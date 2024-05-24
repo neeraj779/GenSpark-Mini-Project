@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StudentManagementAPI.Models
+namespace StudentManagementAPI.Models.DBModels
 {
     public class Teacher
     {

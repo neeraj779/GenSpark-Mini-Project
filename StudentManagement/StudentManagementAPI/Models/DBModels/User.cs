@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace StudentManagementAPI.Models
+namespace StudentManagementAPI.Models.DBModels
 {
     public enum UserRole
     {
