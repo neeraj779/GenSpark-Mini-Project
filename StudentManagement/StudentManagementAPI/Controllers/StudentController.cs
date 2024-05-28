@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
+using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
@@ -23,42 +25,58 @@ namespace StudentManagementAPI.Controllers
         /// An action result containing the newly created student if successful.
         /// </returns>
         /// <response code="200">Returns the newly created student.</response>
-        [HttpPost("Register")]
-        public async Task<ActionResult> AddStudent(StudentRegisterDTO student)
+        [HttpPost("RegisterStudent")]
+        public async Task<ActionResult<StudentReturnDTO>> AddStudent(StudentRegisterDTO student)
         {
             var newStudent = await _studentService.RegisterStudent(student);
             return Ok(newStudent);
         }
 
-        /// <summary>
-        /// Deletes a student based on the provided student ID.
-        /// </summary>
-        /// <param name="studentId">The ID of the student to be deleted.</param>
-        /// <returns>
-        /// An action result indicating the success of the deletion operation.
-        /// </returns>
-        /// <response code="200">If the student is successfully deleted.</response>
-        [HttpDelete("DeleteStudent")]
-        public async Task<ActionResult> DeleteStudent(int studentId)
+        [HttpPut("UpdateStudentEmail")]
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentEmail(int studentId, string email)
         {
-            var deletedStudent = await _studentService.DeleteStudent(studentId);
-            return Ok(deletedStudent);
+            try
+            {
+                var updatedStudent = await _studentService.UpdateStudentEmail(studentId, email);
+                return Ok(updatedStudent);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
-        /// <summary>
-        /// Updates an existing student with the provided details.
-        /// </summary>
-        /// <param name="student">The updated details of the student.</param>
-        /// <returns>
-        /// An action result containing the updated student if successful.
-        /// </returns>
-        /// <response code="200">Returns the updated student.</response>
-        //[HttpPut("UpdateStudent")]
-        //public async Task<ActionResult> UpdateStudent(StudentReturnDTO student)
-        //{
-        //    var updatedStudent = await _studentService.UpdateStudent(student);
-        //    return Ok(updatedStudent);
-        //}
+        [HttpPut("UpdateStudentPhone")]
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentPhone(int studentId, string phone)
+        {
+            try
+            {
+                var updatedStudent = await _studentService.UpdateStudentPhone(studentId, phone);
+                return Ok(updatedStudent);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPut("UpdateStudentStatus")]
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentStatus(int studentId, string status)
+        {
+            try
+            {
+                var updatedStudent = await _studentService.UpdateStudentStatus(studentId, status);
+                return Ok(updatedStudent);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
 
         /// <summary>
         /// Retrieves a student's details based on the provided student ID.
@@ -70,10 +88,18 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the student's details.</response>
         /// <response code="404">If the student with the given ID is not found.</response>
         [HttpGet("GetStudentById")]
-        public async Task<ActionResult> GetStudentById(int studentId)
+        public async Task<ActionResult<StudentReturnDTO>> GetStudentById(int studentId)
         {
-            var student = await _studentService.GetStudentById(studentId);
-            return Ok(student);
+            try
+            {
+                var student = await _studentService.GetStudentById(studentId);
+                return Ok(student);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -84,10 +110,41 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all students.</response>
         [HttpGet("GetAllStudents")]
-        public async Task<ActionResult> GetStudents()
+        public async Task<ActionResult<StudentReturnDTO>> GetStudents()
         {
-            var students = await _studentService.GetStudents();
-            return Ok(students);
+            try
+            {
+                var students = await _studentService.GetStudents();
+                return Ok(students);
+            }
+
+            catch (NoStudentFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Deletes a student based on the provided student ID.
+        /// </summary>
+        /// <param name="studentId">The ID of the student to be deleted.</param>
+        /// <returns>
+        /// An action result indicating the success of the deletion operation.
+        /// </returns>
+        /// <response code="200">If the student is successfully deleted.</response>
+        [HttpDelete("DeleteStudent")]
+        public async Task<ActionResult<StudentReturnDTO>> DeleteStudent(int studentId)
+        {
+            try
+            {
+                var deletedStudent = await _studentService.DeleteStudent(studentId);
+                return Ok(deletedStudent);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
     }
 }
