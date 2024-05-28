@@ -5,7 +5,7 @@ namespace StudentManagementAPI.Models.DTOs
 {
     public class AssignmentSubmisssionReturnDTO
     {
-        public string AssignmentId { get; set; }
+        public int AssignmentId { get; set; }
 
         [DataType(DataType.Date)]
         [Column(TypeName = "Date")]

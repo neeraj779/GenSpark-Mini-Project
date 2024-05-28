@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
+using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DTOs;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -37,5 +39,60 @@ namespace StudentManagementAPI.Controllers
             var newAssignmentSubmission = await _assignmentSubmission.SubmitAssignment(Id, assignmentSubmission);
             return Ok(newAssignmentSubmission);
         }
+
+        [HttpGet("GetAssignedAssignments")]
+        [Authorize(Roles = "Student")]
+        public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignedAssignments()
+        {
+            try
+            {
+                string studentId = User.FindFirstValue(ClaimTypes.Name);
+
+                int Id = Convert.ToInt32(studentId);
+
+                var assignments = await _assignmentSubmission.GetAssignedAssignments(Id);
+                return Ok(assignments);
+            }
+
+            catch (NotEnrolledInAnyCourseException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+            catch (NoAssignmentFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpGet("GetAssignedAssignmentsByCourse")]
+        [Authorize(Roles = "Student")]
+        public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignedAssignmentsByCourse(string courseCode)
+        {
+            try
+            {
+                string studentId = User.FindFirstValue(ClaimTypes.Name);
+
+                int Id = Convert.ToInt32(studentId);
+
+                var assignments = await _assignmentSubmission.GetAssignedAssignmentsByCourse(Id, courseCode);
+                return Ok(assignments);
+            }
+
+            catch (NotEnrolledInCourseException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+            catch (NoAssignmentFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoSuchCourseException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
     }
 }

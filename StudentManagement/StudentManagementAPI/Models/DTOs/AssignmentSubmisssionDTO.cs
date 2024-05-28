@@ -2,7 +2,7 @@
 {
     public class AssignmentSubmisssionDTO
     {
-        public string AssignmentId { get; set; }
+        public int AssignmentId { get; set; }
         public bool IsCompleted { get; set; }
     }
 }
