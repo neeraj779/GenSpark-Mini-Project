@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementAPI.Models.DBModels
 {
@@ -7,10 +8,11 @@ namespace StudentManagementAPI.Models.DBModels
         [Key]
         public int CourseOfferingId { get; set; }
 
-        [Required(ErrorMessage = "Course ID is required")]
-        public int CourseId { get; set; }
-        public int? TeacherId { get; set; }
+        [Required(ErrorMessage = "Course Code is required")]
+        public string CourseCode { get; set; }
+        public int TeacherId { get; set; }
 
+        [ForeignKey("CourseCode")]
         public Course Course { get; set; }
         public Teacher Teacher { get; set; }
         public ICollection<Class> Classes { get; set; }
