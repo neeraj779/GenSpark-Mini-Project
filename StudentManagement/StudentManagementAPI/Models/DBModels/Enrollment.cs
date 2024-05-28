@@ -12,7 +12,7 @@ namespace StudentManagementAPI.Models.DBModels
         public int StudentId { get; set; }
 
         [Required(ErrorMessage = "Course ID is required.")]
-        public int CourseId { get; set; }
+        public string CourseCode { get; set; }
 
         [Required(ErrorMessage = "Enrollment date is required.")]
         [DataType(DataType.Date)]
@@ -21,7 +21,7 @@ namespace StudentManagementAPI.Models.DBModels
         [ForeignKey("StudentId")]
         public Student Student { get; set; }
 
-        [ForeignKey("CourseId")]
+        [ForeignKey("CourseCode")]
         public Course Course { get; set; }
     }
 }

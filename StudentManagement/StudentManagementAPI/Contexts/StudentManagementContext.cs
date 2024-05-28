@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentManagementAPI.Models.DBModels;
+using System.Security.Cryptography;
+using System.Text;
 
 public class StudentManagementContext : DbContext
 {
     public StudentManagementContext(DbContextOptions options) : base(options) { }
 
     public DbSet<User> Users { get; set; }
-    public DbSet<Degree> Degrees { get; set; }
-    public DbSet<Branch> Branches { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
@@ -20,27 +20,21 @@ public class StudentManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .HasIndex(u => u.Email)
-            .IsUnique();
+        var adminUser = new User
+        {
+            UserId = 100,
+            UserName = "admin",
+            Status = "Active",
+            Role = UserRole.Admin,
+            RegistrationDate = DateTime.UtcNow
+        };
 
-        modelBuilder.Entity<Branch>()
-            .HasOne(b => b.Degree)
-            .WithMany(d => d.Branches)
-            .HasForeignKey(b => b.DegreeId)
-            .OnDelete(DeleteBehavior.Restrict);
+        HMACSHA512 hMACSHA = new HMACSHA512();
+        adminUser.PasswordHashKey = hMACSHA.Key;
+        adminUser.Password = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes("admin"));
 
-        modelBuilder.Entity<Student>()
-            .HasOne(s => s.Degree)
-            .WithMany(d => d.Students)
-            .HasForeignKey(s => s.DegreeId)
-            .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Student>()
-            .HasOne(s => s.Branch)
-            .WithMany(b => b.Students)
-            .HasForeignKey(s => s.BranchId)
-            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<User>().HasData(adminUser);
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
@@ -51,7 +45,7 @@ public class StudentManagementContext : DbContext
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Course)
             .WithMany(c => c.Enrollments)
-            .HasForeignKey(e => e.CourseId)
+            .HasForeignKey(e => e.CourseCode)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<ClassAttendance>()
@@ -69,7 +63,7 @@ public class StudentManagementContext : DbContext
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.Course)
             .WithMany(c => c.Assignments)
-            .HasForeignKey(a => a.CourseId)
+            .HasForeignKey(a => a.CourseCode)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Submission>()

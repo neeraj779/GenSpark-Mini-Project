@@ -15,9 +15,16 @@ namespace PizzaAPI.Repositories
         }
         public async Task<User> Add(User item)
         {
-            _context.Add(item);
-            await _context.SaveChangesAsync();
-            return item;
+            try
+            {
+                _context.Add(item);
+                await _context.SaveChangesAsync();
+                return item;
+            }
+            catch (DbUpdateException)
+            {
+                throw new UnableToAddException("Unable to add user. Please check the data and try again.");
+            }
         }
 
         public async Task<User> Delete(int key)
@@ -35,18 +42,31 @@ namespace PizzaAPI.Repositories
         public async Task<User> Get(int key)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserId == key);
+            if (user == null)
+            {
+                throw new NoSuchUserException();
+            }
             return user;
         }
 
         public async Task<User> GetByUserName(string userName)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                throw new NoSuchUserException();
+            }
             return user;
         }
 
         public async Task<IEnumerable<User>> Get()
         {
-            return (await _context.Users.ToListAsync());
+            var users =  await _context.Users.ToListAsync();
+            if (users == null)
+            {
+                throw new NoUserFoundException();
+            }
+            return users;
         }
 
         public async Task<User> Update(User item)

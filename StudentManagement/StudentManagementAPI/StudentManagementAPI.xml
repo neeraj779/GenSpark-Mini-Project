@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StudentManagementAPI</name>
+    </assembly>
+    <members>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentController.CreateAssignment(StudentManagementAPI.Models.DTOs.CreateAssignmentDTO)">
+            <summary>
+            Creates a new assignment with the provided details.
+            </summary>
+            <param name="assignment">The details of the assignment to be created.</param>
+            <returns>
+            An action result containing the newly created assignment if successful.
+            </returns>
+            <response code="200">Returns the newly created assignment.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentController.DeleteAssignment(System.Int32)">
+            <summary>
+            Deletes an assignment based on the provided assignment ID.
+            </summary>
+            <param name="assignmentId">The ID of the assignment to be deleted.</param>
+            <returns>
+            An action result indicating the success of the deletion operation.
+            </returns>
+            <response code="200">If the assignment is successfully deleted.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentController.UpdateAssignmentDueDate(System.Int32,System.DateTime)">
+            <summary>
+            Updates the due date of an existing assignment based on the provided assignment ID.
+            </summary>
+            <param name="assignmentId">The ID of the assignment to be updated.</param>
+            <param name="dueDate">The new due date for the assignment.</param>
+            <returns>
+            An action result containing the updated assignment if successful.
+            </returns>
+            <response code="200">Returns the updated assignment.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentController.GetAssignmentById(System.Int32)">
+            <summary>
+            Retrieves an assignment's details based on the provided assignment ID.
+            </summary>
+            <param name="assignmentId">The ID of the assignment to be retrieved.</param>
+            <returns>
+            An action result containing the assignment's details if found.
+            </returns>
+            <response code="200">Returns the assignment's details.</response>
+            <response code="404">If the assignment with the given ID is not found.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentController.GetAssignments">
+            <summary>
+            Retrieves a list of all assignments.
+            </summary>
+            <returns>
+            An action result containing the list of all assignments.
+            </returns>
+            <response code="200">Returns the list of all assignments.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentSubmissionController.SubmitAssignment(StudentManagementAPI.Models.DTOs.AssignmentSubmisssionDTO)">
+            <summary>
+            Submits an assignment with the provided submission details.
+            </summary>
+            <param name="assignmentSubmission">The details of the assignment submission.</param>
+            <returns>
+            An action result containing the details of the submitted assignment if successful.
+            </returns>
+            <response code="200">Returns the details of the submitted assignment.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.CourseController.CreateCourse(StudentManagementAPI.Models.DTOs.CourseDTO)">
+            <summary>
+            Creates a new course with the provided course details.
+            </summary>
+            <param name="course">The details of the course to be created.</param>
+            <returns>
+            An action result containing the newly created course if successful.
+            </returns>
+            <response code="200">Returns the newly created course.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.CourseController.DeleteCourse(System.String)">
+            <summary>
+            Deletes a course based on the provided course code.
+            </summary>
+            <param name="courseCode">The code of the course to be deleted.</param>
+            <returns>
+            An action result indicating the success of the deletion operation.
+            </returns>
+            <response code="200">If the course is successfully deleted.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.CourseController.UpdateCourseCreditHours(System.String,System.Int32)">
+            <summary>
+            Updates the credit hours of an existing course based on the provided course code.
+            </summary>
+            <param name="courseCode">The code of the course to be updated.</param>
+            <param name="creditHours">The new credit hours for the course.</param>
+            <returns>
+            An action result containing the updated course if successful.
+            </returns>
+            <response code="200">Returns the updated course.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.CourseController.GetCourseByCode(System.String)">
+            <summary>
+            Retrieves a course's details based on the provided course code.
+            </summary>
+            <param name="courseCode">The code of the course to be retrieved.</param>
+            <returns>
+            An action result containing the course's details if found.
+            </returns>
+            <response code="200">Returns the course's details.</response>
+            <response code="404">If the course with the given code is not found.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.CourseController.GetCourses">
+            <summary>
+            Retrieves a list of all courses.
+            </summary>
+            <returns>
+            An action result containing the list of all courses.
+            </returns>
+            <response code="200">Returns the list of all courses.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.StudentController.AddStudent(StudentManagementAPI.Models.DTOs.StudentDTO)">
+            <summary>
+            Registers a new student with the provided registration details.
+            </summary>
+            <param name="student">The registration details of the student.</param>
+            <returns>
+            An action result containing the newly created student if successful.
+            </returns>
+            <response code="200">Returns the newly created student.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.StudentController.DeleteStudent(System.Int32)">
+            <summary>
+            Deletes a student based on the provided student ID.
+            </summary>
+            <param name="studentId">The ID of the student to be deleted.</param>
+            <returns>
+            An action result indicating the success of the deletion operation.
+            </returns>
+            <response code="200">If the student is successfully deleted.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.StudentController.UpdateStudent(StudentManagementAPI.Models.DTOs.StudentDTO)">
+            <summary>
+            Updates an existing student with the provided details.
+            </summary>
+            <param name="student">The updated details of the student.</param>
+            <returns>
+            An action result containing the updated student if successful.
+            </returns>
+            <response code="200">Returns the updated student.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.StudentController.GetStudentById(System.Int32)">
+            <summary>
+            Retrieves a student's details based on the provided student ID.
+            </summary>
+            <param name="studentId">The ID of the student to be retrieved.</param>
+            <returns>
+            An action result containing the student's details if found.
+            </returns>
+            <response code="200">Returns the student's details.</response>
+            <response code="404">If the student with the given ID is not found.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.StudentController.GetStudents">
+            <summary>
+            Retrieves a list of all students.
+            </summary>
+            <returns>
+            An action result containing the list of all students.
+            </returns>
+            <response code="200">Returns the list of all students.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.TeacherController.AddTeacher(StudentManagementAPI.Models.DTOs.TeacherRegisterDTO)">
+            <summary>
+            Registers a new teacher with the provided registration details.
+            </summary>
+            <param name="teacher">The registration details of the teacher.</param>
+            <returns>
+            An action result containing the newly created teacher if successful, 
+            or an appropriate error message if the registration fails.
+            </returns>
+            <response code="200">Returns the newly created teacher.</response>
+            <response code="400">If the registration fails due to invalid input.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.TeacherController.DeleteTeacher(System.Int32)">
+            <summary>
+            Deletes a teacher based on the provided teacher ID.
+            </summary>
+            <param name="teacherId">The ID of the teacher to be deleted.</param>
+            <returns>
+            An action result indicating the success of the deletion operation.
+            </returns>
+            <response code="200">If the teacher is successfully deleted.</response>
+            <response code="400">If the deletion fails due to invalid input.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.TeacherController.GetTeacherById(System.Int32)">
+            <summary>
+            Retrieves a teacher's details based on the provided teacher ID.
+            </summary>
+            <param name="teacherId">The ID of the teacher to be retrieved.</param>
+            <returns>
+            An action result containing the teacher's details if found.
+            </returns>
+            <response code="200">Returns the teacher's details.</response>
+            <response code="404">If the teacher with the given ID is not found.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.TeacherController.GetTeachers">
+            <summary>
+            Retrieves a list of all teachers.
+            </summary>
+            <returns>
+            An action result containing the list of all teachers.
+            </returns>
+            <response code="200">Returns the list of all teachers.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.UserController.Login(StudentManagementAPI.Models.DTOs.UserLoginDTO)">
+            <summary>
+            Authenticates a user based on the provided login credentials for JWT Token.
+            </summary>
+            <param name="user">The login details of the user.</param>
+            <returns>
+            JWT Token if successful, 
+            or an appropriate error status code if the login fails.
+            </returns>
+            <response code="200">Returns the authentication response.</response>
+            <response code="403">If the user is not active.</response>
+            <response code="401">If the login credentials are invalid.</response>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.UserController.Register(StudentManagementAPI.Models.DTOs.UserRegisterDTO)">
+            <summary>
+            Registers a new user with the provided registration details.
+            </summary>
+            <param name="user">The registration details of the user.</param>
+            <returns>
+            An action result containing the newly created user if successful, 
+            or an appropriate error status code if the registration fails.
+            </returns>
+            <response code="200">Returns the newly created user.</response>
+            <response code="409">If a user with the same details already exists.</response>
+            <response code="400">If the provided role is invalid or the user is not part of the institution.</response>
+        </member>
+    </members>
+</doc>

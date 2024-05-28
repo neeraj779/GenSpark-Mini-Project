@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementAPI.Models.DBModels
 {
@@ -7,8 +8,8 @@ namespace StudentManagementAPI.Models.DBModels
         [Key]
         public int AssignmentId { get; set; }
 
-        [Required(ErrorMessage = "Course ID is required.")]
-        public int CourseId { get; set; }
+        [ForeignKey("CourseCode")]
+        public string CourseCode { get; set; }
 
         [Required(ErrorMessage = "Title is required.")]
         [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]

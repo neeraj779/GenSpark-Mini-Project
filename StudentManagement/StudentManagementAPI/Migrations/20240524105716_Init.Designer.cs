@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace StudentManagementAPI.Migrations
 {
     [DbContext(typeof(StudentManagementContext))]
-    partial class StudentManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20240524105716_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,8 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssignmentId"), 1L, 1);
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
@@ -43,9 +44,32 @@ namespace StudentManagementAPI.Migrations
 
                     b.HasKey("AssignmentId");
 
-                    b.HasIndex("CourseCode");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Assignments");
+                });
+
+            modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Branch", b =>
+                {
+                    b.Property<int>("BranchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchId"), 1L, 1);
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("DegreeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BranchId");
+
+                    b.HasIndex("DegreeId");
+
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Class", b =>
@@ -102,8 +126,16 @@ namespace StudentManagementAPI.Migrations
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Course", b =>
                 {
+                    b.Property<int>("CourseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"), 1L, 1);
+
                     b.Property<string>("CourseCode")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("CourseCredit")
                         .HasColumnType("int");
@@ -113,7 +145,7 @@ namespace StudentManagementAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("CourseCode");
+                    b.HasKey("CourseId");
 
                     b.ToTable("Courses");
                 });
@@ -126,9 +158,8 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseOfferingId"), 1L, 1);
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -139,11 +170,31 @@ namespace StudentManagementAPI.Migrations
 
                     b.HasKey("CourseOfferingId");
 
-                    b.HasIndex("CourseCode");
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("TeacherId");
 
                     b.ToTable("CourseOfferings");
+                });
+
+            modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Degree", b =>
+                {
+                    b.Property<int>("DegreeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DegreeId"), 1L, 1);
+
+                    b.Property<string>("DegreeName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("DegreeId");
+
+                    b.ToTable("Degrees");
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Enrollment", b =>
@@ -154,9 +205,8 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"), 1L, 1);
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EnrollmentDate")
                         .HasColumnType("datetime2");
@@ -166,7 +216,7 @@ namespace StudentManagementAPI.Migrations
 
                     b.HasKey("EnrollmentId");
 
-                    b.HasIndex("CourseCode");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
@@ -181,13 +231,16 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
+                    b.Property<int>("BranchId")
+                        .HasMaxLength(150)
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Department")
-                        .IsRequired()
+                    b.Property<int>("DegreeId")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -219,6 +272,10 @@ namespace StudentManagementAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("StudentId");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("DegreeId");
 
                     b.HasIndex("UserId");
 
@@ -265,10 +322,6 @@ namespace StudentManagementAPI.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -302,6 +355,10 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<byte[]>("Password")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -329,15 +386,19 @@ namespace StudentManagementAPI.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             UserId = 100,
-                            Password = new byte[] { 159, 216, 196, 161, 243, 208, 135, 252, 234, 143, 90, 237, 182, 220, 92, 168, 20, 161, 173, 136, 255, 17, 170, 194, 134, 218, 131, 2, 109, 52, 121, 211, 27, 21, 12, 178, 11, 48, 67, 173, 17, 213, 244, 78, 178, 239, 120, 253, 59, 122, 224, 50, 149, 61, 95, 52, 97, 159, 137, 59, 225, 44, 229, 212 },
-                            PasswordHashKey = new byte[] { 73, 206, 85, 4, 151, 111, 104, 104, 111, 235, 168, 41, 66, 16, 214, 146, 224, 67, 203, 0, 209, 13, 60, 19, 127, 11, 30, 8, 158, 84, 18, 39, 152, 153, 132, 7, 2, 232, 18, 8, 94, 203, 218, 202, 133, 202, 200, 197, 2, 42, 237, 94, 225, 98, 112, 108, 216, 214, 231, 160, 223, 87, 67, 65, 37, 151, 140, 130, 35, 73, 236, 6, 82, 55, 41, 75, 180, 100, 108, 181, 238, 132, 142, 5, 171, 69, 17, 70, 207, 242, 149, 107, 128, 35, 221, 145, 16, 147, 35, 79, 205, 171, 41, 48, 11, 129, 210, 159, 210, 95, 229, 73, 12, 166, 77, 119, 46, 105, 190, 210, 26, 239, 254, 61, 185, 250, 109, 162 },
-                            RegistrationDate = new DateTime(2024, 5, 27, 10, 43, 19, 405, DateTimeKind.Utc).AddTicks(240),
+                            Email = "admin@presidio.com",
+                            Password = new byte[] { 230, 229, 18, 63, 118, 252, 27, 36, 118, 226, 246, 15, 143, 207, 28, 128, 151, 214, 236, 116, 14, 95, 44, 52, 50, 125, 226, 14, 97, 128, 48, 175, 97, 231, 244, 101, 158, 0, 173, 223, 58, 48, 42, 49, 140, 225, 211, 61, 66, 1, 190, 120, 76, 108, 155, 66, 183, 55, 91, 45, 146, 74, 186, 100 },
+                            PasswordHashKey = new byte[] { 250, 199, 38, 9, 219, 16, 144, 83, 248, 117, 45, 185, 226, 87, 226, 148, 85, 68, 45, 209, 163, 116, 22, 213, 160, 115, 185, 101, 205, 107, 140, 12, 20, 217, 59, 121, 84, 176, 18, 86, 235, 24, 182, 68, 179, 62, 44, 186, 67, 165, 0, 120, 189, 226, 119, 232, 50, 64, 190, 151, 91, 246, 174, 89, 74, 250, 109, 232, 71, 142, 231, 3, 234, 5, 90, 49, 228, 134, 231, 216, 160, 190, 156, 86, 67, 194, 30, 217, 34, 1, 68, 172, 153, 58, 238, 159, 61, 123, 77, 93, 222, 45, 189, 23, 217, 10, 136, 165, 193, 199, 204, 203, 18, 125, 27, 182, 78, 152, 9, 111, 241, 134, 53, 158, 203, 151, 64, 176 },
+                            RegistrationDate = new DateTime(2024, 5, 24, 10, 57, 15, 814, DateTimeKind.Utc).AddTicks(3504),
                             Role = 0,
                             Status = "Active",
                             UserName = "admin"
@@ -348,11 +409,22 @@ namespace StudentManagementAPI.Migrations
                 {
                     b.HasOne("StudentManagementAPI.Models.DBModels.Course", "Course")
                         .WithMany("Assignments")
-                        .HasForeignKey("CourseCode")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Branch", b =>
+                {
+                    b.HasOne("StudentManagementAPI.Models.DBModels.Degree", "Degree")
+                        .WithMany("Branches")
+                        .HasForeignKey("DegreeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Degree");
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Class", b =>
@@ -387,9 +459,15 @@ namespace StudentManagementAPI.Migrations
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.CourseOffering", b =>
                 {
+                    b.HasOne("StudentManagementAPI.Models.DBModels.Branch", "Branch")
+                        .WithMany("CourseOfferings")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("StudentManagementAPI.Models.DBModels.Course", "Course")
                         .WithMany("CourseOfferings")
-                        .HasForeignKey("CourseCode")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -398,6 +476,8 @@ namespace StudentManagementAPI.Migrations
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("Course");
 
@@ -408,7 +488,7 @@ namespace StudentManagementAPI.Migrations
                 {
                     b.HasOne("StudentManagementAPI.Models.DBModels.Course", "Course")
                         .WithMany("Enrollments")
-                        .HasForeignKey("CourseCode")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -425,9 +505,25 @@ namespace StudentManagementAPI.Migrations
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Student", b =>
                 {
+                    b.HasOne("StudentManagementAPI.Models.DBModels.Branch", "Branch")
+                        .WithMany("Students")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("StudentManagementAPI.Models.DBModels.Degree", "Degree")
+                        .WithMany("Students")
+                        .HasForeignKey("DegreeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("StudentManagementAPI.Models.DBModels.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Degree");
 
                     b.Navigation("User");
                 });
@@ -465,6 +561,13 @@ namespace StudentManagementAPI.Migrations
                     b.Navigation("Submissions");
                 });
 
+            modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Branch", b =>
+                {
+                    b.Navigation("CourseOfferings");
+
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Class", b =>
                 {
                     b.Navigation("ClassAttendances");
@@ -482,6 +585,13 @@ namespace StudentManagementAPI.Migrations
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.CourseOffering", b =>
                 {
                     b.Navigation("Classes");
+                });
+
+            modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Degree", b =>
+                {
+                    b.Navigation("Branches");
+
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Student", b =>

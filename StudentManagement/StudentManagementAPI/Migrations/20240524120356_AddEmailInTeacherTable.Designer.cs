@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace StudentManagementAPI.Migrations
 {
     [DbContext(typeof(StudentManagementContext))]
-    [Migration("20240524061304_Init")]
-    partial class Init
+    [Migration("20240524120356_AddEmailInTeacherTable")]
+    partial class AddEmailInTeacherTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -322,6 +322,10 @@ namespace StudentManagementAPI.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -355,10 +359,6 @@ namespace StudentManagementAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<byte[]>("Password")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -386,10 +386,19 @@ namespace StudentManagementAPI.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 100,
+                            Password = new byte[] { 172, 62, 232, 166, 210, 85, 15, 133, 151, 157, 115, 26, 141, 124, 18, 20, 134, 236, 67, 224, 10, 221, 14, 219, 210, 65, 151, 185, 107, 234, 203, 147, 112, 48, 211, 230, 149, 17, 232, 187, 183, 227, 66, 13, 9, 160, 228, 174, 224, 187, 122, 104, 244, 69, 125, 85, 168, 126, 152, 180, 22, 164, 160, 88 },
+                            PasswordHashKey = new byte[] { 119, 20, 63, 42, 150, 149, 49, 118, 145, 25, 40, 173, 76, 225, 193, 184, 97, 19, 60, 74, 137, 162, 253, 112, 211, 69, 26, 16, 40, 34, 13, 187, 95, 76, 209, 83, 195, 240, 114, 166, 232, 67, 13, 146, 185, 22, 236, 185, 128, 0, 35, 192, 201, 226, 242, 230, 19, 37, 200, 246, 132, 157, 1, 163, 60, 90, 139, 15, 61, 255, 113, 129, 136, 65, 135, 5, 118, 31, 62, 21, 85, 107, 33, 79, 145, 195, 7, 127, 41, 108, 5, 112, 57, 149, 215, 82, 168, 157, 74, 162, 71, 182, 87, 242, 89, 190, 4, 46, 80, 220, 78, 103, 86, 151, 84, 158, 100, 132, 131, 39, 214, 175, 254, 240, 71, 26, 236, 147 },
+                            RegistrationDate = new DateTime(2024, 5, 24, 12, 3, 56, 545, DateTimeKind.Utc).AddTicks(5023),
+                            Role = 0,
+                            Status = "Active",
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.Assignment", b =>

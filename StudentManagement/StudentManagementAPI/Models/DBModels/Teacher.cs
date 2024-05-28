@@ -24,6 +24,11 @@ namespace StudentManagementAPI.Models.DBModels
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; } = string.Empty;
+
         public User? User { get; set; }
         public ICollection<CourseOffering>? CourseOfferings { get; set; }
     }
