@@ -95,6 +95,10 @@ namespace StudentManagementAPI.Services
         public async Task<IEnumerable<EnrollmentReturnDTO>> GetAllEnrollments()
         {
             var enrollments = await _enrollmentRepository.Get();
+
+            if (enrollments.Count() == 0)
+                throw new NoEnrollmentFoundException();
+
             var enrollmentsDTOs = new List<EnrollmentReturnDTO>();
             foreach (var enrollment in enrollments)
                 enrollmentsDTOs.Add(MapEnrollmentToEnrollmentReturnDTO(enrollment));
