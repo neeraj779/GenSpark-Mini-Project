@@ -32,7 +32,7 @@ namespace StudentManagementAPI.Services
             var userDB = await _userRepo.GetByUserName(loginDTO.UserName);
             if (userDB == null)
             {
-                throw new UnauthorizedUserException();
+                throw new InvalidLoginException();
             }
 
             if(userDB.Status != "Active")
@@ -47,7 +47,7 @@ namespace StudentManagementAPI.Services
 
             if (!isPasswordCorrect)
             {
-                throw new UnauthorizedUserException();
+                throw new InvalidLoginException();
             }
             LoginReturnDTO returnDTO = new LoginReturnDTO();
             returnDTO.AccessToken = _tokenService.GenerateToken(userDB);
