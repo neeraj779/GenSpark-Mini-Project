@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
+using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 using System;
@@ -29,8 +31,16 @@ namespace StudentManagementAPI.Controllers
         [HttpPost("CreateAssignment")]
         public async Task<ActionResult<AssignmentDTO>> CreateAssignment(CreateAssignmentDTO assignment)
         {
-            var newAssignment = await _assignmentService.CreateAssignment(assignment);
-            return Ok(newAssignment);
+            try
+            {
+                var newAssignment = await _assignmentService.CreateAssignment(assignment);
+                return Ok(newAssignment);
+            }
+
+            catch(NoSuchCourseException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -44,8 +54,16 @@ namespace StudentManagementAPI.Controllers
         [HttpDelete("DeleteAssignment")]
         public async Task<ActionResult<AssignmentDTO>> DeleteAssignment(int assignmentId)
         {
-            var deletedAssignment = await _assignmentService.DeleteAssignment(assignmentId);
-            return Ok(deletedAssignment);
+            try
+            {
+                var deletedAssignment = await _assignmentService.DeleteAssignment(assignmentId);
+                return Ok(deletedAssignment);
+            }
+
+            catch (NoSuchAssignmentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -57,11 +75,19 @@ namespace StudentManagementAPI.Controllers
         /// An action result containing the updated assignment if successful.
         /// </returns>
         /// <response code="200">Returns the updated assignment.</response>
-        [HttpPut("UpdateAssignment")]
-        public async Task<ActionResult> UpdateAssignmentDueDate(int assignmentId, DateTime dueDate)
+        [HttpPut("UpdateAssignmentDueDate")]
+        public async Task<ActionResult<AssignmentDTO>> UpdateAssignmentDueDate(AssignmentUpdateDTO assignment)
         {
-            var updatedAssignment = await _assignmentService.UpdateAssignmentDueDate(assignmentId, dueDate);
-            return Ok(updatedAssignment);
+            try
+            {
+                var updatedAssignment = await _assignmentService.UpdateAssignmentDueDate(assignment);
+                return Ok(updatedAssignment);
+            }
+
+            catch (NoSuchAssignmentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -76,8 +102,16 @@ namespace StudentManagementAPI.Controllers
         [HttpGet("GetAssignmentById")]
         public async Task<ActionResult<AssignmentDTO>> GetAssignmentById(int assignmentId)
         {
-            var assignment = await _assignmentService.GetAssignmentById(assignmentId);
-            return Ok(assignment);
+            try
+            {
+                var assignment = await _assignmentService.GetAssignmentById(assignmentId);
+                return Ok(assignment);
+            }
+
+            catch (NoSuchAssignmentException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -90,8 +124,16 @@ namespace StudentManagementAPI.Controllers
         [HttpGet("GetAllAssignments")]
         public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignments()
         {
-            var assignments = await _assignmentService.GetAssignments();
-            return Ok(assignments);
+            try
+            {
+                var assignments = await _assignmentService.GetAssignments();
+                return Ok(assignments);
+            }
+
+            catch (NoAssignmentFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
     }
 }

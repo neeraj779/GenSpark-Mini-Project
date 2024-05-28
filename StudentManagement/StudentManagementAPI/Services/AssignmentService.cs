@@ -1,4 +1,5 @@
-﻿using StudentManagementAPI.Interfaces;
+﻿using StudentManagementAPI.Exceptions;
+using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
@@ -7,14 +8,20 @@ namespace StudentManagementAPI.Services
     public class AssignmentService : IAssignmentService
     {
         private IRepository<int, Assignment> _assignmentRepository;
+        private IRepository<string, Course> _courseRepository;
 
-        public AssignmentService(IRepository<int, Assignment> assignmentRepository)
+        public AssignmentService(IRepository<int, Assignment> assignmentRepository, IRepository<string, Course> courseRepository)
         {
             _assignmentRepository = assignmentRepository;
+            _courseRepository = courseRepository;
         }
         public async Task<AssignmentDTO> CreateAssignment(CreateAssignmentDTO assignment)
         {
             var newAssignment = new Assignment();
+
+            var course = await _courseRepository.Get(assignment.CourseCode);
+            if (course == null)
+                throw new NoSuchCourseException();
 
             newAssignment.Title = assignment.Title;
             newAssignment.DueDate = assignment.AssignmentDueDate;
@@ -27,19 +34,34 @@ namespace StudentManagementAPI.Services
 
         public async Task<AssignmentDTO> DeleteAssignment(int assignmentId)
         {
-            var deletedAssignment = await _assignmentRepository.Delete(assignmentId);
-            return MapAssignmentToAssignmentDTO(deletedAssignment);
+            try
+            {
+                var deletedAssignment = await _assignmentRepository.Delete(assignmentId);
+                return MapAssignmentToAssignmentDTO(deletedAssignment);
+            }
+            catch (NoSuchAssignmentException)
+            {
+                throw new NoSuchAssignmentException();
+            }
         }
 
         public async Task<AssignmentDTO> GetAssignmentById(int assignmentId)
         {
             var assignment =await _assignmentRepository.Get(assignmentId);
+
+            if (assignment == null)
+                throw new NoSuchAssignmentException();
+
             return MapAssignmentToAssignmentDTO(assignment);
         }
 
         public async Task<IEnumerable<AssignmentDTO>> GetAssignments()
         {
             var assignments = await _assignmentRepository.Get();
+
+            if (assignments.Count() == 0)
+                throw new NoAssignmentFoundException();
+
             var assignmentDTOs = new List<AssignmentDTO>();
             foreach (var assignment in assignments)
                 assignmentDTOs.Add(MapAssignmentToAssignmentDTO(assignment));
@@ -48,12 +70,16 @@ namespace StudentManagementAPI.Services
 
         }
 
-        public async Task<AssignmentDTO> UpdateAssignmentDueDate(int assignmentId, DateTime dueDate)
+        public async Task<AssignmentDTO> UpdateAssignmentDueDate(AssignmentUpdateDTO assignment)
         {
-            var assignment = await _assignmentRepository.Get(assignmentId);
-            assignment.DueDate = dueDate;
+            var assignmentDb = await _assignmentRepository.Get(assignment.AssignmentId);
 
-            var updatedAssignment = await _assignmentRepository.Update(assignment);
+            if (assignmentDb == null)
+                throw new NoSuchAssignmentException();
+
+            assignmentDb.DueDate = assignment.AssignmentDueDate;
+
+            var updatedAssignment = await _assignmentRepository.Update(assignmentDb);
             return MapAssignmentToAssignmentDTO(updatedAssignment);
         }
 

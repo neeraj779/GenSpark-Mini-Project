@@ -27,35 +27,15 @@ namespace StudentManagementAPI.Exceptions
             }
         }
 
-        public async Task<Assignment> Delete(int key)
-        {
-            var assignment = await Get(key);
-            if (assignment != null)
-            {
-                _context.Remove(assignment);
-                await _context.SaveChangesAsync();
-                return assignment;
-            }
-            throw new NoSuchAssignmentException();
-        }
-
         public async Task<Assignment> Get(int key)
         {
             var assignment = await _context.Assignments.SingleOrDefaultAsync(a => a.AssignmentId == key);
-            if (assignment == null)
-            {
-                throw new NoSuchAssignmentException();
-            }
             return assignment;
         }
 
         public async Task<IEnumerable<Assignment>> Get()
         {
             var assignments = await _context.Assignments.ToListAsync();
-            if (assignments == null)
-            {
-                throw new NoAssignmentFoundException();
-            }
             return assignments;
         }
 
@@ -69,6 +49,18 @@ namespace StudentManagementAPI.Exceptions
                 return item;
             }
 
+            throw new NoSuchAssignmentException();
+        }
+
+        public async Task<Assignment> Delete(int key)
+        {
+            var assignment = await Get(key);
+            if (assignment != null)
+            {
+                _context.Remove(assignment);
+                await _context.SaveChangesAsync();
+                return assignment;
+            }
             throw new NoSuchAssignmentException();
         }
     }
