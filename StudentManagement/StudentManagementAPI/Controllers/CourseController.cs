@@ -30,8 +30,16 @@ namespace StudentManagementAPI.Controllers
         [HttpPost("CreateCourse")]
         public async Task<ActionResult<CourseDTO>> CreateCourse(CourseDTO course)
         {
-            var newCourse = await _courseService.CreateCourse(course);
-            return Ok(newCourse);
+            try
+            {
+                var newCourse = await _courseService.CreateCourse(course);
+                return Ok(newCourse);
+            }
+
+            catch (CourseAlreadyExistsException ex)
+            {
+                return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>

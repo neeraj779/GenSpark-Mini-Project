@@ -16,6 +16,12 @@ namespace StudentManagementAPI.Services
 
         public async Task<CourseDTO> CreateCourse(CourseDTO course)
         {
+
+            var courseExists = await _courseRepository.Get(course.CourseCode);
+
+            if (courseExists != null)
+                throw new CourseAlreadyExistsException();
+
             var newCourse = new Course();
 
             newCourse.CourseCode = course.CourseCode;
