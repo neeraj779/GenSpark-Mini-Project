@@ -77,6 +77,47 @@ namespace StudentManagementAPI.Controllers
             {
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
+
+            catch(DuplicateUserNameException ex)
+            {
+                return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
+            }
         }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsers();
+            return Ok(users);
+        }
+
+        [HttpPost("ActivateUser")]
+        public async Task<ActionResult> ActivateUser(int id)
+        {
+            try
+            {
+                var user = await _userService.ActivateUser(id);
+                return Ok(user);
+            }
+            catch (NoSuchUserException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPost("DeactivateUser")]
+        public async Task<ActionResult> DeactivateUser(int id)
+        {
+            try
+            {
+                var user = await _userService.DeactivateUser(id);
+                return Ok(user);
+            }
+            catch (NoSuchUserException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
     }
 }

@@ -52,10 +52,6 @@ namespace PizzaAPI.Repositories
         public async Task<User> GetByUserName(string userName)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == userName);
-            if (user == null)
-            {
-                throw new NoSuchUserException();
-            }
             return user;
         }
 
