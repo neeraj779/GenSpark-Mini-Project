@@ -2,7 +2,6 @@
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
-using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
@@ -28,7 +27,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the newly created teacher.</response>
         /// <response code="400">If the registration fails due to invalid input.</response>
         [HttpPost("Register")]
-        public async Task<ActionResult> AddTeacher(TeacherRegisterDTO teacher)
+        public async Task<ActionResult<TeacherReturnDTO>> AddTeacher(TeacherRegisterDTO teacher)
         {
             try
             {
@@ -51,7 +50,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">If the teacher is successfully deleted.</response>
         /// <response code="400">If the deletion fails due to invalid input.</response>
         [HttpDelete("DeleteTeacher")]
-        public async Task<ActionResult> DeleteTeacher(int teacherId)
+        public async Task<ActionResult<TeacherReturnDTO>> DeleteTeacher(int teacherId)
         {
             try
             {
@@ -62,7 +61,6 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-
 
         }
 
@@ -76,7 +74,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the teacher's details.</response>
         /// <response code="404">If the teacher with the given ID is not found.</response>
         [HttpGet("GetTeacherById")]
-        public async Task<ActionResult> GetTeacherById(int teacherId)
+        public async Task<ActionResult<TeacherReturnDTO>> GetTeacherById(int teacherId)
         {
             try
             {
@@ -98,7 +96,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all teachers.</response>
         [HttpGet("GetAllTeachers")]
-        public async Task<ActionResult> GetTeachers()
+        public async Task<ActionResult<TeacherReturnDTO>> GetTeachers()
         {
             try
             {
