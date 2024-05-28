@@ -17,6 +17,7 @@ namespace StudentManagementAPI.Models.DBModels
 
         [Required(ErrorMessage = "Due date is required.")]
         [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
         public DateTime DueDate { get; set; }
 
         public Course Course { get; set; }

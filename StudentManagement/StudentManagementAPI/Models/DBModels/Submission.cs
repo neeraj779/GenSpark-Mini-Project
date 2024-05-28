@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementAPI.Models.DBModels
 {
@@ -15,6 +16,7 @@ namespace StudentManagementAPI.Models.DBModels
 
         [Required(ErrorMessage = "Submission date is required.")]
         [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
         public DateTime SubmissionDate { get; set; }
 
         [Required(ErrorMessage = "Completion status is required.")]
