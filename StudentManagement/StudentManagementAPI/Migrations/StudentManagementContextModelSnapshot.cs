@@ -34,7 +34,7 @@ namespace StudentManagementAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -60,7 +60,7 @@ namespace StudentManagementAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Schedule")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.HasKey("ClassId");
 
@@ -81,7 +81,7 @@ namespace StudentManagementAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -116,6 +116,74 @@ namespace StudentManagementAPI.Migrations
                     b.HasKey("CourseCode");
 
                     b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            CourseCode = "CSE101",
+                            CourseCredit = 3,
+                            CourseName = "Introduction to Computer Science"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE102",
+                            CourseCredit = 3,
+                            CourseName = "Data Structures"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE103",
+                            CourseCredit = 3,
+                            CourseName = "Algorithms"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE104",
+                            CourseCredit = 3,
+                            CourseName = "Database Management Systems"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE105",
+                            CourseCredit = 3,
+                            CourseName = "Operating Systems"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE106",
+                            CourseCredit = 3,
+                            CourseName = "Computer Networks"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE107",
+                            CourseCredit = 3,
+                            CourseName = "Software Engineering"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE108",
+                            CourseCredit = 3,
+                            CourseName = "Web Development"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE109",
+                            CourseCredit = 3,
+                            CourseName = "Artificial Intelligence"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE110",
+                            CourseCredit = 3,
+                            CourseName = "Machine Learning"
+                        },
+                        new
+                        {
+                            CourseCode = "CSE201",
+                            CourseCredit = 3,
+                            CourseName = "Object-Oriented Programming"
+                        });
                 });
 
             modelBuilder.Entity("StudentManagementAPI.Models.DBModels.CourseOffering", b =>
@@ -130,11 +198,7 @@ namespace StudentManagementAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TeacherId")
-                        .IsRequired()
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("CourseOfferingId");
@@ -182,7 +246,7 @@ namespace StudentManagementAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"), 1L, 1);
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<string>("Department")
                         .IsRequired()
@@ -243,7 +307,7 @@ namespace StudentManagementAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SubmissionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.HasKey("SubmissionId");
 
@@ -263,7 +327,7 @@ namespace StudentManagementAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherId"), 1L, 1);
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -335,9 +399,9 @@ namespace StudentManagementAPI.Migrations
                         new
                         {
                             UserId = 100,
-                            Password = new byte[] { 159, 216, 196, 161, 243, 208, 135, 252, 234, 143, 90, 237, 182, 220, 92, 168, 20, 161, 173, 136, 255, 17, 170, 194, 134, 218, 131, 2, 109, 52, 121, 211, 27, 21, 12, 178, 11, 48, 67, 173, 17, 213, 244, 78, 178, 239, 120, 253, 59, 122, 224, 50, 149, 61, 95, 52, 97, 159, 137, 59, 225, 44, 229, 212 },
-                            PasswordHashKey = new byte[] { 73, 206, 85, 4, 151, 111, 104, 104, 111, 235, 168, 41, 66, 16, 214, 146, 224, 67, 203, 0, 209, 13, 60, 19, 127, 11, 30, 8, 158, 84, 18, 39, 152, 153, 132, 7, 2, 232, 18, 8, 94, 203, 218, 202, 133, 202, 200, 197, 2, 42, 237, 94, 225, 98, 112, 108, 216, 214, 231, 160, 223, 87, 67, 65, 37, 151, 140, 130, 35, 73, 236, 6, 82, 55, 41, 75, 180, 100, 108, 181, 238, 132, 142, 5, 171, 69, 17, 70, 207, 242, 149, 107, 128, 35, 221, 145, 16, 147, 35, 79, 205, 171, 41, 48, 11, 129, 210, 159, 210, 95, 229, 73, 12, 166, 77, 119, 46, 105, 190, 210, 26, 239, 254, 61, 185, 250, 109, 162 },
-                            RegistrationDate = new DateTime(2024, 5, 27, 10, 43, 19, 405, DateTimeKind.Utc).AddTicks(240),
+                            Password = new byte[] { 40, 63, 89, 175, 17, 110, 38, 125, 94, 137, 232, 135, 205, 127, 144, 7, 185, 145, 89, 70, 184, 135, 25, 41, 152, 0, 46, 170, 194, 241, 32, 228, 163, 110, 115, 63, 167, 24, 169, 115, 162, 73, 26, 40, 220, 194, 17, 179, 171, 171, 91, 223, 154, 157, 230, 29, 227, 36, 67, 188, 118, 201, 170, 174 },
+                            PasswordHashKey = new byte[] { 36, 189, 54, 249, 161, 141, 112, 196, 39, 157, 243, 131, 227, 7, 21, 245, 145, 173, 19, 59, 72, 172, 236, 223, 200, 143, 146, 58, 92, 169, 99, 204, 51, 86, 170, 1, 9, 244, 175, 199, 115, 183, 54, 83, 230, 87, 156, 108, 173, 95, 17, 207, 73, 0, 16, 57, 133, 98, 165, 216, 130, 219, 162, 11, 16, 0, 250, 224, 41, 112, 16, 222, 198, 91, 213, 52, 204, 40, 174, 189, 139, 165, 215, 24, 0, 132, 61, 221, 44, 165, 186, 7, 7, 33, 171, 58, 84, 35, 210, 29, 180, 214, 80, 242, 11, 223, 189, 13, 212, 197, 146, 251, 118, 63, 228, 61, 173, 197, 134, 119, 194, 224, 122, 21, 152, 10, 155, 242 },
+                            RegistrationDate = new DateTime(2024, 5, 28, 16, 25, 12, 114, DateTimeKind.Utc).AddTicks(9792),
                             Role = 0,
                             Status = "Active",
                             UserName = "admin"

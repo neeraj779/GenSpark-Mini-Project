@@ -36,6 +36,21 @@ public class StudentManagementContext : DbContext
 
         modelBuilder.Entity<User>().HasData(adminUser);
 
+        modelBuilder.Entity<Course>().HasData(
+            new Course { CourseCode = "CSE101", CourseName = "Introduction to Computer Science", CourseCredit = 3 },
+            new Course { CourseCode = "CSE102", CourseName = "Data Structures", CourseCredit = 3 },
+            new Course { CourseCode = "CSE103", CourseName = "Algorithms", CourseCredit = 3 },
+            new Course { CourseCode = "CSE104", CourseName = "Database Management Systems", CourseCredit = 3 },
+            new Course { CourseCode = "CSE105", CourseName = "Operating Systems", CourseCredit = 3 },
+            new Course { CourseCode = "CSE106", CourseName = "Computer Networks", CourseCredit = 3 },
+            new Course { CourseCode = "CSE107", CourseName = "Software Engineering", CourseCredit = 3 },
+            new Course { CourseCode = "CSE108", CourseName = "Web Development", CourseCredit = 3 },
+            new Course { CourseCode = "CSE109", CourseName = "Artificial Intelligence", CourseCredit = 3 },
+            new Course { CourseCode = "CSE110", CourseName = "Machine Learning", CourseCredit = 3 },
+            new Course { CourseCode = "CSE201", CourseName = "Object-Oriented Programming", CourseCredit = 3 }
+        );
+
+
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Student)
             .WithMany(s => s.Enrollments)
