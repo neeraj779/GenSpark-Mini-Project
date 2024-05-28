@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementAPI.Models.DBModels
 {
@@ -6,7 +7,6 @@ namespace StudentManagementAPI.Models.DBModels
     {
         [Key]
         public int StudentId { get; set; }
-
         public int? UserId { get; set; }
 
         [Required(ErrorMessage = "Full name is required.")]
@@ -23,6 +23,7 @@ namespace StudentManagementAPI.Models.DBModels
 
         [Required(ErrorMessage = "Date of birth is required.")]
         [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]
@@ -40,7 +41,7 @@ namespace StudentManagementAPI.Models.DBModels
         [StringLength(20, ErrorMessage = "Status must be between 1 and 20 characters.")]
         public string Status { get; set; } = string.Empty;
 
-        public User User { get; set; }
+        public User? User { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<ClassAttendance> ClassAttendances { get; set; }
         public ICollection<Submission> Submissions { get; set; }
