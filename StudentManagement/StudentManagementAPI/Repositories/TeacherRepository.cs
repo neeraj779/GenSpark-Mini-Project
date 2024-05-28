@@ -43,20 +43,12 @@ namespace StudentManagementAPI.Repositories
         public async Task<Teacher> Get(int key)
         {
             var teacher = await _context.Teachers.SingleOrDefaultAsync(t => t.TeacherId == key);
-            if (teacher == null)
-            {
-                throw new NoSuchTeacherException();
-            }
             return teacher;
         }
 
         public async Task<IEnumerable<Teacher>> Get()
         {
             var teachers = await _context.Teachers.ToListAsync();
-            if (teachers == null)
-            {
-                throw new NoTeacherFoundException();
-            }
             return teachers;
         }
 

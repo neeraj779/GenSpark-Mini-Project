@@ -1,4 +1,5 @@
-﻿using StudentManagementAPI.Interfaces;
+﻿using StudentManagementAPI.Exceptions;
+using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
@@ -22,19 +23,32 @@ namespace StudentManagementAPI.Services
 
         public async Task<TeacherReturnDTO> UpdateTeacher(Teacher teacher)
         {
-            var updatedTeacher = await _teacherRepository.Update(teacher);
-            return MapTeacherToTeacherReturnDTO(updatedTeacher);
+            try
+            {
+                var updatedTeacher = await _teacherRepository.Update(teacher);
+                return MapTeacherToTeacherReturnDTO(updatedTeacher);
+            }
+            catch (NoSuchTeacherException)
+            {
+                throw new NoSuchTeacherException();
+            }
         }
 
         public async Task<TeacherReturnDTO> GetTeacherById(int key)
         {
             var teacher = await _teacherRepository.Get(key);
+            if (teacher == null)
+                throw new NoSuchTeacherException();
+
             return MapTeacherToTeacherReturnDTO(teacher);
         }
 
         public async Task<IEnumerable<TeacherReturnDTO>> GetTeachers()
         {
             var teachers = await _teacherRepository.Get();
+            if (teachers.Count() == 0)
+                throw new NoTeacherFoundException();
+
             var teacherDTOs = new List<TeacherReturnDTO>();
             foreach (var teacher in teachers)
                 teacherDTOs.Add(MapTeacherToTeacherReturnDTO(teacher));

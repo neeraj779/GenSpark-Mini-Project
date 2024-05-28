@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
+using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
@@ -51,8 +53,17 @@ namespace StudentManagementAPI.Controllers
         [HttpDelete("DeleteTeacher")]
         public async Task<ActionResult> DeleteTeacher(int teacherId)
         {
-            var deletedTeacher = await _teacherService.DeleteTeacher(teacherId);
-            return Ok(deletedTeacher);
+            try
+            {
+                var deletedTeacher = await _teacherService.DeleteTeacher(teacherId);
+                return Ok(deletedTeacher);
+            }
+            catch (NoSuchTeacherException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+
         }
 
         /// <summary>
@@ -67,8 +78,16 @@ namespace StudentManagementAPI.Controllers
         [HttpGet("GetTeacherById")]
         public async Task<ActionResult> GetTeacherById(int teacherId)
         {
-            var teacher = await _teacherService.GetTeacherById(teacherId);
-            return Ok(teacher);
+            try
+            {
+                var teacher = await _teacherService.GetTeacherById(teacherId);
+                return Ok(teacher);
+            }
+
+            catch (NoSuchTeacherException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -81,8 +100,16 @@ namespace StudentManagementAPI.Controllers
         [HttpGet("GetAllTeachers")]
         public async Task<ActionResult> GetTeachers()
         {
-            var teachers = await _teacherService.GetTeachers();
-            return Ok(teachers);
+            try
+            {
+                var teachers = await _teacherService.GetTeachers();
+                return Ok(teachers);
+            }
+
+            catch (NoTeacherFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
     }
 }
