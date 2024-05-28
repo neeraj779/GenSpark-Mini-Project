@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
+using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,8 +45,16 @@ namespace StudentManagementAPI.Controllers
         [HttpDelete("DeleteCourse")]
         public async Task<ActionResult<CourseDTO>> DeleteCourse(string courseCode)
         {
-            var deletedCourse = await _courseService.DeleteCourse(courseCode);
-            return Ok(deletedCourse);
+            try
+            {
+                var deletedCourse = await _courseService.DeleteCourse(courseCode);
+                return Ok(deletedCourse);
+            }
+
+            catch (NoSuchCourseException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -59,8 +69,16 @@ namespace StudentManagementAPI.Controllers
         [HttpPut("UpdateCourseCreditHours")]
         public async Task<ActionResult<CourseDTO>> UpdateCourseCreditHours(string courseCode, int creditHours)
         {
-            var updatedCourse = await _courseService.UpdateCourseCreditHours(courseCode, creditHours);
-            return Ok(updatedCourse);
+            try
+            {
+                var updatedCourse = await _courseService.UpdateCourseCreditHours(courseCode, creditHours);
+                return Ok(updatedCourse);
+            }
+
+            catch (NoSuchCourseException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -75,8 +93,16 @@ namespace StudentManagementAPI.Controllers
         [HttpGet("GetCourseByCode")]
         public async Task<ActionResult<CourseDTO>> GetCourseByCode(string courseCode)
         {
-            var course = await _courseService.GetCourseByCode(courseCode);
-            return Ok(course);
+            try
+            {
+                var course = await _courseService.GetCourseByCode(courseCode);
+                return Ok(course);
+            }
+
+            catch (NoSuchCourseException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -86,11 +112,19 @@ namespace StudentManagementAPI.Controllers
         /// An action result containing the list of all courses.
         /// </returns>
         /// <response code="200">Returns the list of all courses.</response>
-        [HttpGet("GetCourses")]
+        [HttpGet("GetAllCourses")]
         public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses()
         {
-            var courses = await _courseService.GetCourses();
-            return Ok(courses);
+            try
+            {
+                var courses = await _courseService.GetCourses();
+                return Ok(courses);
+            }
+
+            catch (NoCourseFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
     }
 }

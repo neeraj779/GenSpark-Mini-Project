@@ -31,10 +31,6 @@ namespace StudentManagementAPI.Repositories
         public async Task<Course> Get(string key)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(c => c.CourseCode == key);
-            if (course == null)
-            {
-                throw new NoSuchCourseException();
-            }
             return course;
         }
 
@@ -53,10 +49,6 @@ namespace StudentManagementAPI.Repositories
         public async Task<IEnumerable<Course>> Get()
         {
             var courses = await _context.Courses.ToListAsync();
-            if (courses == null)
-            {
-                throw new NoCourseFoundException();
-            }
             return courses;
         }
 
