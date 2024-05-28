@@ -1,4 +1,5 @@
-﻿using StudentManagementAPI.Exceptions;
+﻿using Microsoft.AspNetCore.Authorization;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;

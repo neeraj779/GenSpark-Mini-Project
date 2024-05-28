@@ -53,10 +53,6 @@ namespace StudentManagementAPI.Repositories
         public async Task<IEnumerable<Enrollment>> Get()
         {
             var enrollments = await _context.Enrollments.ToListAsync();
-            if (enrollments == null)
-            {
-                throw new NoEnrollmentFoundException();
-            }
             return enrollments;
         }
 

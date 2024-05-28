@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -20,6 +21,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("EnrollStudentInCourse")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> EnrollStudent([FromBody] EnrollmentDTO enrollment)
         {
             try
@@ -45,6 +47,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("UnenrollStudentFromCourse")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> UnenrollStudent([FromBody] EnrollmentDTO enrollment)
         {
             try
@@ -65,6 +68,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetEnrollmentsByStudentId")]
+        [Authorize(Roles = "Teacher, Student")]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByStudentId(int studentId)
         {
             try
@@ -80,6 +84,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetEnrollmentsByCourseId")]
+        [Authorize(Roles = "Teacher, Student")]
         public async Task<ActionResult<EnrollmentReturnDTO>>  GetEnrollmentsByCourseId(string courseCode)
         {
             try
@@ -95,6 +100,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAllEnrollments")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetAllEnrollments()
         {
             try
