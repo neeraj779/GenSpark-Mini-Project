@@ -3,7 +3,7 @@ using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 
-namespace PizzaAPI.Repositories
+namespace StudentManagementAPI.Repositories
 {
     public class UserRepository : IUserRepository<int, User>
     {
