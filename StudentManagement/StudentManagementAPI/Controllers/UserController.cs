@@ -28,7 +28,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the authentication response.</response>
         /// <response code="403">If the user is not active.</response>
         /// <response code="401">If the login credentials are invalid.</response>
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(UserLoginDTO user)
         {
             try
@@ -57,7 +57,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the newly created user.</response>
         /// <response code="409">If a user with the same details already exists.</response>
         /// <response code="400">If the provided role is invalid or the user is not part of the institution.</response>
-        [HttpPost("register")]
+        [HttpPost("RegisterAccount")]
         public async Task<ActionResult> Register(UserRegisterDTO user)
         {
             try
