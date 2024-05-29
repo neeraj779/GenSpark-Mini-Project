@@ -20,6 +20,9 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("MarkStudentAttendance")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> MarkStudentAttendance(ClassAttendanceDTO classAttendancedto)
         {
             try
@@ -43,6 +46,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetAttendanceByClass")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClass(int classId)
         {
             try
@@ -54,10 +59,18 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch(NoClassAttendanceFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+
         }
 
         [HttpGet("GetAttendanceByStudent")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByStudent(int studentId)
         {
             try
@@ -69,10 +82,16 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch (NoClassAttendanceFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet("GetAttendanceByClassAndStudent")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClassAndStudent(int classId, int studentId)
         {
             try
@@ -88,10 +107,16 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch(NoSuchClassAttendanceException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpPut("UpdateAttendance")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> UpdateAttendance(ClassAttendanceDTO classAttendancedto)
         {
             try

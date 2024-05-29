@@ -21,14 +21,10 @@ namespace StudentManagementAPI.Controllers
         /// Registers a new teacher with the provided registration details.
         /// </summary>
         /// <param name="teacher">The registration details of the teacher.</param>
-        /// <returns>
-        /// An action result containing the newly created teacher if successful, 
-        /// or an appropriate error message if the registration fails.
-        /// </returns>
-        /// <response code="200">Returns the newly created teacher.</response>
-        /// <response code="400">If the registration fails due to invalid input.</response>
         [HttpPost("RegisterTeacher")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TeacherReturnDTO>> AddTeacher(TeacherRegisterDTO teacher)
         {
             if (!ModelState.IsValid)
@@ -39,9 +35,9 @@ namespace StudentManagementAPI.Controllers
                 var newTeacher = await _teacherService.RegisterTeacher(teacher);
                 return Ok(newTeacher);
             }
-            catch (Exception ex)
+            catch (UnableToAddException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel { ErrorCode = StatusCodes.Status500InternalServerError, ErrorMessage = ex.Message });
             }
         }
 
@@ -49,12 +45,10 @@ namespace StudentManagementAPI.Controllers
         /// Retrieves a teacher's details based on the provided teacher ID.
         /// </summary>
         /// <param name="teacherId">The ID of the teacher to be retrieved.</param>
-        /// <returns>
-        /// An action result containing the teacher's details if found.
-        /// </returns>
-        /// <response code="200">Returns the teacher's details.</response>
-        /// <response code="404">If the teacher with the given ID is not found.</response>
         [HttpGet("GetTeacherById")]
+        [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TeacherReturnDTO>> GetTeacherById(int teacherId)
         {
             try
@@ -72,12 +66,10 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Retrieves a list of all teachers.
         /// </summary>
-        /// <returns>
-        /// An action result containing the list of all teachers.
-        /// </returns>
-        /// <response code="200">Returns the list of all teachers.</response>
         [HttpGet("GetAllTeachers")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TeacherReturnDTO>> GetTeachers()
         {
             try
@@ -94,6 +86,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPut("UpdateTeacherEmail")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherEmail(UpdateEmailDTO updateEmaildto)
         {
             if (!ModelState.IsValid)
@@ -112,6 +106,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPut("UpdateTeacherPhone")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherPhone(UpdatePhoneDTO updatePhonedto)
         {
             if (!ModelState.IsValid)
@@ -132,13 +128,10 @@ namespace StudentManagementAPI.Controllers
         /// Deletes a teacher based on the provided teacher ID.
         /// </summary>
         /// <param name="teacherId">The ID of the teacher to be deleted.</param>
-        /// <returns>
-        /// An action result indicating the success of the deletion operation.
-        /// </returns>
-        /// <response code="200">If the teacher is successfully deleted.</response>
-        /// <response code="400">If the deletion fails due to invalid input.</response>
         [HttpDelete("DeleteTeacherRecord")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TeacherReturnDTO>> DeleteTeacher(int teacherId)
         {
             try

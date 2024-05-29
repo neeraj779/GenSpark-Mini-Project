@@ -20,6 +20,9 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("AssignTeacherForCourseOffering")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
         public async Task<ActionResult<CourseOfferingDTO>> AssignTeacherForCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -43,6 +46,9 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("UpdateTeacherForCourseOffering")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
         public async Task<ActionResult<CourseOfferingDTO>> UpdateTeacherForCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -62,6 +68,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("UnassignTeacherFromCourseOffering")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseOfferingDTO>> UnassignTeacherFromCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -85,6 +93,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetCourseOfferingByTeacherId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseOfferingDTO>> GetCourseOfferingByTeacherId(int teacherid)
         {
             try
@@ -104,6 +114,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetCourseOfferingByCourseCode")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseOfferingDTO>> GetCourseOfferingByCourseCode(string CourseCode)
         {
             try
@@ -123,6 +135,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetAllCourseOfferings")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseOfferingDTO>> GetAllCourseOfferings()
         {
             try

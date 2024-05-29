@@ -20,7 +20,10 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("EnrollStudentInCourse")]
         [Authorize(Roles = "Admin, Teacher")]
-        public async Task<IActionResult> EnrollStudent([FromBody] EnrollmentDTO enrollment)
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
+        public async Task<ActionResult> EnrollStudent(EnrollmentDTO enrollment)
         {
             try
             {
@@ -46,7 +49,9 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("UnenrollStudentFromCourse")]
         [Authorize(Roles = "Admin, Teacher")]
-        public async Task<IActionResult> UnenrollStudent([FromBody] EnrollmentDTO enrollment)
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> UnenrollStudent(EnrollmentDTO enrollment)
         {
             try
             {
@@ -67,6 +72,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetEnrollmentsByStudentId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByStudentId(int studentId)
         {
             try
@@ -83,6 +90,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetEnrollmentsByCourseId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EnrollmentReturnDTO>>  GetEnrollmentsByCourseId(string courseCode)
         {
             try
@@ -99,6 +108,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetAllEnrollments")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetAllEnrollments()
         {
             try

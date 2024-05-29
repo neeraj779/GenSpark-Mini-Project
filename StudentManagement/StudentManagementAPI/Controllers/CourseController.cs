@@ -23,13 +23,10 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Creates a new course with the provided course details.
         /// </summary>
-        /// <param name="course">The details of the course to be created.</param>
-        /// <returns>
-        /// An action result containing the newly created course if successful.
-        /// </returns>
-        /// <response code="200">Returns the newly created course.</response>
         [HttpPost("CreateCourse")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
         public async Task<ActionResult<CourseDTO>> CreateCourse(CourseDTO course)
         {
             try
@@ -48,12 +45,10 @@ namespace StudentManagementAPI.Controllers
         /// Deletes a course based on the provided course code.
         /// </summary>
         /// <param name="courseCode">The code of the course to be deleted.</param>
-        /// <returns>
-        /// An action result indicating the success of the deletion operation.
-        /// </returns>
-        /// <response code="200">If the course is successfully deleted.</response>
         [HttpDelete("DeleteCourse")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseDTO>> DeleteCourse(string courseCode)
         {
             try
@@ -73,12 +68,10 @@ namespace StudentManagementAPI.Controllers
         /// </summary>
         /// <param name="courseCode">The code of the course to be updated.</param>
         /// <param name="creditHours">The new credit hours for the course.</param>
-        /// <returns>
-        /// An action result containing the updated course if successful.
-        /// </returns>
-        /// <response code="200">Returns the updated course.</response>
         [HttpPut("UpdateCourseCreditHours")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseDTO>> UpdateCourseCreditHours(string courseCode, int creditHours)
         {
             try
@@ -97,13 +90,10 @@ namespace StudentManagementAPI.Controllers
         /// Retrieves a course's details based on the provided course code.
         /// </summary>
         /// <param name="courseCode">The code of the course to be retrieved.</param>
-        /// <returns>
-        /// An action result containing the course's details if found.
-        /// </returns>
-        /// <response code="200">Returns the course's details.</response>
-        /// <response code="404">If the course with the given code is not found.</response>
         [HttpGet("GetCourseByCode")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CourseDTO>> GetCourseByCode(string courseCode)
         {
             try
@@ -121,12 +111,10 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Retrieves a list of all courses.
         /// </summary>
-        /// <returns>
-        /// An action result containing the list of all courses.
-        /// </returns>
-        /// <response code="200">Returns the list of all courses.</response>
         [HttpGet("GetAllCourses")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(CourseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses()
         {
             try

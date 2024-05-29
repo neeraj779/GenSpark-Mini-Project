@@ -23,25 +23,36 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Submits an assignment with the provided submission details.
         /// </summary>
-        /// <param name="assignmentSubmission">The details of the assignment submission.</param>
-        /// <returns>
-        /// An action result containing the details of the submitted assignment if successful.
-        /// </returns>
-        /// <response code="200">Returns the details of the submitted assignment.</response>
         [HttpPost("SubmitAssignment")]
         [Authorize(Roles = "Student")]
+        [ProducesResponseType(typeof(AssignmentSubmisssionReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<AssignmentSubmisssionReturnDTO>> SubmitAssignment(AssignmentSubmisssionDTO assignmentSubmission)
         {
-            string studentId = User.FindFirstValue(ClaimTypes.Name);
+            try
+            {
+                string studentId = User.FindFirstValue(ClaimTypes.Name);
 
-            int Id = Convert.ToInt32(studentId);
+                int Id = Convert.ToInt32(studentId);
 
-            var newAssignmentSubmission = await _assignmentSubmission.SubmitAssignment(Id, assignmentSubmission);
-            return Ok(newAssignmentSubmission);
+                var newAssignmentSubmission = await _assignmentSubmission.SubmitAssignment(Id, assignmentSubmission);
+                return Ok(newAssignmentSubmission);
+            }
+            catch (NoSuchAssignmentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+            catch(NotEnrolledInCourseException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet("GetAssignedAssignments")]
         [Authorize(Roles = "Student")]
+        [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignedAssignments()
         {
             try
@@ -67,6 +78,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetAssignedAssignmentsByCourse")]
         [Authorize(Roles = "Student")]
+        [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignedAssignmentsByCourse(string courseCode)
         {
             try

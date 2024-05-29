@@ -21,6 +21,9 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPost("AddClass")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
         public async Task<ActionResult<ClassReturnDTO>> AddClass(ClassRegisterDTO classdto)
         {
             try
@@ -40,6 +43,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpDelete("DeleteClass")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassReturnDTO>> DeleteClass(int classId)
         {
             try
@@ -55,6 +60,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetClass")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassReturnDTO>> GetClass(int classId)
         {
             try
@@ -70,6 +77,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpGet("GetClasses")]
         [Authorize(Roles = "Admin, Teacher, Student")]
+        [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<ClassReturnDTO>>> GetClasses()
         {
             try
@@ -85,6 +94,8 @@ namespace StudentManagementAPI.Controllers
 
         [HttpPut("UpdateClassTime")]
         [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassReturnDTO>> UpdateClassTime(UpdateClassDTO updateclassdto)
         {
             try
