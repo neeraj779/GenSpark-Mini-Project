@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using log4net.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -118,6 +119,11 @@ namespace StudentManagementAPI.Controllers
             catch (NoSuchStudentException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+
+            catch (InvalidStudentStatusException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
         }
 
