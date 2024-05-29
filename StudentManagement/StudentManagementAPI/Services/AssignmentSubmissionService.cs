@@ -50,9 +50,13 @@ namespace StudentManagementAPI.Services
             if (isAlreadySubmitted != null)
                 throw new DuplicateAssignmentSubmissionException();
 
-
             if (studentEnrolled == null)
                 throw new NotEnrolledInCourseException();
+
+
+            bool isCorrectFileExt = Path.GetExtension(assignmentSubmission.File.FileName).ToLower() == ".pdf";
+            if (!isCorrectFileExt)
+                throw new InvalidFileExtensionException();
 
             Submission submission = new Submission
             {
@@ -172,6 +176,32 @@ namespace StudentManagementAPI.Services
                 CourseCode = assignment.CourseCode
             };
             return assignmentDTO;
+        }
+
+        public async Task<AssignmentSubmissionResultDTO> GetSubmittedAssignment(int assignmentId, int StudentId)
+        {
+            var assignment = await _assignmentRepository.Get(assignmentId);
+            if (assignment == null)
+                throw new NoSuchAssignmentException();
+
+            var student = await _studentRepository.Get(StudentId);
+            if (student == null)
+                throw new NoSuchStudentException();
+
+            var submission = await _sumissionRepository.Get();
+            var assignmentSubmission = submission.FirstOrDefault(s => s.AssignmentId == assignmentId && s.StudentId == StudentId);
+
+            if (assignmentSubmission == null)
+                throw new NoSuchAssignmentSubmissionException();
+
+            var filePath = Path.Combine("SubmittedAssignments", assignmentSubmission.FileName);
+            var fileData = await File.ReadAllBytesAsync(filePath);
+
+            return new AssignmentSubmissionResultDTO
+            {
+                FileData = fileData,
+                FileName = assignmentSubmission.FileName
+            };
         }
     }
 }

@@ -8,5 +8,6 @@ namespace StudentManagementAPI.Interfaces
         public Task<IEnumerable<AssignmentDTO>> GetAssignedAssignmentsByCourse(int userId, string courseCode);
         public Task<AssignmentDTO> GetAssignmentSubmissionStatus(int userId, int assignmentId);
         public Task<AssignmentSubmisssionReturnDTO> SubmitAssignment(int userId, AssignmentSubmisssionDTO assignmentSubmission);
+        public Task<AssignmentSubmissionResultDTO> GetSubmittedAssignment(int assignmentId, int StudentId);
     }
 }

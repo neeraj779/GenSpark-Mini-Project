@@ -4,6 +4,7 @@ using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DTOs;
+using StudentManagementAPI.Services;
 using System.Security.Claims;
 
 namespace StudentManagementAPI.Controllers
@@ -49,6 +50,10 @@ namespace StudentManagementAPI.Controllers
             catch(DuplicateAssignmentSubmissionException ex)
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
+            }
+            catch(InvalidFileExtensionException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
         }
 
@@ -119,5 +124,28 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the submission status of the assignment for the student.
+        /// </summary>
+        /// <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
+        /// <param name="studentId"> The student id for which the submission status is to be fetched.</param>
+        /// <returns></returns>
+        [HttpGet("GetSubmittedAssignment")]
+        [Authorize(Roles = "Admin, Teacher")]
+        [ProducesResponseType(typeof(byte[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<byte[]>> GetSubmittedAssignment(int assignmentId, int studentId)
+        {
+            try
+            {
+                var fileData = await _assignmentSubmission.GetSubmittedAssignment(assignmentId, studentId);
+                string contentType = "application/pdf";
+                return File(fileData.FileData, contentType, fileData.FileName);
+            }
+            catch (NoSuchAssignmentSubmissionException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
     }
 }
