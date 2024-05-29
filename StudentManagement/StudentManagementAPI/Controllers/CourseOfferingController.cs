@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
-using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
@@ -35,7 +33,7 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(CourseOfferingAlreadyExistsException ex)
+            catch (CourseOfferingAlreadyExistsException ex)
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
             }
@@ -75,7 +73,7 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(NoSuchCourseOfferingException ex)
+            catch (NoSuchCourseOfferingException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
@@ -93,6 +91,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch (NoSuchTeacherException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet("GetCourseOfferingByCourseCode")]
@@ -107,6 +109,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch (NoSuchCourseException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpGet("GetAllCourseOfferings")]
@@ -117,7 +123,7 @@ namespace StudentManagementAPI.Controllers
                 var courseOffering = await _courseOfferingService.GetAllCourseOfferings();
                 return Ok(courseOffering);
             }
-            catch (NoSuchCourseOfferingException ex)
+            catch (NoCourseOfferingException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }

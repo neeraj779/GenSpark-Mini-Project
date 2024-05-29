@@ -51,7 +51,7 @@ namespace StudentManagementAPI.Services
         {
             var courseOfferings = await _courseOfferingRepository.Get();
 
-            if (courseOfferings == null)
+            if (courseOfferings.Count() == 0)
                 throw new NoCourseOfferingException();
 
             var courseOfferingDTOs = new List<CourseOfferingDTO>();
@@ -65,6 +65,11 @@ namespace StudentManagementAPI.Services
 
         public async Task<IEnumerable<CourseOfferingDTO>> GetcourseOfferingByCourseCode(string courseCode)
         {
+            var course = await _courseRepository.Get(courseCode);
+
+            if (course == null)
+                throw new NoSuchCourseException();
+
             var courseOfferings = await _courseOfferingRepository.Get();
 
             var courseOfferingsByCourseCode = courseOfferings.Where(courseOffering => courseOffering.CourseCode == courseCode).ToList();
@@ -82,6 +87,11 @@ namespace StudentManagementAPI.Services
 
         public async Task<IEnumerable<CourseOfferingDTO>> GetcourseOfferingByTeacherId(int teacherId)
         {
+            var teacher = await _teacherRepository.Get(teacherId);
+
+            if (teacher == null)
+                throw new NoSuchTeacherException();
+
             var courseOfferings = await _courseOfferingRepository.Get();
 
             var courseOfferingByTeacherId = courseOfferings.Where(courseOffering => courseOffering.TeacherId == teacherId);
@@ -148,7 +158,7 @@ namespace StudentManagementAPI.Services
             {
                 CourseOfferingId = courseOffering.CourseOfferingId,
                 CourseCode = courseOffering.CourseCode,
-                TeacherId = courseOffering.TeacherId    
+                TeacherId = courseOffering.TeacherId
             };
         }
     }
