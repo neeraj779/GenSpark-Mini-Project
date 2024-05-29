@@ -38,17 +38,43 @@ public class StudentManagementContext : DbContext
 
         modelBuilder.Entity<Course>().HasData(
             new Course { CourseCode = "CSE101", CourseName = "Introduction to Computer Science", CourseCredit = 3 },
-            new Course { CourseCode = "CSE102", CourseName = "Data Structures", CourseCredit = 3 },
-            new Course { CourseCode = "CSE103", CourseName = "Algorithms", CourseCredit = 3 },
+            new Course { CourseCode = "CSE102", CourseName = "Data Structures", CourseCredit = 4 },
+            new Course { CourseCode = "CSE103", CourseName = "Algorithms", CourseCredit = 2 },
             new Course { CourseCode = "CSE104", CourseName = "Database Management Systems", CourseCredit = 3 },
-            new Course { CourseCode = "CSE105", CourseName = "Operating Systems", CourseCredit = 3 },
-            new Course { CourseCode = "CSE106", CourseName = "Computer Networks", CourseCredit = 3 },
-            new Course { CourseCode = "CSE107", CourseName = "Software Engineering", CourseCredit = 3 },
+            new Course { CourseCode = "CSE105", CourseName = "Operating Systems", CourseCredit = 2 },
+            new Course { CourseCode = "CSE106", CourseName = "Computer Networks", CourseCredit = 2 },
+            new Course { CourseCode = "CSE107", CourseName = "Software Engineering", CourseCredit = 4 },
             new Course { CourseCode = "CSE108", CourseName = "Web Development", CourseCredit = 3 },
-            new Course { CourseCode = "CSE109", CourseName = "Artificial Intelligence", CourseCredit = 3 },
+            new Course { CourseCode = "CSE109", CourseName = "Artificial Intelligence", CourseCredit = 4 },
             new Course { CourseCode = "CSE110", CourseName = "Machine Learning", CourseCredit = 3 },
             new Course { CourseCode = "CSE201", CourseName = "Object-Oriented Programming", CourseCredit = 3 }
         );
+
+        modelBuilder.Entity<Teacher>().HasData(
+            new Teacher
+            {
+                TeacherId = 2000,
+                FullName = "Mr. Naresh Kumar",
+                Email = "kumar.naresh@gmail.com",
+                Gender = "Male",
+                DateOfBirth = new DateTime(1980, 1, 1),
+                Phone = "9876543210"
+            }
+            );
+
+        modelBuilder.Entity<Student>().HasData(
+            new Student
+            {
+                StudentId = 4000,
+                FullName = "Ms. Priya Singh",
+                RollNo= "CSE2020001",
+                Department = "Computer Science",
+                Email = "singh.priya@gmail.com",
+                Gender = "Female",
+                Phone = "9374729561",
+                Status = "Undergraduate",
+                DateOfBirth = new DateTime(1999, 1, 1)
+            });
 
 
         modelBuilder.Entity<Enrollment>()

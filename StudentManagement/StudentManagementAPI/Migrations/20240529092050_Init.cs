@@ -58,7 +58,7 @@ namespace StudentManagementAPI.Migrations
                         column: x => x.CourseCode,
                         principalTable: "Courses",
                         principalColumn: "CourseCode",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,13 +128,13 @@ namespace StudentManagementAPI.Migrations
                         column: x => x.CourseCode,
                         principalTable: "Courses",
                         principalColumn: "CourseCode",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Enrollments_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,13 +156,13 @@ namespace StudentManagementAPI.Migrations
                         column: x => x.AssignmentId,
                         principalTable: "Assignments",
                         principalColumn: "AssignmentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Submissions_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,7 +188,7 @@ namespace StudentManagementAPI.Migrations
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "TeacherId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +198,7 @@ namespace StudentManagementAPI.Migrations
                     ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseOfferingId = table.Column<int>(type: "int", nullable: false),
-                    Schedule = table.Column<DateTime>(type: "Date", nullable: false)
+                    ClassDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,13 +230,13 @@ namespace StudentManagementAPI.Migrations
                         column: x => x.ClassId,
                         principalTable: "Classes",
                         principalColumn: "ClassId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClassAttendances_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -245,22 +245,32 @@ namespace StudentManagementAPI.Migrations
                 values: new object[,]
                 {
                     { "CSE101", 3, "Introduction to Computer Science" },
-                    { "CSE102", 3, "Data Structures" },
-                    { "CSE103", 3, "Algorithms" },
+                    { "CSE102", 4, "Data Structures" },
+                    { "CSE103", 2, "Algorithms" },
                     { "CSE104", 3, "Database Management Systems" },
-                    { "CSE105", 3, "Operating Systems" },
-                    { "CSE106", 3, "Computer Networks" },
-                    { "CSE107", 3, "Software Engineering" },
+                    { "CSE105", 2, "Operating Systems" },
+                    { "CSE106", 2, "Computer Networks" },
+                    { "CSE107", 4, "Software Engineering" },
                     { "CSE108", 3, "Web Development" },
-                    { "CSE109", 3, "Artificial Intelligence" },
+                    { "CSE109", 4, "Artificial Intelligence" },
                     { "CSE110", 3, "Machine Learning" },
                     { "CSE201", 3, "Object-Oriented Programming" }
                 });
 
             migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "StudentId", "DateOfBirth", "Department", "Email", "FullName", "Gender", "Phone", "RollNo", "Status", "UserId" },
+                values: new object[] { 4000, new DateTime(1999, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Computer Science", "singh.priya@gmail.com", "Ms. Priya Singh", "Female", "9374729561", "CSE2020001", "Undergraduate", null });
+
+            migrationBuilder.InsertData(
+                table: "Teachers",
+                columns: new[] { "TeacherId", "DateOfBirth", "Email", "FullName", "Gender", "Phone", "UserId" },
+                values: new object[] { 2000, new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kumar.naresh@gmail.com", "Mr. Naresh Kumar", "Male", "9876543210", null });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Password", "PasswordHashKey", "RegistrationDate", "Role", "Status", "UserName" },
-                values: new object[] { 100, new byte[] { 40, 63, 89, 175, 17, 110, 38, 125, 94, 137, 232, 135, 205, 127, 144, 7, 185, 145, 89, 70, 184, 135, 25, 41, 152, 0, 46, 170, 194, 241, 32, 228, 163, 110, 115, 63, 167, 24, 169, 115, 162, 73, 26, 40, 220, 194, 17, 179, 171, 171, 91, 223, 154, 157, 230, 29, 227, 36, 67, 188, 118, 201, 170, 174 }, new byte[] { 36, 189, 54, 249, 161, 141, 112, 196, 39, 157, 243, 131, 227, 7, 21, 245, 145, 173, 19, 59, 72, 172, 236, 223, 200, 143, 146, 58, 92, 169, 99, 204, 51, 86, 170, 1, 9, 244, 175, 199, 115, 183, 54, 83, 230, 87, 156, 108, 173, 95, 17, 207, 73, 0, 16, 57, 133, 98, 165, 216, 130, 219, 162, 11, 16, 0, 250, 224, 41, 112, 16, 222, 198, 91, 213, 52, 204, 40, 174, 189, 139, 165, 215, 24, 0, 132, 61, 221, 44, 165, 186, 7, 7, 33, 171, 58, 84, 35, 210, 29, 180, 214, 80, 242, 11, 223, 189, 13, 212, 197, 146, 251, 118, 63, 228, 61, 173, 197, 134, 119, 194, 224, 122, 21, 152, 10, 155, 242 }, new DateTime(2024, 5, 28, 16, 25, 12, 114, DateTimeKind.Utc).AddTicks(9792), 0, "Active", "admin" });
+                values: new object[] { 100, new byte[] { 245, 216, 40, 147, 219, 216, 187, 15, 155, 6, 134, 169, 82, 120, 56, 99, 32, 185, 132, 5, 231, 98, 229, 190, 26, 202, 8, 63, 108, 199, 58, 141, 78, 199, 89, 243, 136, 160, 71, 20, 132, 60, 137, 173, 59, 222, 40, 114, 34, 87, 117, 226, 34, 126, 114, 238, 132, 70, 84, 8, 233, 157, 194, 211 }, new byte[] { 198, 45, 235, 101, 175, 167, 100, 30, 25, 68, 250, 24, 126, 138, 69, 254, 101, 75, 209, 174, 31, 116, 142, 182, 16, 12, 207, 129, 241, 5, 223, 192, 135, 86, 33, 242, 155, 19, 236, 51, 22, 89, 116, 186, 158, 39, 18, 115, 99, 229, 224, 247, 130, 176, 116, 114, 59, 246, 205, 134, 41, 89, 108, 99, 118, 136, 191, 109, 156, 93, 235, 221, 46, 207, 79, 83, 228, 139, 81, 215, 10, 95, 158, 72, 162, 239, 50, 46, 37, 232, 233, 196, 177, 215, 212, 31, 102, 167, 172, 32, 204, 59, 70, 220, 75, 94, 54, 236, 53, 61, 7, 212, 254, 37, 196, 53, 3, 50, 183, 18, 206, 232, 130, 249, 214, 90, 86, 196 }, new DateTime(2024, 5, 29, 9, 20, 50, 436, DateTimeKind.Utc).AddTicks(4918), 0, "Active", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assignments_CourseCode",
