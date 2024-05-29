@@ -3,6 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentManagementAPI.Models.DBModels
 {
+    public enum StudentStatus
+    {
+        Undergraduate,
+        Postgraduate,
+        Alumni,
+        Graduated,
+        DroppedOut,
+        Expelled,
+        Suspended,
+        Transferred,
+    }
     public class Student
     {
         [Key]
@@ -39,7 +50,7 @@ namespace StudentManagementAPI.Models.DBModels
 
         [Required(ErrorMessage = "Status is required.")]
         [StringLength(20, ErrorMessage = "Status must be between 1 and 20 characters.")]
-        public string Status { get; set; } = string.Empty;
+        public StudentStatus Status { get; set; }
 
         public User? User { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }

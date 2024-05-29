@@ -16,6 +16,12 @@ namespace StudentManagementAPI.Services
 
         public async Task<StudentReturnDTO> RegisterStudent(StudentRegisterDTO student)
         {
+
+            if (!Enum.TryParse(student.Status, out StudentStatus status))
+            {
+                throw new InvalidStudentStatusException();
+            }
+
             var newStudent = new Student();
             newStudent.FullName = student.FullName;
             newStudent.RollNo = student.RollNo;
@@ -24,7 +30,7 @@ namespace StudentManagementAPI.Services
             newStudent.DateOfBirth = student.DateOfBirth;
             newStudent.Phone = student.Phone;
             newStudent.Email = student.Email;
-            newStudent.Status = student.Status;
+            newStudent.Status = status;
 
             var AddedStudent = await _studentRepository.Add(newStudent);
 
@@ -33,12 +39,12 @@ namespace StudentManagementAPI.Services
         }
 
 
-        public async Task<StudentReturnDTO> UpdateStudentEmail(int studentId, string email)
+        public async Task<StudentReturnDTO> UpdateStudentEmail(UpdateEmailDTO updateEmaildto)
         {
-            var student = await _studentRepository.Get(studentId);
+            var student = await _studentRepository.Get(updateEmaildto.Id);
             if (student != null)
             {
-                student.Email = email;
+                student.Email = updateEmaildto.Email;
                 var updatedStudent = await _studentRepository.Update(student);
                 return MapStudentToStudentReturnDTO(updatedStudent);
             }
@@ -47,12 +53,12 @@ namespace StudentManagementAPI.Services
         }
 
 
-        public async Task<StudentReturnDTO> UpdateStudentPhone(int studentId, string phone)
+        public async Task<StudentReturnDTO> UpdateStudentPhone(UpdatePhoneDTO updatePhonedto)
         {
-            var student = await _studentRepository.Get(studentId);
+            var student = await _studentRepository.Get(updatePhonedto.Id);
             if (student != null)
             {
-                student.Phone = phone;
+                student.Phone = updatePhonedto.Phone;
                 var updatedStudent = await _studentRepository.Update(student);
                 return MapStudentToStudentReturnDTO(updatedStudent);
             }
@@ -62,9 +68,16 @@ namespace StudentManagementAPI.Services
         public async Task<StudentReturnDTO> UpdateStudentStatus(int studentId, string status)
         {
             var student = await _studentRepository.Get(studentId);
+
+            if (!Enum.TryParse(status, out StudentStatus studentStatus))
+            {
+                throw new InvalidStudentStatusException();
+            }
+
+
             if (student != null)
             {
-                student.Status = status;
+                student.Status = studentStatus;
                 var updatedStudent = await _studentRepository.Update(student);
                 return MapStudentToStudentReturnDTO(updatedStudent);
             }
@@ -121,7 +134,7 @@ namespace StudentManagementAPI.Services
             studentReturnDTO.DateOfBirth = student.DateOfBirth;
             studentReturnDTO.Phone = student.Phone;
             studentReturnDTO.Email = student.Email;
-            studentReturnDTO.Status = student.Status;
+            studentReturnDTO.Status = student.Status.ToString();
 
             return studentReturnDTO;
         }

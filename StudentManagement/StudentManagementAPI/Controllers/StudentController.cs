@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
-using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
+using StudentManagementAPI.Services;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -26,18 +27,32 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the newly created student.</response>
         [HttpPost("RegisterStudent")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<StudentReturnDTO>> AddStudent(StudentRegisterDTO student)
         {
-            var newStudent = await _studentService.RegisterStudent(student);
-            return Ok(newStudent);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var newStudent = await _studentService.RegisterStudent(student);
+                return Ok(newStudent);
+            }
+            catch (InvalidStudentStatusException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
+            }
         }
 
         [HttpPut("UpdateStudentEmail")]
-        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentEmail(int studentId, string email)
+        [Authorize(Roles = "Admin, Teacher")]
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentEmail(UpdateEmailDTO updateEmaildto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
-                var updatedStudent = await _studentService.UpdateStudentEmail(studentId, email);
+                var updatedStudent = await _studentService.UpdateStudentEmail(updateEmaildto);
                 return Ok(updatedStudent);
             }
 
@@ -48,11 +63,14 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateStudentPhone")]
-        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentPhone(int studentId, string phone)
+        [Authorize(Roles = "Admin, Teacher")]
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentPhone(UpdatePhoneDTO updatePhonedto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             try
             {
-                var updatedStudent = await _studentService.UpdateStudentPhone(studentId, phone);
+                var updatedStudent = await _studentService.UpdateStudentPhone(updatePhonedto);
                 return Ok(updatedStudent);
             }
 
@@ -63,6 +81,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateStudentStatus")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<StudentReturnDTO>> UpdateStudentStatus(int studentId, string status)
         {
             try
@@ -88,6 +107,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the student's details.</response>
         /// <response code="404">If the student with the given ID is not found.</response>
         [HttpGet("GetStudentById")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<StudentReturnDTO>> GetStudentById(int studentId)
         {
             try
@@ -110,6 +130,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all students.</response>
         [HttpGet("GetAllStudents")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<StudentReturnDTO>> GetStudents()
         {
             try
@@ -133,6 +154,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">If the student is successfully deleted.</response>
         [HttpDelete("DeleteStudent")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<StudentReturnDTO>> DeleteStudent(int studentId)
         {
             try

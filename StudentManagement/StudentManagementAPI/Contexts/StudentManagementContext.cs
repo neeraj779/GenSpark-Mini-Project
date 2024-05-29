@@ -72,7 +72,7 @@ public class StudentManagementContext : DbContext
                 Email = "singh.priya@gmail.com",
                 Gender = "Female",
                 Phone = "9374729561",
-                Status = "Undergraduate",
+                Status = StudentStatus.Undergraduate,
                 DateOfBirth = new DateTime(1999, 1, 1)
             });
 
