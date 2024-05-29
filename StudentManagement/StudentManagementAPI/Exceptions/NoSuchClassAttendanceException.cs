@@ -3,14 +3,13 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class NoSuchClassException : Exception
+    internal class NoSuchClassAttendanceException : Exception
     {
         string _message;
-        public NoSuchClassException()
+        public NoSuchClassAttendanceException()
         {
-            _message = "Class with given Id does not exist.";
+            _message = "No such class attendance found.";
         }
-
         public override string Message => _message;
     }
 }

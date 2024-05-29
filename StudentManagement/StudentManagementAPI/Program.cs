@@ -105,6 +105,7 @@ namespace StudentManagementAPI
             builder.Services.AddScoped<IRepository<int, Enrollment>, EnrollmentRepository>();
             builder.Services.AddScoped<IRepository<int, CourseOffering>, CourseOfferingRepository>();
             builder.Services.AddScoped<IRepository<int, Class>, ClassRepository>();
+            builder.Services.AddScoped<IRepository<int, ClassAttendance>, ClassAttendanceRepository>();
             #endregion
 
             #region Services
@@ -118,6 +119,7 @@ namespace StudentManagementAPI
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
             builder.Services.AddScoped<ICourseOfferingService, CourseOfferingService>();
             builder.Services.AddScoped<IClassService, ClassService>();
+            builder.Services.AddScoped<IClassAttendanceService, ClassAttendanceService>();
             #endregion
 
             var app = builder.Build();
