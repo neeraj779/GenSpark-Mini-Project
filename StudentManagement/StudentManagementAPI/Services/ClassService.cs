@@ -27,7 +27,7 @@ namespace StudentManagementAPI.Services
         public async Task<ClassReturnDTO> AddClass(ClassRegisterDTO classdto)
         {
             var IsClassExists = await _classRepository.Get();
-            var classExists = IsClassExists.FirstOrDefault(classObj => classObj.CourseOfferingId == classdto.CourseOfferingId);
+            var classExists = IsClassExists.FirstOrDefault(classObj => classObj.CourseOfferingId == classdto.CourseOfferingId && classObj.ClassDateAndTime == classdto.ClassDateAndTime);
 
             if (classExists != null)
                 throw new ClassAlreadyExistsException();
