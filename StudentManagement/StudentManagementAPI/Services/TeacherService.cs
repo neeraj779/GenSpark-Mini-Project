@@ -41,25 +41,25 @@ namespace StudentManagementAPI.Services
             }
         }
 
-        public async Task<TeacherReturnDTO> UpdateTeacherEmail(int teacherId, string email)
+        public async Task<TeacherReturnDTO> UpdateTeacherEmail(UpdateEmailDTO updateEmaildto)
         {
-            var teacher = await _teacherRepository.Get(teacherId);
+            var teacher = await _teacherRepository.Get(updateEmaildto.Id);
             if (teacher == null)
                 throw new NoSuchTeacherException();
 
-            teacher.Email = email;
+            teacher.Email = updateEmaildto.Email;
             await _teacherRepository.Update(teacher);
 
             return MapTeacherToTeacherReturnDTO(teacher);
         }
 
-        public async Task<TeacherReturnDTO> UpdateTeacherPhone(int teacherId, string phone)
+        public async Task<TeacherReturnDTO> UpdateTeacherPhone(UpdatePhoneDTO updatePhonedto)
         {
-            var teacher = await _teacherRepository.Get(teacherId);
+            var teacher = await _teacherRepository.Get(updatePhonedto.Id);
             if (teacher == null)
                 throw new NoSuchTeacherException();
 
-            teacher.Phone = phone;
+            teacher.Phone = updatePhonedto.Phone;
             await _teacherRepository.Update(teacher);
 
             return MapTeacherToTeacherReturnDTO(teacher);

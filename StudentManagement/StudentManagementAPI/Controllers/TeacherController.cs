@@ -7,7 +7,7 @@ using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class TeacherController : ControllerBase
     {
@@ -28,8 +28,12 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the newly created teacher.</response>
         /// <response code="400">If the registration fails due to invalid input.</response>
         [HttpPost("RegisterTeacher")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TeacherReturnDTO>> AddTeacher(TeacherRegisterDTO teacher)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var newTeacher = await _teacherService.RegisterTeacher(teacher);
@@ -73,6 +77,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all teachers.</response>
         [HttpGet("GetAllTeachers")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TeacherReturnDTO>> GetTeachers()
         {
             try
@@ -88,11 +93,15 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateTeacherEmail")]
-        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherEmail(int teacherId, string email)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherEmail(UpdateEmailDTO updateEmaildto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                var updatedTeacher = await _teacherService.UpdateTeacherEmail(teacherId, email);
+                var updatedTeacher = await _teacherService.UpdateTeacherEmail(updateEmaildto);
                 return Ok(updatedTeacher);
             }
             catch (NoSuchTeacherException)
@@ -102,11 +111,15 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateTeacherPhone")]
-        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherPhone(int teacherId, string phone)
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherPhone(UpdatePhoneDTO updatePhonedto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                var updatedTeacher = await _teacherService.UpdateTeacherPhone(teacherId, phone);
+                var updatedTeacher = await _teacherService.UpdateTeacherPhone(updatePhonedto);
                 return Ok(updatedTeacher);
             }
             catch (NoSuchTeacherException)
@@ -125,6 +138,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">If the teacher is successfully deleted.</response>
         /// <response code="400">If the deletion fails due to invalid input.</response>
         [HttpDelete("DeleteTeacherRecord")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<TeacherReturnDTO>> DeleteTeacher(int teacherId)
         {
             try
