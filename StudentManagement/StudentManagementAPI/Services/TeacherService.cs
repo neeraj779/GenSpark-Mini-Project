@@ -14,11 +14,18 @@ namespace StudentManagementAPI.Services
             _teacherRepository = teacherRepository;
         }
 
-
-        public async Task<TeacherReturnDTO> DeleteTeacher(int teacherId)
+        public async Task<TeacherReturnDTO> RegisterTeacher(TeacherRegisterDTO teacher)
         {
-            var teacher = await _teacherRepository.Delete(teacherId);
-            return MapTeacherToTeacherReturnDTO(teacher);
+            Teacher newTeacher = new Teacher();
+            newTeacher.FullName = teacher.FullName;
+            newTeacher.DateOfBirth = teacher.DateOfBirth;
+            newTeacher.Gender = teacher.Gender;
+            newTeacher.Phone = teacher.Phone;
+            newTeacher.Email = teacher.Email;
+
+            await _teacherRepository.Add(newTeacher);
+
+            return MapTeacherToTeacherReturnDTO(newTeacher);
         }
 
         public async Task<TeacherReturnDTO> UpdateTeacher(Teacher teacher)
@@ -32,6 +39,30 @@ namespace StudentManagementAPI.Services
             {
                 throw new NoSuchTeacherException();
             }
+        }
+
+        public async Task<TeacherReturnDTO> UpdateTeacherEmail(int teacherId, string email)
+        {
+            var teacher = await _teacherRepository.Get(teacherId);
+            if (teacher == null)
+                throw new NoSuchTeacherException();
+
+            teacher.Email = email;
+            await _teacherRepository.Update(teacher);
+
+            return MapTeacherToTeacherReturnDTO(teacher);
+        }
+
+        public async Task<TeacherReturnDTO> UpdateTeacherPhone(int teacherId, string phone)
+        {
+            var teacher = await _teacherRepository.Get(teacherId);
+            if (teacher == null)
+                throw new NoSuchTeacherException();
+
+            teacher.Phone = phone;
+            await _teacherRepository.Update(teacher);
+
+            return MapTeacherToTeacherReturnDTO(teacher);
         }
 
         public async Task<TeacherReturnDTO> GetTeacherById(int key)
@@ -55,31 +86,16 @@ namespace StudentManagementAPI.Services
             return teacherDTOs;
         }
 
-        public async Task<TeacherRegisterDTO> RegisterTeacher(TeacherRegisterDTO teacher)
+        public async Task<TeacherReturnDTO> DeleteTeacher(int teacherId)
         {
-            Teacher newTeacher = new Teacher();
-            newTeacher.FullName = teacher.FullName;
-            newTeacher.DateOfBirth = teacher.DateOfBirth;
-            newTeacher.Gender = teacher.Gender;
-            newTeacher.Phone = teacher.Phone;
-            newTeacher.Email = teacher.Email;
+            var isTeacherExist = await _teacherRepository.Get(teacherId);
+            if (isTeacherExist == null)
+                throw new NoSuchTeacherException();
 
-            await _teacherRepository.Add(newTeacher);
-
-            return MapTeacherToTeacherRegisterDTO(newTeacher);
+            var teacher = await _teacherRepository.Delete(teacherId);
+            return MapTeacherToTeacherReturnDTO(teacher);
         }
 
-        private TeacherRegisterDTO MapTeacherToTeacherRegisterDTO(Teacher newTeacher)
-        {
-            TeacherRegisterDTO teacherRegisterDTO = new TeacherRegisterDTO();
-            teacherRegisterDTO.FullName = newTeacher.FullName;
-            teacherRegisterDTO.DateOfBirth = newTeacher.DateOfBirth;
-            teacherRegisterDTO.Gender = newTeacher.Gender;
-            teacherRegisterDTO.Phone = newTeacher.Phone;
-            teacherRegisterDTO.Email = newTeacher.Email;
-
-            return teacherRegisterDTO;
-        }
 
         private TeacherReturnDTO MapTeacherToTeacherReturnDTO(Teacher newTeacher)
         {
@@ -94,5 +110,4 @@ namespace StudentManagementAPI.Services
             return teacherReturnDTO;
         }
     }
-
 }

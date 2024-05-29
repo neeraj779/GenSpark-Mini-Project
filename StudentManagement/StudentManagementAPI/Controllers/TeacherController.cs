@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
@@ -26,7 +27,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the newly created teacher.</response>
         /// <response code="400">If the registration fails due to invalid input.</response>
-        [HttpPost("Register")]
+        [HttpPost("RegisterTeacher")]
         public async Task<ActionResult<TeacherReturnDTO>> AddTeacher(TeacherRegisterDTO teacher)
         {
             try
@@ -38,30 +39,6 @@ namespace StudentManagementAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        /// <summary>
-        /// Deletes a teacher based on the provided teacher ID.
-        /// </summary>
-        /// <param name="teacherId">The ID of the teacher to be deleted.</param>
-        /// <returns>
-        /// An action result indicating the success of the deletion operation.
-        /// </returns>
-        /// <response code="200">If the teacher is successfully deleted.</response>
-        /// <response code="400">If the deletion fails due to invalid input.</response>
-        [HttpDelete("DeleteTeacher")]
-        public async Task<ActionResult<TeacherReturnDTO>> DeleteTeacher(int teacherId)
-        {
-            try
-            {
-                var deletedTeacher = await _teacherService.DeleteTeacher(teacherId);
-                return Ok(deletedTeacher);
-            }
-            catch (NoSuchTeacherException ex)
-            {
-                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
-            }
-
         }
 
         /// <summary>
@@ -105,6 +82,57 @@ namespace StudentManagementAPI.Controllers
             }
 
             catch (NoTeacherFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        [HttpPut("UpdateTeacherEmail")]
+        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherEmail(int teacherId, string email)
+        {
+            try
+            {
+                var updatedTeacher = await _teacherService.UpdateTeacherEmail(teacherId, email);
+                return Ok(updatedTeacher);
+            }
+            catch (NoSuchTeacherException)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = "Teacher not found" });
+            }
+        }
+
+        [HttpPut("UpdateTeacherPhone")]
+        public async Task<ActionResult<TeacherReturnDTO>> UpdateTeacherPhone(int teacherId, string phone)
+        {
+            try
+            {
+                var updatedTeacher = await _teacherService.UpdateTeacherPhone(teacherId, phone);
+                return Ok(updatedTeacher);
+            }
+            catch (NoSuchTeacherException)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = "Teacher not found" });
+            }
+        }
+
+        /// <summary>
+        /// Deletes a teacher based on the provided teacher ID.
+        /// </summary>
+        /// <param name="teacherId">The ID of the teacher to be deleted.</param>
+        /// <returns>
+        /// An action result indicating the success of the deletion operation.
+        /// </returns>
+        /// <response code="200">If the teacher is successfully deleted.</response>
+        /// <response code="400">If the deletion fails due to invalid input.</response>
+        [HttpDelete("DeleteTeacherRecord")]
+        public async Task<ActionResult<TeacherReturnDTO>> DeleteTeacher(int teacherId)
+        {
+            try
+            {
+                var deletedTeacher = await _teacherService.DeleteTeacher(teacherId);
+                return Ok(deletedTeacher);
+            }
+            catch (NoSuchTeacherException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
