@@ -42,10 +42,6 @@ namespace PizzaAPI.Repositories
         public async Task<User> Get(int key)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserId == key);
-            if (user == null)
-            {
-                throw new NoSuchUserException();
-            }
             return user;
         }
 
@@ -58,10 +54,6 @@ namespace PizzaAPI.Repositories
         public async Task<IEnumerable<User>> Get()
         {
             var users =  await _context.Users.ToListAsync();
-            if (users == null)
-            {
-                throw new NoUserFoundException();
-            }
             return users;
         }
 

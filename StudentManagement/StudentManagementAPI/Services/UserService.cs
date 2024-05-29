@@ -52,6 +52,7 @@ namespace StudentManagementAPI.Services
             LoginReturnDTO returnDTO = new LoginReturnDTO();
             returnDTO.AccessToken = _tokenService.GenerateToken(userDB);
             returnDTO.TokenType = "Bearer";
+            returnDTO.Role = userDB.Role.ToString();
             return returnDTO;
         }
 
@@ -123,6 +124,10 @@ namespace StudentManagementAPI.Services
         public async Task<IEnumerable<RegisteredUserDTO>> GetAllUsers()
         {
             var users = await _userRepo.Get();
+
+            if (users.Count() == 0)
+                throw new NoUserFoundException();
+
             List<RegisteredUserDTO> userReturnDTOs = new List<RegisteredUserDTO>();
             foreach (var user in users)
                 userReturnDTOs.Add(MapUserToReturnDTO(user));
@@ -134,6 +139,9 @@ namespace StudentManagementAPI.Services
         {
             var user = await _userRepo.Get(id);
 
+            if (user == null)
+                throw new NoSuchUserException();
+
             user.Status = "Active";
             await _userRepo.Update(user);
 
@@ -143,6 +151,9 @@ namespace StudentManagementAPI.Services
         public async Task<RegisteredUserDTO> DeactivateUser(int id)
         {
             var user = await _userRepo.Get(id);
+
+            if (user == null)
+                throw new NoSuchUserException();
 
             user.Status = "Inactive";
             await _userRepo.Update(user);

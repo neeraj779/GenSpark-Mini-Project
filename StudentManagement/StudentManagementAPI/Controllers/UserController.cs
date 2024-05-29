@@ -22,28 +22,25 @@ namespace StudentManagementAPI.Controllers
         /// Authenticates a user based on the provided login credentials for JWT Token.
         /// </summary>
         /// <param name="user">The login details of the user.</param>
-        /// <returns>
-        /// JWT Token if successful, 
-        /// or an appropriate error status code if the login fails.
-        /// </returns>
-        /// <response code="200">Returns the authentication response.</response>
-        /// <response code="403">If the user is not active.</response>
-        /// <response code="401">If the login credentials are invalid.</response>
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(UserLoginDTO user)
+        [ProducesResponseType(typeof(LoginReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<LoginReturnDTO>> Login(UserLoginDTO user)
         {
             try
             {
                 var loginReturn = await _userService.Login(user);
                 return Ok(loginReturn);
             }
-            catch (UserNotActiveException e)
+            catch (UserNotActiveException ex)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorModel { ErrorCode = StatusCodes.Status403Forbidden, ErrorMessage = ex.Message });
             }
-            catch (InvalidLoginException)
+            catch (InvalidLoginException ex)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status401Unauthorized, new ErrorModel { ErrorCode = StatusCodes.Status401Unauthorized, ErrorMessage = ex.Message });
+
             }
         }
 
@@ -51,15 +48,12 @@ namespace StudentManagementAPI.Controllers
         /// Registers a new user with the provided registration details.
         /// </summary>
         /// <param name="user">The registration details of the user.</param>
-        /// <returns>
-        /// An action result containing the newly created user if successful, 
-        /// or an appropriate error status code if the registration fails.
-        /// </returns>
-        /// <response code="200">Returns the newly created user.</response>
-        /// <response code="409">If a user with the same details already exists.</response>
-        /// <response code="400">If the provided role is invalid or the user is not part of the institution.</response>
         [HttpPost("RegisterAccount")]
-        public async Task<ActionResult> Register(UserRegisterDTO user)
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<RegisteredUserDTO>> Register(UserRegisterDTO user)
         {
             try
             {
@@ -85,16 +79,37 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves all users.
+        /// </summary>
+        /// <returns>List of registered user DTOs</returns>
         [HttpGet("GetAllUsers")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> GetAllUsers()
+        [ProducesResponseType(typeof(RegisteredUserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<RegisteredUserDTO>> GetAllUsers()
         {
-            var users = await _userService.GetAllUsers();
-            return Ok(users);
+            try
+            {
+                var users = await _userService.GetAllUsers();
+                return Ok(users);
+            }
+
+            catch (NoUserFoundException ex)
+            {
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
+        /// <summary>
+        /// Activates a user.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>Action result</returns>
         [HttpPost("ActivateUser")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ActivateUser(int id)
         {
             try
@@ -108,8 +123,15 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Deactivates a user.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>Action result</returns>
         [HttpPost("DeactivateUser")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeactivateUser(int id)
         {
             try
