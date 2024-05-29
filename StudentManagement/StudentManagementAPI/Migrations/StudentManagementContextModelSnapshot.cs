@@ -282,25 +282,25 @@ namespace StudentManagementAPI.Migrations
                         {
                             CourseOfferingId = 2,
                             CourseCode = "CSE102",
-                            TeacherId = 2002
+                            TeacherId = 2001
                         },
                         new
                         {
                             CourseOfferingId = 3,
                             CourseCode = "CSE103",
-                            TeacherId = 2003
+                            TeacherId = 2002
                         },
                         new
                         {
                             CourseOfferingId = 4,
                             CourseCode = "CSE104",
-                            TeacherId = 2004
+                            TeacherId = 2003
                         },
                         new
                         {
                             CourseOfferingId = 5,
                             CourseCode = "CSE105",
-                            TeacherId = 2005
+                            TeacherId = 2004
                         });
                 });
 
@@ -336,56 +336,56 @@ namespace StudentManagementAPI.Migrations
                             EnrollmentId = 1,
                             CourseCode = "CSE101",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4001
+                            StudentId = 4000
                         },
                         new
                         {
                             EnrollmentId = 2,
                             CourseCode = "CSE102",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4001
+                            StudentId = 4000
                         },
                         new
                         {
                             EnrollmentId = 3,
                             CourseCode = "CSE103",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4001
+                            StudentId = 4000
                         },
                         new
                         {
                             EnrollmentId = 4,
                             CourseCode = "CSE101",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4002
+                            StudentId = 4001
                         },
                         new
                         {
                             EnrollmentId = 5,
                             CourseCode = "CSE102",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4002
+                            StudentId = 4001
                         },
                         new
                         {
                             EnrollmentId = 6,
                             CourseCode = "CSE103",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4002
+                            StudentId = 4001
                         },
                         new
                         {
                             EnrollmentId = 7,
                             CourseCode = "CSE101",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4003
+                            StudentId = 4002
                         },
                         new
                         {
                             EnrollmentId = 8,
                             CourseCode = "CSE102",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4003
+                            StudentId = 4002
                         },
                         new
                         {
@@ -399,42 +399,42 @@ namespace StudentManagementAPI.Migrations
                             EnrollmentId = 10,
                             CourseCode = "CSE101",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4004
+                            StudentId = 4003
                         },
                         new
                         {
                             EnrollmentId = 11,
                             CourseCode = "CSE102",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4004
+                            StudentId = 4003
                         },
                         new
                         {
                             EnrollmentId = 12,
                             CourseCode = "CSE103",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4004
+                            StudentId = 4003
                         },
                         new
                         {
                             EnrollmentId = 13,
                             CourseCode = "CSE101",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4005
+                            StudentId = 4004
                         },
                         new
                         {
                             EnrollmentId = 14,
                             CourseCode = "CSE102",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4005
+                            StudentId = 4004
                         },
                         new
                         {
                             EnrollmentId = 15,
                             CourseCode = "CSE103",
                             EnrollmentDate = new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StudentId = 4005
+                            StudentId = 4004
                         });
                 });
 
@@ -491,7 +491,7 @@ namespace StudentManagementAPI.Migrations
                     b.HasData(
                         new
                         {
-                            StudentId = 4001,
+                            StudentId = 4000,
                             DateOfBirth = new DateTime(1998, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "Computer Science",
                             Email = "raj.patel@gmail.com",
@@ -503,7 +503,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            StudentId = 4002,
+                            StudentId = 4001,
                             DateOfBirth = new DateTime(2000, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "Electronics and Communication",
                             Email = "neha.desai@gmail.com",
@@ -515,7 +515,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            StudentId = 4003,
+                            StudentId = 4002,
                             DateOfBirth = new DateTime(1997, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "Mechanical Engineering",
                             Email = "amit.sharma@gmail.com",
@@ -527,7 +527,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            StudentId = 4004,
+                            StudentId = 4003,
                             DateOfBirth = new DateTime(1999, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "Electrical Engineering",
                             Email = "sneha.rao@gmail.com",
@@ -539,7 +539,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            StudentId = 4005,
+                            StudentId = 4004,
                             DateOfBirth = new DateTime(1996, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Department = "Civil Engineering",
                             Email = "vivek.gupta@gmail.com",
@@ -632,7 +632,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            TeacherId = 2002,
+                            TeacherId = 2001,
                             DateOfBirth = new DateTime(1975, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ramesh.gupta@gmail.com",
                             FullName = "Mr. Ramesh Gupta",
@@ -641,7 +641,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            TeacherId = 2003,
+                            TeacherId = 2002,
                             DateOfBirth = new DateTime(1982, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "anjali.mehta@gmail.com",
                             FullName = "Ms. Anjali Mehta",
@@ -650,7 +650,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            TeacherId = 2004,
+                            TeacherId = 2003,
                             DateOfBirth = new DateTime(1970, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "vijay.patil@gmail.com",
                             FullName = "Mr. Vijay Patil",
@@ -659,7 +659,7 @@ namespace StudentManagementAPI.Migrations
                         },
                         new
                         {
-                            TeacherId = 2005,
+                            TeacherId = 2004,
                             DateOfBirth = new DateTime(1983, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "seema.reddy@gmail.com",
                             FullName = "Dr. Seema Reddy",
@@ -709,9 +709,9 @@ namespace StudentManagementAPI.Migrations
                         new
                         {
                             UserId = 100,
-                            Password = new byte[] { 54, 143, 224, 62, 251, 190, 18, 137, 58, 24, 115, 41, 244, 85, 156, 174, 169, 120, 116, 255, 65, 17, 46, 89, 94, 8, 151, 252, 86, 25, 152, 239, 22, 232, 254, 226, 219, 166, 52, 227, 146, 124, 29, 128, 95, 133, 243, 128, 185, 181, 1, 237, 77, 223, 156, 11, 22, 192, 150, 13, 59, 226, 19, 95 },
-                            PasswordHashKey = new byte[] { 176, 188, 167, 229, 219, 151, 238, 159, 239, 114, 185, 104, 109, 179, 172, 240, 212, 201, 165, 252, 129, 72, 254, 136, 117, 255, 201, 153, 187, 148, 48, 228, 98, 0, 120, 205, 191, 154, 13, 221, 10, 122, 19, 118, 230, 7, 220, 57, 11, 153, 254, 214, 97, 98, 30, 170, 162, 197, 230, 241, 23, 250, 41, 160, 113, 8, 211, 136, 187, 118, 82, 161, 117, 162, 237, 177, 101, 5, 242, 135, 204, 28, 40, 37, 207, 88, 227, 152, 137, 171, 229, 78, 138, 4, 158, 59, 20, 74, 61, 5, 243, 157, 246, 60, 24, 122, 32, 231, 179, 22, 175, 168, 155, 31, 239, 135, 147, 151, 239, 137, 35, 8, 51, 107, 59, 105, 196, 34 },
-                            RegistrationDate = new DateTime(2024, 5, 29, 15, 23, 48, 530, DateTimeKind.Utc).AddTicks(9926),
+                            Password = new byte[] { 7, 103, 252, 111, 253, 155, 11, 138, 144, 227, 39, 137, 237, 78, 163, 103, 127, 22, 79, 185, 239, 64, 87, 219, 173, 48, 82, 88, 193, 147, 177, 133, 138, 63, 148, 178, 19, 218, 172, 182, 134, 126, 221, 130, 255, 249, 130, 234, 246, 123, 97, 161, 82, 119, 36, 152, 71, 50, 104, 145, 248, 2, 147, 144 },
+                            PasswordHashKey = new byte[] { 85, 8, 37, 25, 77, 248, 103, 203, 248, 95, 127, 142, 133, 104, 145, 16, 179, 59, 56, 14, 91, 19, 119, 228, 203, 211, 60, 38, 84, 223, 246, 131, 126, 195, 64, 189, 103, 31, 149, 86, 19, 10, 164, 179, 170, 75, 121, 107, 18, 240, 145, 91, 147, 199, 212, 76, 168, 170, 166, 147, 17, 235, 5, 216, 66, 17, 64, 249, 106, 237, 108, 95, 8, 249, 160, 31, 74, 204, 125, 254, 242, 224, 46, 218, 29, 196, 225, 38, 204, 249, 104, 230, 207, 154, 117, 149, 131, 182, 74, 5, 34, 74, 47, 69, 174, 225, 228, 60, 240, 254, 149, 168, 113, 52, 152, 235, 250, 81, 132, 3, 138, 99, 39, 132, 59, 22, 8, 187 },
+                            RegistrationDate = new DateTime(2024, 5, 29, 16, 33, 39, 427, DateTimeKind.Utc).AddTicks(8808),
                             Role = 0,
                             Status = "Active",
                             UserName = "admin"

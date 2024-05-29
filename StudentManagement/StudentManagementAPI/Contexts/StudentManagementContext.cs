@@ -62,7 +62,7 @@ public class StudentManagementContext : DbContext
             },
             new Teacher
             {
-                TeacherId = 2002,
+                TeacherId = 2001,
                 FullName = "Mr. Ramesh Gupta",
                 Email = "ramesh.gupta@gmail.com",
                 Gender = "Male",
@@ -71,7 +71,7 @@ public class StudentManagementContext : DbContext
             },
             new Teacher
             {
-                TeacherId = 2003,
+                TeacherId = 2002,
                 FullName = "Ms. Anjali Mehta",
                 Email = "anjali.mehta@gmail.com",
                 Gender = "Female",
@@ -80,7 +80,7 @@ public class StudentManagementContext : DbContext
             },
             new Teacher
             {
-                TeacherId = 2004,
+                TeacherId = 2003,
                 FullName = "Mr. Vijay Patil",
                 Email = "vijay.patil@gmail.com",
                 Gender = "Male",
@@ -89,7 +89,7 @@ public class StudentManagementContext : DbContext
             },
             new Teacher
             {
-                TeacherId = 2005,
+                TeacherId = 2004,
                 FullName = "Dr. Seema Reddy",
                 Email = "seema.reddy@gmail.com",
                 Gender = "Female",
@@ -100,7 +100,7 @@ public class StudentManagementContext : DbContext
         modelBuilder.Entity<Student>().HasData(
             new Student
             {
-                StudentId = 4001,
+                StudentId = 4000,
                 FullName = "Mr. Raj Patel",
                 RollNo = "CSE2020002",
                 Department = "Computer Science",
@@ -112,7 +112,7 @@ public class StudentManagementContext : DbContext
             },
             new Student
             {
-                StudentId = 4002,
+                StudentId = 4001,
                 FullName = "Ms. Neha Desai",
                 RollNo = "ECE2020001",
                 Department = "Electronics and Communication",
@@ -124,7 +124,7 @@ public class StudentManagementContext : DbContext
             },
             new Student
             {
-                StudentId = 4003,
+                StudentId = 4002,
                 FullName = "Mr. Amit Sharma",
                 RollNo = "ME2020001",
                 Department = "Mechanical Engineering",
@@ -136,7 +136,7 @@ public class StudentManagementContext : DbContext
             },
             new Student
             {
-                StudentId = 4004,
+                StudentId = 4003,
                 FullName = "Ms. Sneha Rao",
                 RollNo = "EE2020001",
                 Department = "Electrical Engineering",
@@ -148,7 +148,7 @@ public class StudentManagementContext : DbContext
             },
             new Student
             {
-                StudentId = 4005,
+                StudentId = 4004,
                 FullName = "Mr. Vivek Gupta",
                 RollNo = "CE2020001",
                 Department = "Civil Engineering",
@@ -162,10 +162,10 @@ public class StudentManagementContext : DbContext
 
         modelBuilder.Entity<CourseOffering>().HasData(
             new CourseOffering { CourseOfferingId = 1, CourseCode = "CSE101", TeacherId = 2000 },
-            new CourseOffering { CourseOfferingId = 2, CourseCode = "CSE102", TeacherId = 2002 },
-            new CourseOffering { CourseOfferingId = 3, CourseCode = "CSE103", TeacherId = 2003 },
-            new CourseOffering { CourseOfferingId = 4, CourseCode = "CSE104", TeacherId = 2004 },
-            new CourseOffering { CourseOfferingId = 5, CourseCode = "CSE105", TeacherId = 2005 }
+            new CourseOffering { CourseOfferingId = 2, CourseCode = "CSE102", TeacherId = 2001 },
+            new CourseOffering { CourseOfferingId = 3, CourseCode = "CSE103", TeacherId = 2002 },
+            new CourseOffering { CourseOfferingId = 4, CourseCode = "CSE104", TeacherId = 2003 },
+            new CourseOffering { CourseOfferingId = 5, CourseCode = "CSE105", TeacherId = 2004 }
         );
 
         modelBuilder.Entity<Class>().HasData(
@@ -182,21 +182,21 @@ public class StudentManagementContext : DbContext
         );
 
         modelBuilder.Entity<Enrollment>().HasData(
-            new Enrollment { EnrollmentId = 1, StudentId = 4001, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 2, StudentId = 4001, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 3, StudentId = 4001, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 4, StudentId = 4002, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 5, StudentId = 4002, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 6, StudentId = 4002, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 7, StudentId = 4003, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 8, StudentId = 4003, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 1, StudentId = 4000, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 2, StudentId = 4000, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 3, StudentId = 4000, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 4, StudentId = 4001, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 5, StudentId = 4001, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 6, StudentId = 4001, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 7, StudentId = 4002, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 8, StudentId = 4002, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
             new Enrollment { EnrollmentId = 9, StudentId = 4003, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 10, StudentId = 4004, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 11, StudentId = 4004, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 12, StudentId = 4004, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 13, StudentId = 4005, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 14, StudentId = 4005, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
-            new Enrollment { EnrollmentId = 15, StudentId = 4005, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) }
+            new Enrollment { EnrollmentId = 10, StudentId = 4003, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 11, StudentId = 4003, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 12, StudentId = 4003, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 13, StudentId = 4004, CourseCode = "CSE101", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 14, StudentId = 4004, CourseCode = "CSE102", EnrollmentDate = new DateTime(2024, 6, 1) },
+            new Enrollment { EnrollmentId = 15, StudentId = 4004, CourseCode = "CSE103", EnrollmentDate = new DateTime(2024, 6, 1) }
         );
 
         modelBuilder.Entity<Enrollment>()

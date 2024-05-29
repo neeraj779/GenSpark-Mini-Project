@@ -262,11 +262,11 @@ namespace StudentManagementAPI.Migrations
                 columns: new[] { "StudentId", "DateOfBirth", "Department", "Email", "FullName", "Gender", "Phone", "RollNo", "Status", "UserId" },
                 values: new object[,]
                 {
-                    { 4001, new DateTime(1998, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Computer Science", "raj.patel@gmail.com", "Mr. Raj Patel", "Male", "9374729562", "CSE2020002", 0, null },
-                    { 4002, new DateTime(2000, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Electronics and Communication", "neha.desai@gmail.com", "Ms. Neha Desai", "Female", "9374729563", "ECE2020001", 0, null },
-                    { 4003, new DateTime(1997, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mechanical Engineering", "amit.sharma@gmail.com", "Mr. Amit Sharma", "Male", "9374729564", "ME2020001", 0, null },
-                    { 4004, new DateTime(1999, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Electrical Engineering", "sneha.rao@gmail.com", "Ms. Sneha Rao", "Female", "9374729565", "EE2020001", 0, null },
-                    { 4005, new DateTime(1996, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Civil Engineering", "vivek.gupta@gmail.com", "Mr. Vivek Gupta", "Male", "9374729566", "CE2020001", 0, null }
+                    { 4000, new DateTime(1998, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Computer Science", "raj.patel@gmail.com", "Mr. Raj Patel", "Male", "9374729562", "CSE2020002", 0, null },
+                    { 4001, new DateTime(2000, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Electronics and Communication", "neha.desai@gmail.com", "Ms. Neha Desai", "Female", "9374729563", "ECE2020001", 0, null },
+                    { 4002, new DateTime(1997, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mechanical Engineering", "amit.sharma@gmail.com", "Mr. Amit Sharma", "Male", "9374729564", "ME2020001", 0, null },
+                    { 4003, new DateTime(1999, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Electrical Engineering", "sneha.rao@gmail.com", "Ms. Sneha Rao", "Female", "9374729565", "EE2020001", 0, null },
+                    { 4004, new DateTime(1996, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Civil Engineering", "vivek.gupta@gmail.com", "Mr. Vivek Gupta", "Male", "9374729566", "CE2020001", 0, null }
                 });
 
             migrationBuilder.InsertData(
@@ -275,16 +275,16 @@ namespace StudentManagementAPI.Migrations
                 values: new object[,]
                 {
                     { 2000, new DateTime(1978, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "sunita.verma@gmail.com", "Dr. Sunita Verma", "Female", "9876543212", null },
-                    { 2002, new DateTime(1975, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "ramesh.gupta@gmail.com", "Mr. Ramesh Gupta", "Male", "9876543213", null },
-                    { 2003, new DateTime(1982, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "anjali.mehta@gmail.com", "Ms. Anjali Mehta", "Female", "9876543214", null },
-                    { 2004, new DateTime(1970, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "vijay.patil@gmail.com", "Mr. Vijay Patil", "Male", "9876543215", null },
-                    { 2005, new DateTime(1983, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "seema.reddy@gmail.com", "Dr. Seema Reddy", "Female", "9876543216", null }
+                    { 2001, new DateTime(1975, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "ramesh.gupta@gmail.com", "Mr. Ramesh Gupta", "Male", "9876543213", null },
+                    { 2002, new DateTime(1982, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "anjali.mehta@gmail.com", "Ms. Anjali Mehta", "Female", "9876543214", null },
+                    { 2003, new DateTime(1970, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "vijay.patil@gmail.com", "Mr. Vijay Patil", "Male", "9876543215", null },
+                    { 2004, new DateTime(1983, 5, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "seema.reddy@gmail.com", "Dr. Seema Reddy", "Female", "9876543216", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Password", "PasswordHashKey", "RegistrationDate", "Role", "Status", "UserName" },
-                values: new object[] { 100, new byte[] { 54, 143, 224, 62, 251, 190, 18, 137, 58, 24, 115, 41, 244, 85, 156, 174, 169, 120, 116, 255, 65, 17, 46, 89, 94, 8, 151, 252, 86, 25, 152, 239, 22, 232, 254, 226, 219, 166, 52, 227, 146, 124, 29, 128, 95, 133, 243, 128, 185, 181, 1, 237, 77, 223, 156, 11, 22, 192, 150, 13, 59, 226, 19, 95 }, new byte[] { 176, 188, 167, 229, 219, 151, 238, 159, 239, 114, 185, 104, 109, 179, 172, 240, 212, 201, 165, 252, 129, 72, 254, 136, 117, 255, 201, 153, 187, 148, 48, 228, 98, 0, 120, 205, 191, 154, 13, 221, 10, 122, 19, 118, 230, 7, 220, 57, 11, 153, 254, 214, 97, 98, 30, 170, 162, 197, 230, 241, 23, 250, 41, 160, 113, 8, 211, 136, 187, 118, 82, 161, 117, 162, 237, 177, 101, 5, 242, 135, 204, 28, 40, 37, 207, 88, 227, 152, 137, 171, 229, 78, 138, 4, 158, 59, 20, 74, 61, 5, 243, 157, 246, 60, 24, 122, 32, 231, 179, 22, 175, 168, 155, 31, 239, 135, 147, 151, 239, 137, 35, 8, 51, 107, 59, 105, 196, 34 }, new DateTime(2024, 5, 29, 15, 23, 48, 530, DateTimeKind.Utc).AddTicks(9926), 0, "Active", "admin" });
+                values: new object[] { 100, new byte[] { 7, 103, 252, 111, 253, 155, 11, 138, 144, 227, 39, 137, 237, 78, 163, 103, 127, 22, 79, 185, 239, 64, 87, 219, 173, 48, 82, 88, 193, 147, 177, 133, 138, 63, 148, 178, 19, 218, 172, 182, 134, 126, 221, 130, 255, 249, 130, 234, 246, 123, 97, 161, 82, 119, 36, 152, 71, 50, 104, 145, 248, 2, 147, 144 }, new byte[] { 85, 8, 37, 25, 77, 248, 103, 203, 248, 95, 127, 142, 133, 104, 145, 16, 179, 59, 56, 14, 91, 19, 119, 228, 203, 211, 60, 38, 84, 223, 246, 131, 126, 195, 64, 189, 103, 31, 149, 86, 19, 10, 164, 179, 170, 75, 121, 107, 18, 240, 145, 91, 147, 199, 212, 76, 168, 170, 166, 147, 17, 235, 5, 216, 66, 17, 64, 249, 106, 237, 108, 95, 8, 249, 160, 31, 74, 204, 125, 254, 242, 224, 46, 218, 29, 196, 225, 38, 204, 249, 104, 230, 207, 154, 117, 149, 131, 182, 74, 5, 34, 74, 47, 69, 174, 225, 228, 60, 240, 254, 149, 168, 113, 52, 152, 235, 250, 81, 132, 3, 138, 99, 39, 132, 59, 22, 8, 187 }, new DateTime(2024, 5, 29, 16, 33, 39, 427, DateTimeKind.Utc).AddTicks(8808), 0, "Active", "admin" });
 
             migrationBuilder.InsertData(
                 table: "CourseOfferings",
@@ -292,10 +292,10 @@ namespace StudentManagementAPI.Migrations
                 values: new object[,]
                 {
                     { 1, "CSE101", 2000 },
-                    { 2, "CSE102", 2002 },
-                    { 3, "CSE103", 2003 },
-                    { 4, "CSE104", 2004 },
-                    { 5, "CSE105", 2005 }
+                    { 2, "CSE102", 2001 },
+                    { 3, "CSE103", 2002 },
+                    { 4, "CSE104", 2003 },
+                    { 5, "CSE105", 2004 }
                 });
 
             migrationBuilder.InsertData(
@@ -303,21 +303,21 @@ namespace StudentManagementAPI.Migrations
                 columns: new[] { "EnrollmentId", "CourseCode", "EnrollmentDate", "StudentId" },
                 values: new object[,]
                 {
-                    { 1, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
-                    { 2, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
-                    { 3, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
-                    { 4, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4002 },
-                    { 5, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4002 },
-                    { 6, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4002 },
-                    { 7, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
-                    { 8, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
+                    { 1, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4000 },
+                    { 2, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4000 },
+                    { 3, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4000 },
+                    { 4, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
+                    { 5, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
+                    { 6, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4001 },
+                    { 7, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4002 },
+                    { 8, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4002 },
                     { 9, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
-                    { 10, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 },
-                    { 11, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 },
-                    { 12, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 },
-                    { 13, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4005 },
-                    { 14, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4005 },
-                    { 15, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4005 }
+                    { 10, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
+                    { 11, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
+                    { 12, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4003 },
+                    { 13, "CSE101", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 },
+                    { 14, "CSE102", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 },
+                    { 15, "CSE103", new DateTime(2024, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 4004 }
                 });
 
             migrationBuilder.InsertData(
