@@ -18,6 +18,12 @@ namespace StudentManagementAPI.Controllers
             _courseOfferingService = courseOfferingService;
         }
 
+        /// <summary>
+        /// Assigns a teacher to a course offering.
+        /// </summary>
+        /// <param name="teacherid"> The Id of the teacher to be assigned.</param>
+        /// <param name="CourseCode"> The code of the course offering to which the teacher is to be assigned.</param>
+        /// <returns></returns>
         [HttpPost("AssignTeacherForCourseOffering")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
@@ -44,6 +50,12 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the teacher assigned to a course offering.
+        /// </summary>
+        /// <param name="teacherid"> The Id of the teacher to be assigned.</param>
+        /// <param name="CourseCode"> The code of the course offering to which the teacher is to be assigned.</param>
+        /// <returns></returns>
         [HttpPost("UpdateTeacherForCourseOffering")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
@@ -66,6 +78,12 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Unassigns a teacher from a course offering.
+        /// </summary>
+        /// <param name="teacherid"> The Id of the teacher to be unassigned.</param>
+        /// <param name="CourseCode"> The code of the course offering from which the teacher is to be unassigned.</param>
+        /// <returns></returns>
         [HttpPost("UnassignTeacherFromCourseOffering")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
@@ -91,6 +109,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the course offering details by teacher Id.
+        /// </summary>
+        /// <param name="teacherid"> The Id of the teacher for which the course offering details are to be fetched.</param> 
+        /// <returns></returns>
         [HttpGet("GetCourseOfferingByTeacherId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
@@ -112,6 +135,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the course offering details by course code.
+        /// </summary>
+        /// <param name="CourseCode"> The code of the course for which the course offering details are to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetCourseOfferingByCourseCode")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
@@ -133,6 +161,10 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all the course offerings.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllCourseOfferings")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]

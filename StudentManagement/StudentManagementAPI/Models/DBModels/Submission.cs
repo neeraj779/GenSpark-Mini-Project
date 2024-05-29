@@ -19,9 +19,7 @@ namespace StudentManagementAPI.Models.DBModels
         [Column(TypeName = "Date")]
         public DateTime SubmissionDate { get; set; }
 
-        [Required(ErrorMessage = "Completion status is required.")]
-        public bool IsCompleted { get; set; }
-
+        public string FileName { get; set; }
         public Assignment Assignment { get; set; }
         public Student Student { get; set; }
     }

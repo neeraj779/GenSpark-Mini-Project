@@ -21,6 +21,7 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Registers a new student with the provided registration details.
         /// </summary>
+        /// <param name="student"> StudentRegisterDTO object containing the details of the student to be registered.</param>
         [HttpPost("RegisterStudent")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]
@@ -46,7 +47,11 @@ namespace StudentManagementAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel { ErrorCode = StatusCodes.Status500InternalServerError, ErrorMessage = ex.Message });
             }
         }
-
+        
+        /// <summary>
+        /// Updates the email of a student based on the provided student ID.
+        /// </summary>
+        /// <param name="updateEmaildto"> UpdateEmailDTO object containing the details of the student's email to be updated.</param>
         [HttpPut("UpdateStudentEmail")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]
@@ -67,6 +72,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the phone number of a student based on the provided student ID.
+        /// </summary>
+        /// <param name="updatePhonedto"> UpdatePhoneDTO object containing the details of the student's phone number to be updated.</param>
+        /// <returns></returns>
         [HttpPut("UpdateStudentPhone")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]
@@ -87,6 +97,12 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the status of a student based on the provided student ID.
+        /// </summary>
+        /// <param name="studentId"> The ID of the student to be updated.</param>
+        /// <param name="status"> The new status for the student.</param>
+        /// <returns></returns>
         [HttpPut("UpdateStudentStatus")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]

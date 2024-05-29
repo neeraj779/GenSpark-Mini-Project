@@ -18,6 +18,11 @@ namespace StudentManagementAPI.Controllers
             _classAttendanceService = classAttendanceService;
         }
 
+        /// <summary>
+        /// Marks the attendance of a student in a class.
+        /// </summary>
+        /// <param name="classAttendancedto"> ClassAttendanceDTO object containing the details of the class attendance to be marked.</param>
+        /// <returns></returns>
         [HttpPost("MarkStudentAttendance")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
@@ -44,6 +49,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the attendance of a class.
+        /// </summary>
+        /// <param name="classId"> The Id of the class for which the attendance is to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetAttendanceByClass")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
@@ -67,6 +77,11 @@ namespace StudentManagementAPI.Controllers
 
         }
 
+        /// <summary>
+        /// Gets the attendance of a student.
+        /// </summary>
+        /// <param name="studentId"> The Id of the student for which the attendance is to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetAttendanceByStudent")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
@@ -88,6 +103,13 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Gets the attendance of a student in a class.
+        /// </summary>
+        /// <param name="classId"> The Id of the class for which the attendance is to be fetched.</param>
+        /// <param name="studentId"> The Id of the student for which the attendance is to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetAttendanceByClassAndStudent")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
@@ -113,6 +135,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the attendance of a student in a class.
+        /// </summary>
+        /// <param name="classAttendancedto"> ClassAttendanceDTO object containing the details of the class attendance to be updated.</param>
+        /// <returns></returns>
         [HttpPut("UpdateAttendance")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]

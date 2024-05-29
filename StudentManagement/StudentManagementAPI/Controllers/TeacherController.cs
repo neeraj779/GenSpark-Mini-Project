@@ -84,6 +84,10 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates a teacher's email based on the provided teacher ID.
+        /// </summary>
+        /// <param name="updateEmaildto"> The ID of the teacher and the new email to be updated.</param>
         [HttpPut("UpdateTeacherEmail")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]
@@ -104,6 +108,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates a teacher's phone number based on the provided teacher ID.
+        /// </summary>
+        /// <param name="updatePhonedto"> The ID of the teacher and the new phone number to be updated.</param>
+        /// <returns></returns>
         [HttpPut("UpdateTeacherPhone")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(TeacherReturnDTO), StatusCodes.Status200OK)]

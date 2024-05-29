@@ -18,6 +18,11 @@ namespace StudentManagementAPI.Controllers
             _enrollmentService = enrollmentService;
         }
 
+        /// <summary>
+        /// Enrolls a student in a course.
+        /// </summary>
+        /// <param name="enrollment"> EnrollmentDTO object containing the details of the enrollment to be made.</param>
+        /// <returns></returns>
         [HttpPost("EnrollStudentInCourse")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
@@ -47,6 +52,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Unenrolls a student from a course.
+        /// </summary>
+        /// <param name="enrollment"> EnrollmentDTO object containing the details of the enrollment to be removed.</param>
+        /// <returns></returns>
         [HttpPost("UnenrollStudentFromCourse")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
@@ -70,6 +80,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a student's enrollments based on the provided student ID.
+        /// </summary>
+        /// <param name="studentId"> The ID of the student for which the enrollments are to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetEnrollmentsByStudentId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
@@ -88,6 +103,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a course's enrollments based on the provided course code.
+        /// </summary>
+        /// <param name="courseCode"> The code of the course for which the enrollments are to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetEnrollmentsByCourseId")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
@@ -106,6 +126,10 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves all enrollments.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllEnrollments")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]

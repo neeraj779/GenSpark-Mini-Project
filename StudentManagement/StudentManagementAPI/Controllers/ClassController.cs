@@ -19,6 +19,11 @@ namespace StudentManagementAPI.Controllers
             _classService = classService;
         }
 
+        /// <summary>
+        /// Adds a new class to the database.
+        /// </summary>
+        /// <param name="classdto"> ClassRegisterDTO object containing the details of the class to be added.</param>
+        /// <returns></returns>
         [HttpPost("AddClass")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
@@ -41,6 +46,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a class from the database.
+        /// </summary>
+        /// <param name="classId"> The Id of the class to be deleted.</param>
+        /// <returns></returns>
         [HttpDelete("DeleteClass")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
@@ -58,6 +68,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the details of a class.
+        /// </summary>
+        /// <param name="classId"> The Id of the class for which the details are to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetClass")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
@@ -75,6 +90,10 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all the classes in the database.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetClasses")]
         [Authorize(Roles = "Admin, Teacher, Student")]
         [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]
@@ -92,6 +111,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the timeing of a class.
+        /// </summary>
+        /// <param name="updateclassdto"> UpdateClassDTO object containing the details of the class to be updated.</param>
+        /// <returns></returns>
         [HttpPut("UpdateClassTime")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassReturnDTO), StatusCodes.Status200OK)]

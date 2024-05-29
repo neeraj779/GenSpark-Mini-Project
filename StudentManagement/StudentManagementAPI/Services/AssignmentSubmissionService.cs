@@ -39,29 +39,64 @@ namespace StudentManagementAPI.Services
             var studentDb = await _studentRepository.Get();
             var student = studentDb.FirstOrDefault(s => s.UserId == userId);
 
-            int studentId = student.StudentId;         
+            int studentId = student.StudentId;
 
             var isStudentEnrolled = await _enrollmentRepository.Get();
             var studentEnrolled = isStudentEnrolled.FirstOrDefault(enrollment => enrollment.StudentId == studentId && enrollment.CourseCode == isAssignmentExists.CourseCode);
 
+            var submissionsDB = await _sumissionRepository.Get();
+            var isAlreadySubmitted = submissionsDB.FirstOrDefault(s => s.StudentId == studentId && s.AssignmentId == assignmentSubmission.AssignmentId);
+
+            if (isAlreadySubmitted != null)
+                throw new DuplicateAssignmentSubmissionException();
+
+
             if (studentEnrolled == null)
                 throw new NotEnrolledInCourseException();
 
-            Submission submission = new Submission();
-            submission.StudentId = student.StudentId;
-            submission.SubmissionDate = DateTime.Now;
-            submission.IsCompleted = assignmentSubmission.IsCompleted;
+            Submission submission = new Submission
+            {
+                AssignmentId = assignmentSubmission.AssignmentId,
+                StudentId = student.StudentId,
+                SubmissionDate = DateTime.Now
+            };
+
+            string sanitizedFileName = GenerateFileName(assignmentSubmission, studentId);
+
+            if (assignmentSubmission.File != null && assignmentSubmission.File.Length > 0)
+            {
+                var filePath = Path.Combine("SubmittedAssignments", sanitizedFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await assignmentSubmission.File.CopyToAsync(stream);
+                }
+                submission.FileName = sanitizedFileName;
+            }
 
             var createdSubmission = await _sumissionRepository.Add(submission);
-
             return MapSubmissionToSubmissionDTO(createdSubmission);
+        }
+
+        public string GenerateFileName(AssignmentSubmisssionDTO assignmentSubmission, int studentID)
+        {
+            string assignmentIdStr = assignmentSubmission.AssignmentId.ToString();
+            string studentIdStr = studentID.ToString();
+            string currentDate = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            string sanitizedFileName = string.Join("_", assignmentIdStr, studentIdStr, currentDate, assignmentSubmission.File.FileName)
+                .Replace(":", "_")
+                .Replace(" ", "_");
+
+            return sanitizedFileName;
         }
 
         public AssignmentSubmisssionReturnDTO MapSubmissionToSubmissionDTO(Submission submission)
         {
-            AssignmentSubmisssionReturnDTO assignmentSubmisssionReturnDTO = new AssignmentSubmisssionReturnDTO();
-            assignmentSubmisssionReturnDTO.SubmissionDate = submission.SubmissionDate;
-            assignmentSubmisssionReturnDTO.stautus = submission.IsCompleted ? "Completed" : "Not Completed";
+            AssignmentSubmisssionReturnDTO assignmentSubmisssionReturnDTO = new AssignmentSubmisssionReturnDTO
+            {
+                SubmissionDate = submission.SubmissionDate,
+                FileName = submission.FileName
+            };
 
             return assignmentSubmisssionReturnDTO;
         }
@@ -129,11 +164,13 @@ namespace StudentManagementAPI.Services
 
         public AssignmentDTO MapAssignmentToAssignmentDTO(Assignment assignment)
         {
-            AssignmentDTO assignmentDTO = new AssignmentDTO();
-            assignmentDTO.AssignmentId = assignment.AssignmentId;
-            assignmentDTO.Title = assignment.Title;
-            assignmentDTO.AssignmentDueDate = assignment.DueDate;
-            assignmentDTO.CourseCode = assignment.CourseCode;
+            AssignmentDTO assignmentDTO = new AssignmentDTO
+            {
+                AssignmentId = assignment.AssignmentId,
+                Title = assignment.Title,
+                AssignmentDueDate = assignment.DueDate,
+                CourseCode = assignment.CourseCode
+            };
             return assignmentDTO;
         }
     }

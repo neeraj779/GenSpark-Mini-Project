@@ -104,7 +104,7 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Activates a user.
         /// </summary>
-        /// <param name="id">User ID</param>
+        /// <param name="id">User ID of the user to be activated</param>
         /// <returns>Action result</returns>
         [HttpPost("ActivateUser")]
         [Authorize(Roles = "Admin")]
@@ -126,7 +126,7 @@ namespace StudentManagementAPI.Controllers
         /// <summary>
         /// Deactivates a user.
         /// </summary>
-        /// <param name="id">User ID</param>
+        /// <param name="id">User ID of the user to be deactivated</param>
         /// <returns>Action result</returns>
         [HttpPost("DeactivateUser")]
         [Authorize(Roles = "Admin")]

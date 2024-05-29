@@ -5,7 +5,6 @@ using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DTOs;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace StudentManagementAPI.Controllers
 {
@@ -27,7 +26,7 @@ namespace StudentManagementAPI.Controllers
         [Authorize(Roles = "Student")]
         [ProducesResponseType(typeof(AssignmentSubmisssionReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AssignmentSubmisssionReturnDTO>> SubmitAssignment(AssignmentSubmisssionDTO assignmentSubmission)
+        public async Task<ActionResult<AssignmentSubmisssionReturnDTO>> SubmitAssignment([FromForm] AssignmentSubmisssionDTO assignmentSubmission)
         {
             try
             {
@@ -47,8 +46,16 @@ namespace StudentManagementAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch(DuplicateAssignmentSubmissionException ex)
+            {
+                return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
+            }
         }
 
+        /// <summary>
+        /// Gets all the assignments assigned to the student.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAssignedAssignments")]
         [Authorize(Roles = "Student")]
         [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
@@ -76,6 +83,11 @@ namespace StudentManagementAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all the assignments assigned to the student for a particular course.
+        /// </summary>
+        /// <param name="courseCode">The course code for which the assignments are to be fetched.</param>
+        /// <returns></returns>
         [HttpGet("GetAssignedAssignmentsByCourse")]
         [Authorize(Roles = "Student")]
         [ProducesResponseType(typeof(IEnumerable<AssignmentDTO>), StatusCodes.Status200OK)]
