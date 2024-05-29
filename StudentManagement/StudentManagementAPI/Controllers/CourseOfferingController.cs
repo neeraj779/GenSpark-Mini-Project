@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
@@ -6,7 +7,7 @@ using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CourseOfferingController : ControllerBase
     {
@@ -18,6 +19,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("AssignTeacherForCourseOffering")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CourseOfferingDTO>> AssignTeacherForCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -40,6 +42,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("UpdateTeacherForCourseOffering")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CourseOfferingDTO>> UpdateTeacherForCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -58,6 +61,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("UnassignTeacherFromCourseOffering")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CourseOfferingDTO>> UnassignTeacherFromCourseOffering(int teacherid, string CourseCode)
         {
             try
@@ -80,6 +84,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetCourseOfferingByTeacherId")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<CourseOfferingDTO>> GetCourseOfferingByTeacherId(int teacherid)
         {
             try
@@ -98,6 +103,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetCourseOfferingByCourseCode")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<CourseOfferingDTO>> GetCourseOfferingByCourseCode(string CourseCode)
         {
             try
@@ -116,6 +122,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAllCourseOfferings")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<CourseOfferingDTO>> GetAllCourseOfferings()
         {
             try

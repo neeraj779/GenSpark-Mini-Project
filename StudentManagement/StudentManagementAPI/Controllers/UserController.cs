@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
@@ -7,7 +8,7 @@ using StudentManagementAPI.Services;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -85,6 +86,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAllUsers")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
@@ -92,6 +94,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("ActivateUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ActivateUser(int id)
         {
             try
@@ -106,6 +109,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("DeactivateUser")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeactivateUser(int id)
         {
             try

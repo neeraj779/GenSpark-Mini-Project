@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
-using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
-using System;
-using System.Threading.Tasks;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AssignmentController : ControllerBase
     {
@@ -29,6 +27,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the newly created assignment.</response>
         [HttpPost("CreateAssignment")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<AssignmentDTO>> CreateAssignment(CreateAssignmentDTO assignment)
         {
             try
@@ -52,6 +51,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">If the assignment is successfully deleted.</response>
         [HttpDelete("DeleteAssignment")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<AssignmentDTO>> DeleteAssignment(int assignmentId)
         {
             try
@@ -76,6 +76,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the updated assignment.</response>
         [HttpPut("UpdateAssignmentDueDate")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<AssignmentDTO>> UpdateAssignmentDueDate(AssignmentUpdateDTO assignment)
         {
             try
@@ -100,6 +101,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the assignment's details.</response>
         /// <response code="404">If the assignment with the given ID is not found.</response>
         [HttpGet("GetAssignmentById")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<AssignmentDTO>> GetAssignmentById(int assignmentId)
         {
             try
@@ -122,6 +124,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all assignments.</response>
         [HttpGet("GetAllAssignments")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<IEnumerable<AssignmentDTO>>> GetAssignments()
         {
             try

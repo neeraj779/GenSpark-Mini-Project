@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
-using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class EnrollmentController : ControllerBase
     {
@@ -21,7 +19,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("EnrollStudentInCourse")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<IActionResult> EnrollStudent([FromBody] EnrollmentDTO enrollment)
         {
             try
@@ -47,7 +45,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("UnenrollStudentFromCourse")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<IActionResult> UnenrollStudent([FromBody] EnrollmentDTO enrollment)
         {
             try
@@ -68,7 +66,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetEnrollmentsByStudentId")]
-        [Authorize(Roles = "Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByStudentId(int studentId)
         {
             try
@@ -84,7 +82,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetEnrollmentsByCourseId")]
-        [Authorize(Roles = "Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<EnrollmentReturnDTO>>  GetEnrollmentsByCourseId(string courseCode)
         {
             try
@@ -100,7 +98,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAllEnrollments")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetAllEnrollments()
         {
             try

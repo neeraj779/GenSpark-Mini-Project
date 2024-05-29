@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
@@ -6,7 +7,7 @@ using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ClassAttendanceController : ControllerBase
     {
@@ -18,6 +19,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("MarkStudentAttendance")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> MarkStudentAttendance(ClassAttendanceDTO classAttendancedto)
         {
             try
@@ -40,6 +42,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAttendanceByClass")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClass(int classId)
         {
             try
@@ -54,6 +57,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAttendanceByStudent")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByStudent(int studentId)
         {
             try
@@ -68,6 +72,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetAttendanceByClassAndStudent")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClassAndStudent(int classId, int studentId)
         {
             try
@@ -86,6 +91,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateAttendance")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> UpdateAttendance(ClassAttendanceDTO classAttendancedto)
         {
             try

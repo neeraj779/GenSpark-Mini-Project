@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -7,7 +8,7 @@ using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ClassController : ControllerBase
     {
@@ -19,6 +20,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost("AddClass")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<ClassReturnDTO>> AddClass(ClassRegisterDTO classdto)
         {
             try
@@ -37,6 +39,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpDelete("DeleteClass")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<ClassReturnDTO>> DeleteClass(int classId)
         {
             try
@@ -51,6 +54,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetClass")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<ClassReturnDTO>> GetClass(int classId)
         {
             try
@@ -65,6 +69,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpGet("GetClasses")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<IEnumerable<ClassReturnDTO>>> GetClasses()
         {
             try
@@ -79,6 +84,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPut("UpdateClassTime")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<ClassReturnDTO>> UpdateClassTime(UpdateClassDTO updateclassdto)
         {
             try

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AssignmentSubmissionController : ControllerBase
     {

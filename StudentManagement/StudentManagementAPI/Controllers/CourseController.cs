@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagementAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CourseController : ControllerBase
     {
@@ -28,6 +29,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the newly created course.</response>
         [HttpPost("CreateCourse")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<CourseDTO>> CreateCourse(CourseDTO course)
         {
             try
@@ -51,6 +53,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">If the course is successfully deleted.</response>
         [HttpDelete("DeleteCourse")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<CourseDTO>> DeleteCourse(string courseCode)
         {
             try
@@ -75,6 +78,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the updated course.</response>
         [HttpPut("UpdateCourseCreditHours")]
+        [Authorize(Roles = "Admin, Teacher")]
         public async Task<ActionResult<CourseDTO>> UpdateCourseCreditHours(string courseCode, int creditHours)
         {
             try
@@ -99,6 +103,7 @@ namespace StudentManagementAPI.Controllers
         /// <response code="200">Returns the course's details.</response>
         /// <response code="404">If the course with the given code is not found.</response>
         [HttpGet("GetCourseByCode")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<CourseDTO>> GetCourseByCode(string courseCode)
         {
             try
@@ -121,6 +126,7 @@ namespace StudentManagementAPI.Controllers
         /// </returns>
         /// <response code="200">Returns the list of all courses.</response>
         [HttpGet("GetAllCourses")]
+        [Authorize(Roles = "Admin, Teacher, Student")]
         public async Task<ActionResult<IEnumerable<CourseDTO>>> GetCourses()
         {
             try
