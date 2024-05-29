@@ -16,16 +16,24 @@ namespace StudentManagementAPI.Services
 
         public async Task<TeacherReturnDTO> RegisterTeacher(TeacherRegisterDTO teacher)
         {
-            Teacher newTeacher = new Teacher();
-            newTeacher.FullName = teacher.FullName;
-            newTeacher.DateOfBirth = teacher.DateOfBirth;
-            newTeacher.Gender = teacher.Gender;
-            newTeacher.Phone = teacher.Phone;
-            newTeacher.Email = teacher.Email;
+            try
+            {
+                Teacher newTeacher = new Teacher();
+                newTeacher.FullName = teacher.FullName;
+                newTeacher.DateOfBirth = teacher.DateOfBirth;
+                newTeacher.Gender = teacher.Gender;
+                newTeacher.Phone = teacher.Phone;
+                newTeacher.Email = teacher.Email;
 
-            await _teacherRepository.Add(newTeacher);
+                await _teacherRepository.Add(newTeacher);
 
-            return MapTeacherToTeacherReturnDTO(newTeacher);
+                return MapTeacherToTeacherReturnDTO(newTeacher);
+            }
+
+            catch (UnableToAddException)
+            {
+                throw new UnableToAddException("Unable to Register Teacher. Please check the data and try again.");
+            }
         }
 
         public async Task<TeacherReturnDTO> UpdateTeacher(Teacher teacher)

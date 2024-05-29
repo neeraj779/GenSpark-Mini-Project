@@ -32,9 +32,20 @@ namespace StudentManagementAPI.Services
 
         public async Task<AssignmentSubmisssionReturnDTO> SubmitAssignment(int userId, AssignmentSubmisssionDTO assignmentSubmission)
         {
+            var isAssignmentExists = await _assignmentRepository.Get(assignmentSubmission.AssignmentId);
+            if (isAssignmentExists == null)
+                throw new NoSuchAssignmentException();
 
             var studentDb = await _studentRepository.Get();
-            var student = studentDb.Where(s => s.UserId == userId).FirstOrDefault();
+            var student = studentDb.FirstOrDefault(s => s.UserId == userId);
+
+            int studentId = student.StudentId;         
+
+            var isStudentEnrolled = await _enrollmentRepository.Get();
+            var studentEnrolled = isStudentEnrolled.FirstOrDefault(enrollment => enrollment.StudentId == studentId && enrollment.CourseCode == isAssignmentExists.CourseCode);
+
+            if (studentEnrolled == null)
+                throw new NotEnrolledInCourseException();
 
             Submission submission = new Submission();
             submission.StudentId = student.StudentId;

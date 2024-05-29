@@ -57,7 +57,7 @@ namespace StudentManagementAPI.Services
             var classAttendanceList = classAttendance.Where(x => x.ClassId == classId);
 
             if (classAttendanceList.Count() == 0)
-                throw new NoSuchClassAttendanceException();
+                throw new NoClassAttendanceFoundException();
 
             var classAttendanceReturnList = new List<ClassAttendanceReturnDTO>();
             foreach (var attendance in classAttendanceList)
@@ -76,7 +76,7 @@ namespace StudentManagementAPI.Services
             var classAttendanceList = classAttendance.Where(x => x.StudentId == studentId);
 
             if (classAttendanceList.Count() == 0)
-                throw new NoSuchClassAttendanceException();
+                throw new NoClassAttendanceFoundException();
 
             var classAttendanceReturnList = new List<ClassAttendanceReturnDTO>();
             foreach (var attendance in classAttendanceList)

@@ -32,10 +32,16 @@ namespace StudentManagementAPI.Services
             newStudent.Email = student.Email;
             newStudent.Status = status;
 
-            var AddedStudent = await _studentRepository.Add(newStudent);
+            try
+            {
+                var AddedStudent = await _studentRepository.Add(newStudent);
+                return MapStudentToStudentReturnDTO(AddedStudent);
+            }
 
-            return MapStudentToStudentReturnDTO(AddedStudent);
-
+            catch (UnableToAddException)
+            {
+                throw new UnableToAddException("Unable to Register Student. Please check the data and try again.");
+            }
         }
 
 
