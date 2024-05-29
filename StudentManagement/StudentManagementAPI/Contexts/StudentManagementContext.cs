@@ -55,48 +55,48 @@ public class StudentManagementContext : DbContext
             .HasOne(e => e.Student)
             .WithMany(s => s.Enrollments)
             .HasForeignKey(e => e.StudentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Enrollment>()
             .HasOne(e => e.Course)
             .WithMany(c => c.Enrollments)
             .HasForeignKey(e => e.CourseCode)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ClassAttendance>()
             .HasOne(ca => ca.Class)
             .WithMany(c => c.ClassAttendances)
             .HasForeignKey(ca => ca.ClassId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ClassAttendance>()
             .HasOne(ca => ca.Student)
             .WithMany(s => s.ClassAttendances)
             .HasForeignKey(ca => ca.StudentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Assignment>()
             .HasOne(a => a.Course)
             .WithMany(c => c.Assignments)
             .HasForeignKey(a => a.CourseCode)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Submission>()
             .HasOne(s => s.Assignment)
             .WithMany(a => a.Submissions)
             .HasForeignKey(s => s.AssignmentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Submission>()
             .HasOne(s => s.Student)
             .WithMany(s => s.Submissions)
             .HasForeignKey(s => s.StudentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Teacher>()
             .HasMany(t => t.CourseOfferings)
             .WithOne(co => co.Teacher)
             .HasForeignKey(co => co.TeacherId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
