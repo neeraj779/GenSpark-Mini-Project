@@ -87,6 +87,8 @@ namespace StudentManagementAPI
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin, Teacher, Student"));
             });
 
+            builder.Logging.AddLog4Net("log4net.config");
+
             #region Context
             builder.Services.AddDbContext<StudentManagementContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
