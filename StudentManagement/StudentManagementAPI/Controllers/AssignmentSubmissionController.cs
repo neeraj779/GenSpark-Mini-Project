@@ -137,7 +137,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the submission status of the assignment for the student.
+        /// Gets the submitted assignment by the student Id.
         /// </summary>
         /// <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
         /// <param name="studentId"> The student id for which the submission status is to be fetched.</param>
@@ -169,7 +169,7 @@ namespace StudentManagementAPI.Controllers
         }
 
         /// <summary>
-        /// Gets the submission status of the assignment for the student.
+        /// Gets the submission status of the assignment.
         /// </summary>
         /// <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
         [HttpGet("GetSubmittedAssignmentStatus")]

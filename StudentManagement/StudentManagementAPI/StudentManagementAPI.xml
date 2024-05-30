@@ -54,11 +54,17 @@
         </member>
         <member name="M:StudentManagementAPI.Controllers.AssignmentSubmissionController.GetSubmittedAssignment(System.Int32,System.Int32)">
             <summary>
-            Gets the submission status of the assignment for the student.
+            Gets the submitted assignment by the student Id.
             </summary>
             <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
             <param name="studentId"> The student id for which the submission status is to be fetched.</param>
             <returns></returns>
+        </member>
+        <member name="M:StudentManagementAPI.Controllers.AssignmentSubmissionController.GetSubmittedAssignmentStatus(System.Int32)">
+            <summary>
+            Gets the submission status of the assignment for the student.
+            </summary>
+            <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
         </member>
         <member name="M:StudentManagementAPI.Controllers.ClassAttendanceController.MarkStudentAttendance(StudentManagementAPI.Models.DTOs.ClassAttendanceDTO)">
             <summary>
