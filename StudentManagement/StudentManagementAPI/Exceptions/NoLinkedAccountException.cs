@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class NoLinkedAccountException : Exception
+    public class NoLinkedAccountException : Exception
     {
         string _message;
         public NoLinkedAccountException()

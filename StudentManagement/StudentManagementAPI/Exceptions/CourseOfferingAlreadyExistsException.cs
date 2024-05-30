@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class CourseOfferingAlreadyExistsException : Exception
+    public class CourseOfferingAlreadyExistsException : Exception
     {
         string _message;
         public CourseOfferingAlreadyExistsException()

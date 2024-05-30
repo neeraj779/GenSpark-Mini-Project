@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Repositories
 {
     [Serializable]
-    internal class NoSubmissionFoundException : Exception
+    public class NoSubmissionFoundException : Exception
     {
         string _message;
         public NoSubmissionFoundException()

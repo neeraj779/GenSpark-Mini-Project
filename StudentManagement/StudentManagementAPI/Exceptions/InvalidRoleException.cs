@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class InvalidRoleException : Exception
+    public class InvalidRoleException : Exception
     {
         string _message;
         public InvalidRoleException()

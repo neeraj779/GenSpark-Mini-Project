@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class InvalidLoginException : Exception
+    public class InvalidLoginException : Exception
     {
         string _message;
         public InvalidLoginException()

@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Services
 {
     [Serializable]
-    internal class InvalidFileExtensionException : Exception
+    public class InvalidFileExtensionException : Exception
     {
         string _message;
         public InvalidFileExtensionException()

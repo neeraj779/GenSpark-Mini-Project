@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class NoStudentFoundException : Exception
+    public class NoStudentFoundException : Exception
     {
         string _message;
         public NoStudentFoundException()

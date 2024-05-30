@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class NoSuchClassAttendanceException : Exception
+    public class NoSuchClassAttendanceException : Exception
     {
         string _message;
         public NoSuchClassAttendanceException()

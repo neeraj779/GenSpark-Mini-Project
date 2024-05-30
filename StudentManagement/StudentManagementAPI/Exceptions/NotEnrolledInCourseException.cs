@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class NotEnrolledInCourseException : Exception
+    public class NotEnrolledInCourseException : Exception
     {
         string _message;
         public NotEnrolledInCourseException()

@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class StudentAlreadyEnrolledException : Exception
+    public class StudentAlreadyEnrolledException : Exception
     {
         string _message;
         public StudentAlreadyEnrolledException()

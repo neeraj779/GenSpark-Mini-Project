@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Services
 {
     [Serializable]
-    internal class InvalidStudentStatusException : Exception
+    public class InvalidStudentStatusException : Exception
     {
         string _message;
         public InvalidStudentStatusException()

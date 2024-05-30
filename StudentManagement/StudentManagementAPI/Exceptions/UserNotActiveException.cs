@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class UserNotActiveException : Exception
+    public class UserNotActiveException : Exception
     {
         string _message;
         public UserNotActiveException()

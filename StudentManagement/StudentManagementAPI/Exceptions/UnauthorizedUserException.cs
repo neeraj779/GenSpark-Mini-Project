@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class UnauthorizedUserException : Exception
+    public class UnauthorizedUserException : Exception
     {
         string _message;
         public UnauthorizedUserException()

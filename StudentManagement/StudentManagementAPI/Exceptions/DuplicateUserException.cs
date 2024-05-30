@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
-    internal class DuplicateUserException : Exception
+    public class DuplicateUserException : Exception
     {
         string _message;
         public DuplicateUserException()

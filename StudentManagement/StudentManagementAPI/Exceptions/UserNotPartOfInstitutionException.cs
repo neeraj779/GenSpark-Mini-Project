@@ -3,7 +3,7 @@
 namespace StudentManagementAPI.Services
 {
     [Serializable]
-    internal class UserNotPartOfInstitutionException : Exception
+    public class UserNotPartOfInstitutionException : Exception
     {
         string _message;
         public UserNotPartOfInstitutionException()
