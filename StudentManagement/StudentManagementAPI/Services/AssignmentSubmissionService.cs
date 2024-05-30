@@ -39,6 +39,9 @@ namespace StudentManagementAPI.Services
             var studentDb = await _studentRepository.Get();
             var student = studentDb.FirstOrDefault(s => s.UserId == userId);
 
+            if (student == null)
+                throw new NoLinkedAccountException();
+
             int studentId = student.StudentId;
 
             var isStudentEnrolled = await _enrollmentRepository.Get();
@@ -98,6 +101,7 @@ namespace StudentManagementAPI.Services
         {
             AssignmentSubmisssionReturnDTO assignmentSubmisssionReturnDTO = new AssignmentSubmisssionReturnDTO
             {
+                AssignmentId = submission.AssignmentId,
                 SubmissionDate = submission.SubmissionDate,
                 FileName = submission.FileName
             };
@@ -110,6 +114,9 @@ namespace StudentManagementAPI.Services
 
             var studentDb = await _studentRepository.Get();
             var student = studentDb.FirstOrDefault(s => s.UserId == userId);
+
+            if (student == null)
+                throw new NoLinkedAccountException();
 
             int studentId = student.StudentId;
 
@@ -141,6 +148,9 @@ namespace StudentManagementAPI.Services
             var studentDb = await _studentRepository.Get();
             var student = studentDb.FirstOrDefault(s => s.UserId == userId);
 
+            if (student == null)
+                throw new NoLinkedAccountException();
+
             int studentId = student.StudentId;
 
 
@@ -161,9 +171,23 @@ namespace StudentManagementAPI.Services
             return assignedAssignments.Select(MapAssignmentToAssignmentDTO);
         }
 
-        public Task<AssignmentDTO> GetAssignmentSubmissionStatus(int userId, int assignmentId)
+        public async Task<AssignmentSubmisssionReturnDTO> GetAssignmentSubmissionStatus(int userId, int assignmentId)
         {
-            throw new NotImplementedException();
+            var studentDb = await _studentRepository.Get();
+            var student = studentDb.FirstOrDefault(s => s.UserId == userId);
+
+            if (student == null)
+                throw new NoLinkedAccountException();
+
+            int studentId = student.StudentId;
+
+            var submissionDb = await _sumissionRepository.Get();
+            var submission = submissionDb.FirstOrDefault(s => s.StudentId == studentId && s.AssignmentId == assignmentId);
+
+            if (submission == null)
+                throw new NoSuchAssignmentSubmissionException();
+
+            return MapSubmissionToSubmissionDTO(submission);
         }
 
         public AssignmentDTO MapAssignmentToAssignmentDTO(Assignment assignment)

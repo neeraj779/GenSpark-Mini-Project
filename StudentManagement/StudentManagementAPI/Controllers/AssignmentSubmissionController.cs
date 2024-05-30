@@ -43,17 +43,21 @@ namespace StudentManagementAPI.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
 
-            catch(NotEnrolledInCourseException ex)
+            catch (NotEnrolledInCourseException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(DuplicateAssignmentSubmissionException ex)
+            catch (DuplicateAssignmentSubmissionException ex)
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
             }
-            catch(InvalidFileExtensionException ex)
+            catch (InvalidFileExtensionException ex)
             {
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
+            }
+            catch (NoLinkedAccountException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
         }
 
@@ -83,6 +87,10 @@ namespace StudentManagementAPI.Controllers
             }
 
             catch (NoAssignmentFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoLinkedAccountException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
@@ -122,6 +130,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch (NoLinkedAccountException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -143,6 +155,47 @@ namespace StudentManagementAPI.Controllers
                 return File(fileData.FileData, contentType, fileData.FileName);
             }
             catch (NoSuchAssignmentSubmissionException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoSuchStudentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoSuchAssignmentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Gets the submission status of the assignment for the student.
+        /// </summary>
+        /// <param name="assignmentId"> The assignment id for which the submission status is to be fetched.</param>
+        [HttpGet("GetSubmittedAssignmentStatus")]
+        [Authorize(Roles = "Student")]
+        [ProducesResponseType(typeof(AssignmentSubmisssionReturnDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<AssignmentSubmisssionReturnDTO>> GetSubmittedAssignmentStatus(int assignmentId)
+        {
+            try
+            {
+                string studentId = User.FindFirstValue(ClaimTypes.Name);
+
+                int Id = Convert.ToInt32(studentId);
+
+                var assignmentSubmissionStatus = await _assignmentSubmission.GetAssignmentSubmissionStatus(Id, assignmentId);
+                return Ok(assignmentSubmissionStatus);
+            }
+            catch (NoSuchAssignmentSubmissionException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoSuchAssignmentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch (NoLinkedAccountException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
