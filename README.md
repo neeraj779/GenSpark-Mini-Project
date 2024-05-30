@@ -281,12 +281,6 @@ The Student Management System provides the following features:
 
 ## 🚀 Getting Started
 
-***Requirements***
-
-Ensure you have the following dependencies installed on your system:
-
-* **CSharp**: `version x.y.z`
-
 ### ⚙️ Installation
 
 1. Clone the GenSpark-Mini-Project repository:
