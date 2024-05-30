@@ -88,6 +88,9 @@ namespace StudentManagementAPI.Services
             var enrollments = await _enrollmentRepository.Get();
             var enrollment = enrollments.FirstOrDefault(enrollment => enrollment.StudentId == StudentId && enrollment.CourseCode == CourseCode);
 
+            if (enrollment == null)
+                throw new NoSuchEnrollmentException();
+
             await _enrollmentRepository.Delete(enrollment.EnrollmentId);
             return MapEnrollmentToEnrollmentReturnDTO(enrollment);
         }
