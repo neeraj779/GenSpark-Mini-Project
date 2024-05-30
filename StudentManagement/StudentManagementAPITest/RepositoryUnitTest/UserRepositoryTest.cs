@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Repositories;
-using StudentManagementAPI.Exceptions;
 using System.Security.Cryptography;
 using System.Text;
 

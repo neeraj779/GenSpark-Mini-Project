@@ -34,7 +34,7 @@ namespace StudentManagementAPI.Controllers
                 return Ok(newAssignment);
             }
 
-            catch(NoSuchCourseException ex)
+            catch (NoSuchCourseException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }

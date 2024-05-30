@@ -4,8 +4,6 @@ using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Models.DTOs;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace StudentManagementAPI.Controllers
 {

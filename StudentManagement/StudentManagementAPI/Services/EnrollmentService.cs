@@ -79,7 +79,7 @@ namespace StudentManagementAPI.Services
         {
             var student = await _studentRepository.Get(StudentId);
             var course = await _courseRepository.Get(CourseCode);
-            
+
             if (student == null)
                 throw new NoSuchStudentException();
 

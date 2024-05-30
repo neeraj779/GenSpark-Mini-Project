@@ -47,7 +47,7 @@ namespace StudentManagementAPI.Services
 
         public async Task<AssignmentDTO> GetAssignmentById(int assignmentId)
         {
-            var assignment =await _assignmentRepository.Get(assignmentId);
+            var assignment = await _assignmentRepository.Get(assignmentId);
 
             if (assignment == null)
                 throw new NoSuchAssignmentException();

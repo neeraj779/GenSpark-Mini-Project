@@ -112,7 +112,7 @@ namespace StudentManagementAPI.Controllers
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EnrollmentReturnDTO>>  GetEnrollmentsByCourseId(string courseCode)
+        public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByCourseId(string courseCode)
         {
             try
             {

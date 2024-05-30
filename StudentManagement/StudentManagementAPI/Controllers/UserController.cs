@@ -73,7 +73,7 @@ namespace StudentManagementAPI.Controllers
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
 
-            catch(DuplicateUserNameException ex)
+            catch (DuplicateUserNameException ex)
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
             }

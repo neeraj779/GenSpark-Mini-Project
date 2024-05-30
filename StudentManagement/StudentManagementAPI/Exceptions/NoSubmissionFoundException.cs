@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace StudentManagementAPI.Repositories
+﻿namespace StudentManagementAPI.Repositories
 {
     [Serializable]
     public class NoSubmissionFoundException : Exception

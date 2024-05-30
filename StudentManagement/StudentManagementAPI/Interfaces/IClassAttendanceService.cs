@@ -1,5 +1,4 @@
-﻿using StudentManagementAPI.Models.DBModels;
-using StudentManagementAPI.Models.DTOs;
+﻿using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Interfaces
 {

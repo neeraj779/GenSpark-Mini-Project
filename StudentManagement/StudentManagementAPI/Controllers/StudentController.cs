@@ -1,5 +1,4 @@
-﻿using log4net.Core;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -48,7 +47,7 @@ namespace StudentManagementAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorModel { ErrorCode = StatusCodes.Status500InternalServerError, ErrorMessage = ex.Message });
             }
         }
-        
+
         /// <summary>
         /// Updates the email of a student based on the provided student ID.
         /// </summary>

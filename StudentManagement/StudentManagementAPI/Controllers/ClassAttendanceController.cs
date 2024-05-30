@@ -43,11 +43,11 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(ClassAttendanceAlreadyExistsException ex)
+            catch (ClassAttendanceAlreadyExistsException ex)
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
             }
-            catch(InvalidAttendanceStatusException ex)
+            catch (InvalidAttendanceStatusException ex)
             {
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
@@ -73,7 +73,7 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(NoClassAttendanceFoundException ex)
+            catch (NoClassAttendanceFoundException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
@@ -133,7 +133,7 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(NoSuchClassAttendanceException ex)
+            catch (NoSuchClassAttendanceException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
@@ -163,11 +163,11 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(NoSuchClassAttendanceException ex)
+            catch (NoSuchClassAttendanceException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
-            catch(InvalidAttendanceStatusException ex)
+            catch (InvalidAttendanceStatusException ex)
             {
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }

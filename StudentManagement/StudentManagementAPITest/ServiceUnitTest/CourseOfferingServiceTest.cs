@@ -210,7 +210,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             //Action
             var result = await courseOfferingService.UnassignTeacherFromCourseOffering(teacherId, courseCode);
-            var isUpdated  = context.CourseOfferings.Any(c => c.TeacherId == teacherId && c.CourseCode == courseCode);
+            var isUpdated = context.CourseOfferings.Any(c => c.TeacherId == teacherId && c.CourseCode == courseCode);
 
             //Assert
             Assert.That(isUpdated, Is.EqualTo(false));

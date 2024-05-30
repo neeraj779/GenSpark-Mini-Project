@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace StudentManagementAPI.Exceptions
+﻿namespace StudentManagementAPI.Exceptions
 {
     [Serializable]
     public class NoSuchSubmissionException : Exception

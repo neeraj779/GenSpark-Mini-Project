@@ -19,7 +19,7 @@ namespace StudentManagementAPI.Services
             IRepository<int, Teacher> teacherRepo,
             IRepository<int, Student> studentRepo,
             ITokenService tokenService
-            ) 
+            )
         {
             _userRepo = userRepo;
             _teacherRepo = teacherRepo;
@@ -35,7 +35,7 @@ namespace StudentManagementAPI.Services
                 throw new InvalidLoginException();
             }
 
-            if(userDB.Status != "Active")
+            if (userDB.Status != "Active")
             {
                 throw new UserNotActiveException();
             }

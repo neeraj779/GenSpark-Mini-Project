@@ -53,7 +53,7 @@ namespace StudentManagementAPI.Repositories
 
         public async Task<IEnumerable<User>> Get()
         {
-            var users =  await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
             return users;
         }
 

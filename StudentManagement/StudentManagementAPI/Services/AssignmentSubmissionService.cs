@@ -2,7 +2,6 @@
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
-using System.Security.Claims;
 
 namespace StudentManagementAPI.Services
 {

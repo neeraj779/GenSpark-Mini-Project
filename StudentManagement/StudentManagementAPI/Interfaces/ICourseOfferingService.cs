@@ -1,6 +1,4 @@
-﻿using StudentManagementAPI.Models.DBModels;
-using StudentManagementAPI.Models.DTOs;
-using System.Threading.Tasks;
+﻿using StudentManagementAPI.Models.DTOs;
 
 namespace StudentManagementAPI.Interfaces
 {

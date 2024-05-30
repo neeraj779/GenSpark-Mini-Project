@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace StudentManagementAPI.Services
+﻿namespace StudentManagementAPI.Services
 {
     [Serializable]
     public class InvalidFileExtensionException : Exception

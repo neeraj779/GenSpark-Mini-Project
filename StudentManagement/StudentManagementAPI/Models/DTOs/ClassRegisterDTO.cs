@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace StudentManagementAPI.Models.DTOs
+﻿namespace StudentManagementAPI.Models.DTOs
 {
     public class ClassRegisterDTO
     {
