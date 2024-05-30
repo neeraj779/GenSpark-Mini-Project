@@ -28,6 +28,11 @@ namespace StudentManagementAPI.Services
             if (isStudentExist == null)
                 throw new NoSuchStudentException();
 
+            if (!Enum.TryParse(classAttendancedto.Status, out AttendanceStatus status))
+            {
+                throw new InvalidAttendanceStatusException();
+            }
+
             var isAttendanceExist = await _classAttendanceRepository.Get();
             var attendanceExist = isAttendanceExist.FirstOrDefault(x => x.ClassId == classAttendancedto.ClassId && x.StudentId == classAttendancedto.StudentId);
 
@@ -39,7 +44,7 @@ namespace StudentManagementAPI.Services
                 ClassId = classAttendancedto.ClassId,
                 StudentId = classAttendancedto.StudentId,
                 Date = DateTime.Now,
-                Status = classAttendancedto.Status
+                Status = status
             };
 
             var newAttendance = await _classAttendanceRepository.Add(classAttendance);
@@ -119,7 +124,12 @@ namespace StudentManagementAPI.Services
             if (attendanceExist == null)
                 throw new NoSuchClassAttendanceException();
 
-            attendanceExist.Status = classAttendancedto.Status;
+            if (!Enum.TryParse(classAttendancedto.Status, out AttendanceStatus status))
+            {
+                throw new InvalidAttendanceStatusException();
+            }
+
+            attendanceExist.Status = status;
 
             var updatedAttendance = await _classAttendanceRepository.Update(attendanceExist);
             return MapClassAttendanceToClassAttendanceReturnDTO(updatedAttendance);
@@ -132,7 +142,7 @@ namespace StudentManagementAPI.Services
                 ClassId = newAttendance.ClassId,
                 StudentId = newAttendance.StudentId,
                 Date = newAttendance.Date,
-                Status = newAttendance.Status
+                Status = newAttendance.Status.ToString()
             };
         }
     }

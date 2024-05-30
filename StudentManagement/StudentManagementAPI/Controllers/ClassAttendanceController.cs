@@ -47,6 +47,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
             }
+            catch(InvalidAttendanceStatusException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -55,7 +59,7 @@ namespace StudentManagementAPI.Controllers
         /// <param name="classId"> The Id of the class for which the attendance is to be fetched.</param>
         /// <returns></returns>
         [HttpGet("GetAttendanceByClass")]
-        [Authorize(Roles = "Admin, Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClass(int classId)
@@ -83,7 +87,7 @@ namespace StudentManagementAPI.Controllers
         /// <param name="studentId"> The Id of the student for which the attendance is to be fetched.</param>
         /// <returns></returns>
         [HttpGet("GetAttendanceByStudent")]
-        [Authorize(Roles = "Admin, Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByStudent(int studentId)
@@ -111,7 +115,7 @@ namespace StudentManagementAPI.Controllers
         /// <param name="studentId"> The Id of the student for which the attendance is to be fetched.</param>
         /// <returns></returns>
         [HttpGet("GetAttendanceByClassAndStudent")]
-        [Authorize(Roles = "Admin, Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(ClassAttendanceReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClassAttendanceReturnDTO>> GetAttendanceByClassAndStudent(int classId, int studentId)
@@ -162,6 +166,10 @@ namespace StudentManagementAPI.Controllers
             catch(NoSuchClassAttendanceException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
+            catch(InvalidAttendanceStatusException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
         }
     }
