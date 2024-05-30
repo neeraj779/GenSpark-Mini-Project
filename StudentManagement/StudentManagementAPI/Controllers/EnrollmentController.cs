@@ -86,7 +86,7 @@ namespace StudentManagementAPI.Controllers
         /// <param name="studentId"> The ID of the student for which the enrollments are to be fetched.</param>
         /// <returns></returns>
         [HttpGet("GetEnrollmentsByStudentId")]
-        [Authorize(Roles = "Admin, Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByStudentId(int studentId)
@@ -109,7 +109,7 @@ namespace StudentManagementAPI.Controllers
         /// <param name="courseCode"> The code of the course for which the enrollments are to be fetched.</param>
         /// <returns></returns>
         [HttpGet("GetEnrollmentsByCourseId")]
-        [Authorize(Roles = "Admin, Teacher, Student")]
+        [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<EnrollmentReturnDTO>>  GetEnrollmentsByCourseId(string courseCode)
