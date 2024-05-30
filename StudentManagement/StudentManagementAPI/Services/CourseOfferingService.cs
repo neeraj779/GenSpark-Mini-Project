@@ -129,27 +129,21 @@ namespace StudentManagementAPI.Services
             return MapCourseOfferingToCourseOfferingDTO(courseOfferingToUnassign);
         }
 
-        public async Task<CourseOfferingDTO> UpdateTeacherForCourseOffering(int teacherid, string CourseCode)
+        public async Task<CourseOfferingDTO> UpdateTeacherForCourseOffering(int teacherid, int courseOfferingId)
         {
-            var course = await _courseRepository.Get(CourseCode);
             var teacher = await _teacherRepository.Get(teacherid);
-
-            if (course == null)
-                throw new NoSuchCourseException();
+            var courseoffering = await _courseOfferingRepository.Get(courseOfferingId);
 
             if (teacher == null)
                 throw new NoSuchTeacherException();
 
-            var courseOffering = await _courseOfferingRepository.Get();
-            var courseOfferingToUpdate = courseOffering.FirstOrDefault(courseOffering => courseOffering.CourseCode == CourseCode);
-
-            if (courseOfferingToUpdate == null)
+            if (courseoffering == null)
                 throw new NoSuchCourseOfferingException();
 
-            courseOfferingToUpdate.TeacherId = teacher.TeacherId;
-            await _courseOfferingRepository.Update(courseOfferingToUpdate);
+            courseoffering.TeacherId = teacher.TeacherId;
+            await _courseOfferingRepository.Update(courseoffering);
 
-            return MapCourseOfferingToCourseOfferingDTO(courseOfferingToUpdate);
+            return MapCourseOfferingToCourseOfferingDTO(courseoffering);
         }
 
         public CourseOfferingDTO MapCourseOfferingToCourseOfferingDTO(CourseOffering courseOffering)

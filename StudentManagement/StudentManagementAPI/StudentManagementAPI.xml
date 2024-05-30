@@ -178,7 +178,7 @@
             Updates the teacher assigned to a course offering.
             </summary>
             <param name="teacherid"> The Id of the teacher to be assigned.</param>
-            <param name="CourseCode"> The code of the course offering to which the teacher is to be assigned.</param>
+            <param name="courseOfferingId"> The Id of the course offering to which the teacher is to be updated.</param>
             <returns></returns>
         </member>
         <member name="M:StudentManagementAPI.Controllers.CourseOfferingController.UnassignTeacherFromCourseOffering(System.Int32,System.String)">

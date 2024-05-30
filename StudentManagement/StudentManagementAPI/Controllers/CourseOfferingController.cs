@@ -54,21 +54,21 @@ namespace StudentManagementAPI.Controllers
         /// Updates the teacher assigned to a course offering.
         /// </summary>
         /// <param name="teacherid"> The Id of the teacher to be assigned.</param>
-        /// <param name="CourseCode"> The code of the course offering to which the teacher is to be assigned.</param>
+        /// <param name="courseOfferingId"> The Id of the course offering to which the teacher is to be updated.</param>
         /// <returns></returns>
         [HttpPost("UpdateTeacherForCourseOffering")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(CourseOfferingDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<CourseOfferingDTO>> UpdateTeacherForCourseOffering(int teacherid, string CourseCode)
+        public async Task<ActionResult<CourseOfferingDTO>> UpdateTeacherForCourseOffering(int teacherid, int courseOfferingId)
         {
             try
             {
-                var courseOffering = await _courseOfferingService.UpdateTeacherForCourseOffering(teacherid, CourseCode);
+                var courseOffering = await _courseOfferingService.UpdateTeacherForCourseOffering(teacherid, courseOfferingId);
                 return Ok(courseOffering);
             }
-            catch (NoSuchCourseException ex)
+            catch (NoSuchCourseOfferingException ex)
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
