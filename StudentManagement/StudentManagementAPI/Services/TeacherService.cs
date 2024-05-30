@@ -18,12 +18,14 @@ namespace StudentManagementAPI.Services
         {
             try
             {
-                Teacher newTeacher = new Teacher();
-                newTeacher.FullName = teacher.FullName;
-                newTeacher.DateOfBirth = teacher.DateOfBirth;
-                newTeacher.Gender = teacher.Gender;
-                newTeacher.Phone = teacher.Phone;
-                newTeacher.Email = teacher.Email;
+                Teacher newTeacher = new Teacher
+                {
+                    FullName = teacher.FullName,
+                    DateOfBirth = teacher.DateOfBirth,
+                    Gender = teacher.Gender,
+                    Phone = teacher.Phone,
+                    Email = teacher.Email
+                };
 
                 await _teacherRepository.Add(newTeacher);
 
@@ -33,19 +35,6 @@ namespace StudentManagementAPI.Services
             catch (UnableToAddException)
             {
                 throw new UnableToAddException("Unable to Register Teacher. Please check the data and try again.");
-            }
-        }
-
-        public async Task<TeacherReturnDTO> UpdateTeacher(Teacher teacher)
-        {
-            try
-            {
-                var updatedTeacher = await _teacherRepository.Update(teacher);
-                return MapTeacherToTeacherReturnDTO(updatedTeacher);
-            }
-            catch (NoSuchTeacherException)
-            {
-                throw new NoSuchTeacherException();
             }
         }
 
@@ -107,13 +96,15 @@ namespace StudentManagementAPI.Services
 
         private TeacherReturnDTO MapTeacherToTeacherReturnDTO(Teacher newTeacher)
         {
-            TeacherReturnDTO teacherReturnDTO = new TeacherReturnDTO();
-            teacherReturnDTO.TeacherId = newTeacher.TeacherId;
-            teacherReturnDTO.FullName = newTeacher.FullName;
-            teacherReturnDTO.DateOfBirth = newTeacher.DateOfBirth;
-            teacherReturnDTO.Gender = newTeacher.Gender;
-            teacherReturnDTO.Phone = newTeacher.Phone;
-            teacherReturnDTO.Email = newTeacher.Email;
+            TeacherReturnDTO teacherReturnDTO = new TeacherReturnDTO
+            {
+                TeacherId = newTeacher.TeacherId,
+                FullName = newTeacher.FullName,
+                DateOfBirth = newTeacher.DateOfBirth,
+                Gender = newTeacher.Gender,
+                Phone = newTeacher.Phone,
+                Email = newTeacher.Email
+            };
 
             return teacherReturnDTO;
         }
