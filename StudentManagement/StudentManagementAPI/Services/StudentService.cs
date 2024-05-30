@@ -22,15 +22,17 @@ namespace StudentManagementAPI.Services
                 throw new InvalidStudentStatusException();
             }
 
-            var newStudent = new Student();
-            newStudent.FullName = student.FullName;
-            newStudent.RollNo = student.RollNo;
-            newStudent.Gender = student.Gender;
-            newStudent.Department = student.Department;
-            newStudent.DateOfBirth = student.DateOfBirth;
-            newStudent.Phone = student.Phone;
-            newStudent.Email = student.Email;
-            newStudent.Status = status;
+            var newStudent = new Student
+            {
+                FullName = student.FullName,
+                RollNo = student.RollNo,
+                Gender = student.Gender,
+                Department = student.Department,
+                DateOfBirth = student.DateOfBirth,
+                Phone = student.Phone,
+                Email = student.Email,
+                Status = status
+            };
 
             try
             {
@@ -131,16 +133,18 @@ namespace StudentManagementAPI.Services
 
         public StudentReturnDTO MapStudentToStudentReturnDTO(Student student)
         {
-            StudentReturnDTO studentReturnDTO = new StudentReturnDTO();
-            studentReturnDTO.StudentId = student.StudentId;
-            studentReturnDTO.FullName = student.FullName;
-            studentReturnDTO.RollNo = student.RollNo;
-            studentReturnDTO.Gender = student.Gender;
-            studentReturnDTO.Department = student.Department;
-            studentReturnDTO.DateOfBirth = student.DateOfBirth;
-            studentReturnDTO.Phone = student.Phone;
-            studentReturnDTO.Email = student.Email;
-            studentReturnDTO.Status = student.Status.ToString();
+            StudentReturnDTO studentReturnDTO = new StudentReturnDTO
+            {
+                StudentId = student.StudentId,
+                FullName = student.FullName,
+                RollNo = student.RollNo,
+                Gender = student.Gender,
+                Department = student.Department,
+                DateOfBirth = student.DateOfBirth,
+                Phone = student.Phone,
+                Email = student.Email,
+                Status = student.Status.ToString()
+            };
 
             return studentReturnDTO;
         }

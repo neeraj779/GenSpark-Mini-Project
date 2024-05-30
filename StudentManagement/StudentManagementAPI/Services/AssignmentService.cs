@@ -85,11 +85,13 @@ namespace StudentManagementAPI.Services
 
         public AssignmentDTO MapAssignmentToAssignmentDTO(Assignment assignment)
         {
-            AssignmentDTO assignmentDTO = new AssignmentDTO();
-            assignmentDTO.AssignmentId = assignment.AssignmentId;
-            assignmentDTO.Title = assignment.Title;
-            assignmentDTO.AssignmentDueDate = assignment.DueDate;
-            assignmentDTO.CourseCode = assignment.CourseCode;
+            AssignmentDTO assignmentDTO = new AssignmentDTO
+            {
+                AssignmentId = assignment.AssignmentId,
+                Title = assignment.Title,
+                AssignmentDueDate = assignment.DueDate,
+                CourseCode = assignment.CourseCode
+            };
             return assignmentDTO;
         }
     }

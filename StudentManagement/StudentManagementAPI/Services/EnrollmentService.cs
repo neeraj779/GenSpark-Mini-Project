@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using StudentManagementAPI.Exceptions;
+﻿using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Models.DTOs;
@@ -36,9 +35,11 @@ namespace StudentManagementAPI.Services
             if (enrollment != null)
                 throw new StudentAlreadyEnrolledException();
 
-            Enrollment newEnrollment = new Enrollment();
-            newEnrollment.StudentId = StudentId;
-            newEnrollment.CourseCode = CourseCode;
+            Enrollment newEnrollment = new Enrollment
+            {
+                StudentId = StudentId,
+                CourseCode = CourseCode
+            };
 
             newEnrollment = await _enrollmentRepository.Add(newEnrollment);
             return MapEnrollmentToEnrollmentReturnDTO(newEnrollment);
@@ -112,11 +113,13 @@ namespace StudentManagementAPI.Services
 
         public EnrollmentReturnDTO MapEnrollmentToEnrollmentReturnDTO(Enrollment enrollment)
         {
-            EnrollmentReturnDTO newEnrollment = new EnrollmentReturnDTO();
-            newEnrollment.EnrollmentId = enrollment.EnrollmentId;
-            newEnrollment.StudentId = enrollment.StudentId;
-            newEnrollment.CourseCode = enrollment.CourseCode;
-            newEnrollment.EnrollmentDate = enrollment.EnrollmentDate;
+            EnrollmentReturnDTO newEnrollment = new EnrollmentReturnDTO
+            {
+                EnrollmentId = enrollment.EnrollmentId,
+                StudentId = enrollment.StudentId,
+                CourseCode = enrollment.CourseCode,
+                EnrollmentDate = enrollment.EnrollmentDate
+            };
             return newEnrollment;
         }
     }

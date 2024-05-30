@@ -49,10 +49,12 @@ namespace StudentManagementAPI.Services
             {
                 throw new InvalidLoginException();
             }
-            LoginReturnDTO returnDTO = new LoginReturnDTO();
-            returnDTO.AccessToken = _tokenService.GenerateToken(userDB);
-            returnDTO.TokenType = "Bearer";
-            returnDTO.Role = userDB.Role.ToString();
+            LoginReturnDTO returnDTO = new LoginReturnDTO
+            {
+                AccessToken = _tokenService.GenerateToken(userDB),
+                TokenType = "Bearer",
+                Role = userDB.Role.ToString()
+            };
             return returnDTO;
         }
 
@@ -163,12 +165,14 @@ namespace StudentManagementAPI.Services
 
         public RegisteredUserDTO MapUserToReturnDTO(User user)
         {
-            RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO();
-            registeredUserDTO.AccountId = user.UserId;
-            registeredUserDTO.UserName = user.UserName;
-            registeredUserDTO.Role = user.Role.ToString();
-            registeredUserDTO.Status = user.Status;
-            registeredUserDTO.RegistrationDate = user.RegistrationDate;
+            RegisteredUserDTO registeredUserDTO = new RegisteredUserDTO
+            {
+                AccountId = user.UserId,
+                UserName = user.UserName,
+                Role = user.Role.ToString(),
+                Status = user.Status,
+                RegistrationDate = user.RegistrationDate
+            };
             return registeredUserDTO;
         }
     }

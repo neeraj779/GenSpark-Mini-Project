@@ -22,11 +22,12 @@ namespace StudentManagementAPI.Services
             if (courseExists != null)
                 throw new CourseAlreadyExistsException();
 
-            var newCourse = new Course();
-
-            newCourse.CourseCode = course.CourseCode;
-            newCourse.CourseName = course.CourseName;
-            newCourse.CourseCredit = course.CourseCredit;
+            var newCourse = new Course
+            {
+                CourseCode = course.CourseCode,
+                CourseName = course.CourseName,
+                CourseCredit = course.CourseCredit
+            };
 
             var createdCourse = await _courseRepository.Add(newCourse);
 
@@ -83,10 +84,12 @@ namespace StudentManagementAPI.Services
 
         public CourseDTO MapCourseToCourseDTO(Course course)
         {
-            CourseDTO newcourse = new CourseDTO();
-            newcourse.CourseCode = course.CourseCode;
-            newcourse.CourseName = course.CourseName;
-            newcourse.CourseCredit = course.CourseCredit;
+            CourseDTO newcourse = new CourseDTO
+            {
+                CourseCode = course.CourseCode,
+                CourseName = course.CourseName,
+                CourseCredit = course.CourseCredit
+            };
             return newcourse;
         }
     }
