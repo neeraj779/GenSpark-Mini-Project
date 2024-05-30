@@ -131,7 +131,7 @@
         </member>
         <member name="M:StudentManagementAPI.Controllers.ClassController.UpdateClassTime(StudentManagementAPI.Models.DTOs.UpdateClassDTO)">
             <summary>
-            Updates the timeing of a class.
+            Updates the timing of a class.
             </summary>
             <param name="updateclassdto"> UpdateClassDTO object containing the details of the class to be updated.</param>
             <returns></returns>

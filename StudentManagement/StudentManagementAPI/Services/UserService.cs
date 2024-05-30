@@ -13,18 +13,21 @@ namespace StudentManagementAPI.Services
         private readonly IRepository<int, Teacher> _teacherRepo;
         private readonly IRepository<int, Student> _studentRepo;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<UserService> _logger;
 
         public UserService(
             IUserRepository<int, User> userRepo,
             IRepository<int, Teacher> teacherRepo,
             IRepository<int, Student> studentRepo,
-            ITokenService tokenService
+            ITokenService tokenService,
+            ILogger<UserService> logger
             )
         {
             _userRepo = userRepo;
             _teacherRepo = teacherRepo;
             _studentRepo = studentRepo;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         public async Task<LoginReturnDTO> Login(UserLoginDTO loginDTO)
@@ -32,11 +35,13 @@ namespace StudentManagementAPI.Services
             var userDB = await _userRepo.GetByUserName(loginDTO.UserName);
             if (userDB == null)
             {
+                _logger.LogWarning("Login failed for user: {UserName} - User not found", loginDTO.UserName);
                 throw new InvalidLoginException();
             }
 
             if (userDB.Status != "Active")
             {
+                _logger.LogWarning("Login failed for user: {UserName} - User not active", loginDTO.UserName);
                 throw new UserNotActiveException();
             }
 
@@ -47,6 +52,7 @@ namespace StudentManagementAPI.Services
 
             if (!isPasswordCorrect)
             {
+                _logger.LogWarning("Login failed for user: {UserName} - Incorrect password", loginDTO.UserName);
                 throw new InvalidLoginException();
             }
             LoginReturnDTO returnDTO = new LoginReturnDTO
@@ -62,12 +68,14 @@ namespace StudentManagementAPI.Services
         {
             if (!Enum.TryParse(user.Role, out UserRole role))
             {
+                _logger.LogWarning("Register failed for user: {UserName} - Invalid role", user.UserName);
                 throw new InvalidRoleException();
             }
 
             var userDB = await _userRepo.GetByUserName(user.UserName);
             if (userDB != null)
             {
+                _logger.LogWarning("Register failed for user: {UserName} - Duplicate username", user.UserName);
                 throw new DuplicateUserNameException();
             }
 
@@ -90,10 +98,12 @@ namespace StudentManagementAPI.Services
                     var student = await _studentRepo.Get(user.AccountId);
                     if (student == null)
                     {
+                        _logger.LogWarning("Register failed for user: {UserName} - User not part of institution", user.UserName);
                         throw new UserNotPartOfInstitutionException();
                     }
                     if (student.UserId != null)
                     {
+                        _logger.LogWarning("Register failed for user: {UserName} - Duplicate user", user.UserName);
                         throw new DuplicateUserException();
                     }
 
@@ -102,6 +112,7 @@ namespace StudentManagementAPI.Services
                     await _studentRepo.Update(student);
                     return MapUserToReturnDTO(newUserStudent);
                 default:
+                    _logger.LogWarning("Register failed for user: {UserName} - Invalid role", user.UserName);
                     throw new InvalidRoleException();
             }
         }
@@ -128,7 +139,10 @@ namespace StudentManagementAPI.Services
             var users = await _userRepo.Get();
 
             if (users.Count() == 0)
+            {
+                _logger.LogWarning("No users found");
                 throw new NoUserFoundException();
+            }
 
             List<RegisteredUserDTO> userReturnDTOs = new List<RegisteredUserDTO>();
             foreach (var user in users)
@@ -142,7 +156,10 @@ namespace StudentManagementAPI.Services
             var user = await _userRepo.Get(id);
 
             if (user == null)
+            {
+                _logger.LogWarning("Activate failed for user: {UserId} - User not found", id);
                 throw new NoSuchUserException();
+            }
 
             user.Status = "Active";
             await _userRepo.Update(user);
@@ -155,7 +172,10 @@ namespace StudentManagementAPI.Services
             var user = await _userRepo.Get(id);
 
             if (user == null)
+            {
+                _logger.LogWarning("Deactivate failed for user: {UserId} - User not found", id);
                 throw new NoSuchUserException();
+            }
 
             user.Status = "Inactive";
             await _userRepo.Update(user);
