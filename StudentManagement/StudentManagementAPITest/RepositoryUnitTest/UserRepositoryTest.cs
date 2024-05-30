@@ -17,20 +17,8 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("StudentManagementDB");
             context = new StudentManagementContext(optionsBuilder.Options);
 
-            var user = new User
-            {
-                UserId = 1,
-                UserName = "test",
-                Status = "Active",
-                Role = UserRole.Admin,
-                RegistrationDate = DateTime.UtcNow
-            };
-
-            HMACSHA512 hMACSHA = new HMACSHA512();
-            user.PasswordHashKey = hMACSHA.Key;
-            user.Password = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes("password"));
-
-            context.Users.Add(user);
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
         }
 
 
@@ -42,7 +30,7 @@ namespace StudentManagementAPITest.RepositoryUnitTest
 
             var newUser = new User
             {
-                UserId = 2,
+                UserId = 101,
                 UserName = "newUser",
                 Status = "Active",
                 Role = UserRole.Admin,
@@ -57,8 +45,8 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             await userRepository.Add(newUser);
 
             //Assert
-            var userResult = await userRepository.Get(1);
-            Assert.That(userResult.UserId, Is.EqualTo(1));
+            var userResult = await userRepository.Get(101);
+            Assert.That(userResult.UserId, Is.EqualTo(101));
         }
 
         [Test]
@@ -71,7 +59,7 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             var result = await userRepository.Get();
 
             //Assert
-            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -81,10 +69,10 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             IUserRepository<int, User> userRepository = new UserRepository(context);
 
             //Action
-            var result = await userRepository.Get(1);
+            var result = await userRepository.Get(100);
 
             //Assert
-            Assert.That(result.UserId, Is.EqualTo(1));
+            Assert.That(result.UserId, Is.EqualTo(100));
         }
 
         [Test]
@@ -94,10 +82,10 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             IUserRepository<int, User> userRepository = new UserRepository(context);
 
             //Action
-            var result = await userRepository.GetByUserName("test");
+            var result = await userRepository.GetByUserName("admin");
 
             //Assert
-            Assert.That(result.UserName, Is.EqualTo("test"));
+            Assert.That(result.UserName, Is.EqualTo("admin"));
         }
 
         [Test]
@@ -106,14 +94,14 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             //Arrange 
             IUserRepository<int, User> userRepository = new UserRepository(context);
 
-            var user = await userRepository.Get(1);
+            var user = await userRepository.Get(100);
             user.UserName = "test1";
 
             //Action
             await userRepository.Update(user);
 
             //Assert
-            var result = await userRepository.Get(1);
+            var result = await userRepository.Get(100);
             Assert.That(result.UserName, Is.EqualTo("test1"));
         }
 
