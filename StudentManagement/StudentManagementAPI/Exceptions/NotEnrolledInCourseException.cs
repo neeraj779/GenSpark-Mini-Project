@@ -6,7 +6,7 @@
         string _message;
         public NotEnrolledInCourseException()
         {
-            _message = "You are not enrolled in this course.";
+            _message = "Student is not enrolled in the course.";
         }
 
         public override string Message => _message;

@@ -51,6 +51,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
             }
+            catch(NotEnrolledInCourseException ex)
+            {
+                return BadRequest(new ErrorModel { ErrorCode = StatusCodes.Status400BadRequest, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>

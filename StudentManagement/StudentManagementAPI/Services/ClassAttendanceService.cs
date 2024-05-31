@@ -10,20 +10,29 @@ namespace StudentManagementAPI.Services
         private readonly IRepository<int, ClassAttendance> _classAttendanceRepository;
         private readonly IRepository<int, Class> _classRepository;
         private readonly IRepository<int, Student> _studentRepository;
+        private readonly IRepository<int, Enrollment> _enrollmentRepository;
+        private readonly IRepository<int, CourseOffering> _courseOfferingRepository;
 
         public ClassAttendanceService(
             IRepository<int, ClassAttendance> classAttendanceRepository,
             IRepository<int, Class> classRepository,
-            IRepository<int, Student> studentRepository)
+            IRepository<int, Student> studentRepository,
+            IRepository<int, Enrollment> enrollmentRepository,
+            IRepository<int, CourseOffering> courseOfferingRepository
+            )
         {
             _classAttendanceRepository = classAttendanceRepository;
             _classRepository = classRepository;
             _studentRepository = studentRepository;
+            _enrollmentRepository = enrollmentRepository;
+            _courseOfferingRepository = courseOfferingRepository;
+
         }
 
         public async Task<ClassAttendanceReturnDTO> MarkStudentAttendance(ClassAttendanceDTO classAttendanceDto)
         {
             await ValidateClassAndStudentExistence(classAttendanceDto.ClassId, classAttendanceDto.StudentId);
+            await ValidateStudentEnrollmentInClass(classAttendanceDto.ClassId, classAttendanceDto.StudentId);
 
             if (!Enum.TryParse(classAttendanceDto.Status, out AttendanceStatus status))
                 throw new InvalidAttendanceStatusException();
@@ -114,6 +123,18 @@ namespace StudentManagementAPI.Services
         {
             if (await _studentRepository.Get(studentId) == null)
                 throw new NoSuchStudentException();
+        }
+
+        private async Task ValidateStudentEnrollmentInClass(int classId, int studentId)
+        {
+            var classEntity = await _classRepository.Get(classId);
+            var classOffering = await _courseOfferingRepository.Get(classEntity.CourseOfferingId);
+
+            var enrollments = await _enrollmentRepository.Get();
+            var studentEnrollment = enrollments.FirstOrDefault(x => x.StudentId == studentId && x.CourseCode == classOffering.CourseCode);
+
+            if (studentEnrollment == null)
+                throw new NotEnrolledInCourseException();
         }
 
         private async Task ValidateClassAndStudentExistence(int classId, int studentId)
