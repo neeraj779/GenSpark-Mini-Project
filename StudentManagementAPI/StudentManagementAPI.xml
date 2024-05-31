@@ -173,7 +173,7 @@
             <param name="CourseCode"> The code of the course offering to which the teacher is to be assigned.</param>
             <returns></returns>
         </member>
-        <member name="M:StudentManagementAPI.Controllers.CourseOfferingController.UpdateTeacherForCourseOffering(System.Int32,System.String)">
+        <member name="M:StudentManagementAPI.Controllers.CourseOfferingController.UpdateTeacherForCourseOffering(System.Int32,System.Int32)">
             <summary>
             Updates the teacher assigned to a course offering.
             </summary>
