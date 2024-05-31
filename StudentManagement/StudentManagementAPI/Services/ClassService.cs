@@ -24,58 +24,44 @@ namespace StudentManagementAPI.Services
             _courseOfferingRepository = courseOfferingRepository;
         }
 
-        public async Task<ClassReturnDTO> AddClass(ClassRegisterDTO classdto)
+        public async Task<ClassReturnDTO> AddClass(ClassRegisterDTO classDto)
         {
-            var IsClassExists = await _classRepository.Get();
-            var classExists = IsClassExists.FirstOrDefault(classObj => classObj.CourseOfferingId == classdto.CourseOfferingId && classObj.ClassDateAndTime == classdto.ClassDateAndTime);
+            await EnsureClassDoesNotExist(classDto.CourseOfferingId, classDto.ClassDateAndTime);
 
-            if (classExists != null)
-                throw new ClassAlreadyExistsException();
-
-            var courseOffering = await _courseOfferingRepository.Get(classdto.CourseOfferingId);
-
+            var courseOffering = await _courseOfferingRepository.Get(classDto.CourseOfferingId);
             if (courseOffering == null)
                 throw new NoSuchCourseOfferingException();
 
             var newClass = new Class
             {
-                CourseOfferingId = classdto.CourseOfferingId,
-                ClassDateAndTime = classdto.ClassDateAndTime
+                CourseOfferingId = classDto.CourseOfferingId,
+                ClassDateAndTime = classDto.ClassDateAndTime
             };
 
-            await _classRepository.Add(newClass);
-            return await MapClassToClassReturnDTO(newClass);
+            var addedClass = await _classRepository.Add(newClass);
+            return await MapClassToClassReturnDTO(addedClass);
         }
 
         public async Task<ClassReturnDTO> DeleteClass(int classId)
         {
-            var classExists = await _classRepository.Get(classId);
-            if (classExists == null)
-                throw new NoSuchClassException();
-
-            var deletedClass = await _classRepository.Delete(classId);
+            var classEntity = await EnsureClassExists(classId);
+            var deletedClass = await _classRepository.Delete(classEntity.ClassId);
             return await MapClassToClassReturnDTO(deletedClass);
         }
 
         public async Task<ClassReturnDTO> GetClass(int classId)
         {
-            var classExists = await _classRepository.Get(classId);
-            if (classExists == null)
-                throw new NoSuchClassException();
-
-            var classObj = await _classRepository.Get(classId);
-            return await MapClassToClassReturnDTO(classObj);
+            var classEntity = await EnsureClassExists(classId);
+            return await MapClassToClassReturnDTO(classEntity);
         }
 
         public async Task<IEnumerable<ClassReturnDTO>> GetClasses()
         {
             var classes = await _classRepository.Get();
-
-            if (classes.Count() == 0)
+            if (!classes.Any())
                 throw new NoClassFoundException();
 
             var classReturnDTOs = new List<ClassReturnDTO>();
-
             foreach (var classObj in classes)
             {
                 classReturnDTOs.Add(await MapClassToClassReturnDTO(classObj));
@@ -84,16 +70,32 @@ namespace StudentManagementAPI.Services
             return classReturnDTOs;
         }
 
-        public async Task<ClassReturnDTO> UpdateClassTime(UpdateClassDTO updateclassdto)
+        public async Task<ClassReturnDTO> UpdateClassTime(UpdateClassDTO updateClassDto)
         {
-            var classExists = await _classRepository.Get(updateclassdto.ClassId);
-            if (classExists == null)
+            var classEntity = await EnsureClassExists(updateClassDto.ClassId);
+
+            classEntity.ClassDateAndTime = updateClassDto.ClassDateAndTime;
+            var updatedClass = await _classRepository.Update(classEntity);
+            return await MapClassToClassReturnDTO(updatedClass);
+        }
+
+        private async Task<Class> EnsureClassExists(int classId)
+        {
+            var classEntity = await _classRepository.Get(classId);
+            if (classEntity == null)
                 throw new NoSuchClassException();
 
-            var classObj = await _classRepository.Get(updateclassdto.ClassId);
-            classObj.ClassDateAndTime = updateclassdto.ClassDateAndTime;
-            await _classRepository.Update(classObj);
-            return await MapClassToClassReturnDTO(classObj);
+            return classEntity;
+        }
+
+        private async Task EnsureClassDoesNotExist(int courseOfferingId, DateTime classDateAndTime)
+        {
+            var existingClasses = await _classRepository.Get();
+            var classExists = existingClasses.Any(classObj =>
+                classObj.CourseOfferingId == courseOfferingId && classObj.ClassDateAndTime == classDateAndTime);
+
+            if (classExists)
+                throw new ClassAlreadyExistsException();
         }
 
         private async Task<ClassReturnDTO> MapClassToClassReturnDTO(Class classEntity)

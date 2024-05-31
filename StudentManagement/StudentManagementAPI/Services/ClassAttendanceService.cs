@@ -11,138 +11,125 @@ namespace StudentManagementAPI.Services
         private readonly IRepository<int, Class> _classRepository;
         private readonly IRepository<int, Student> _studentRepository;
 
-        public ClassAttendanceService(IRepository<int, ClassAttendance> classAttendanceRepository, IRepository<int, Class> classRepository, IRepository<int, Student> studentRepository)
+        public ClassAttendanceService(
+            IRepository<int, ClassAttendance> classAttendanceRepository,
+            IRepository<int, Class> classRepository,
+            IRepository<int, Student> studentRepository)
         {
             _classAttendanceRepository = classAttendanceRepository;
             _classRepository = classRepository;
             _studentRepository = studentRepository;
         }
 
-        public async Task<ClassAttendanceReturnDTO> MarkStudentAttendance(ClassAttendanceDTO classAttendancedto)
+        public async Task<ClassAttendanceReturnDTO> MarkStudentAttendance(ClassAttendanceDTO classAttendanceDto)
         {
-            var isClassExist = await _classRepository.Get(classAttendancedto.ClassId);
-            if (isClassExist == null)
-                throw new NoSuchClassException();
+            await ValidateClassAndStudentExistence(classAttendanceDto.ClassId, classAttendanceDto.StudentId);
 
-            var isStudentExist = await _studentRepository.Get(classAttendancedto.StudentId);
-            if (isStudentExist == null)
-                throw new NoSuchStudentException();
-
-            if (!Enum.TryParse(classAttendancedto.Status, out AttendanceStatus status))
-            {
+            if (!Enum.TryParse(classAttendanceDto.Status, out AttendanceStatus status))
                 throw new InvalidAttendanceStatusException();
-            }
 
-            var isAttendanceExist = await _classAttendanceRepository.Get();
-            var attendanceExist = isAttendanceExist.FirstOrDefault(x => x.ClassId == classAttendancedto.ClassId && x.StudentId == classAttendancedto.StudentId);
+            var existingAttendance = (await _classAttendanceRepository.Get())
+                .FirstOrDefault(x => x.ClassId == classAttendanceDto.ClassId && x.StudentId == classAttendanceDto.StudentId);
 
-            if (attendanceExist != null)
+            if (existingAttendance != null)
                 throw new ClassAttendanceAlreadyExistsException();
 
             var classAttendance = new ClassAttendance
             {
-                ClassId = classAttendancedto.ClassId,
-                StudentId = classAttendancedto.StudentId,
+                ClassId = classAttendanceDto.ClassId,
+                StudentId = classAttendanceDto.StudentId,
                 Date = DateTime.Now,
                 Status = status
             };
 
             var newAttendance = await _classAttendanceRepository.Add(classAttendance);
-            return MapClassAttendanceToClassAttendanceReturnDTO(newAttendance);
+            return MapClassAttendanceToDTO(newAttendance);
         }
-
 
         public async Task<IEnumerable<ClassAttendanceReturnDTO>> GetAttendanceByClass(int classId)
         {
-            var isClassExist = await _classRepository.Get(classId);
-            if (isClassExist == null)
-                throw new NoSuchClassException();
+            await ValidateClassExistence(classId);
 
-            var classAttendance = await _classAttendanceRepository.Get();
-            var classAttendanceList = classAttendance.Where(x => x.ClassId == classId);
+            var classAttendances = (await _classAttendanceRepository.Get())
+                .Where(x => x.ClassId == classId);
 
-            if (classAttendanceList.Count() == 0)
+            if (!classAttendances.Any())
                 throw new NoClassAttendanceFoundException();
 
-            var classAttendanceReturnList = new List<ClassAttendanceReturnDTO>();
-            foreach (var attendance in classAttendanceList)
-                classAttendanceReturnList.Add(MapClassAttendanceToClassAttendanceReturnDTO(attendance));
-
-            return classAttendanceReturnList;
+            return classAttendances.Select(MapClassAttendanceToDTO);
         }
 
         public async Task<IEnumerable<ClassAttendanceReturnDTO>> GetAttendanceByStudent(int studentId)
         {
-            var isStudentExist = await _studentRepository.Get(studentId);
-            if (isStudentExist == null)
-                throw new NoSuchStudentException();
+            await ValidateStudentExistence(studentId);
 
-            var classAttendance = await _classAttendanceRepository.Get();
-            var classAttendanceList = classAttendance.Where(x => x.StudentId == studentId);
+            var classAttendances = (await _classAttendanceRepository.Get())
+                .Where(x => x.StudentId == studentId);
 
-            if (classAttendanceList.Count() == 0)
+            if (!classAttendances.Any())
                 throw new NoClassAttendanceFoundException();
 
-            var classAttendanceReturnList = new List<ClassAttendanceReturnDTO>();
-            foreach (var attendance in classAttendanceList)
-                classAttendanceReturnList.Add(MapClassAttendanceToClassAttendanceReturnDTO(attendance));
-
-            return classAttendanceReturnList;
+            return classAttendances.Select(MapClassAttendanceToDTO);
         }
 
         public async Task<ClassAttendanceReturnDTO> GetAttendanceByClassAndStudent(int classId, int studentId)
         {
-            var isClassExist = await _classRepository.Get(classId);
-            if (isClassExist == null)
-                throw new NoSuchClassException();
+            await ValidateClassAndStudentExistence(classId, studentId);
 
-            var isStudentExist = await _studentRepository.Get(studentId);
-            if (isStudentExist == null)
-                throw new NoSuchStudentException();
+            var classAttendance = (await _classAttendanceRepository.Get())
+                .FirstOrDefault(x => x.ClassId == classId && x.StudentId == studentId);
 
-            var classAttendance = await _classAttendanceRepository.Get();
-            var classAttendanceList = classAttendance.FirstOrDefault(x => x.ClassId == classId && x.StudentId == studentId);
-
-            if (classAttendanceList == null)
+            if (classAttendance == null)
                 throw new NoSuchClassAttendanceException();
 
-            return MapClassAttendanceToClassAttendanceReturnDTO(classAttendanceList);
+            return MapClassAttendanceToDTO(classAttendance);
         }
 
-        public async Task<ClassAttendanceReturnDTO> UpdateClassAttendance(ClassAttendanceDTO classAttendancedto)
+        public async Task<ClassAttendanceReturnDTO> UpdateClassAttendance(ClassAttendanceDTO classAttendanceDto)
         {
-            var isClassExist = await _classRepository.Get(classAttendancedto.ClassId);
-            if (isClassExist == null)
-                throw new NoSuchClassException();
+            await ValidateClassAndStudentExistence(classAttendanceDto.ClassId, classAttendanceDto.StudentId);
 
-            var isStudentExist = await _studentRepository.Get(classAttendancedto.StudentId);
-            if (isStudentExist == null)
-                throw new NoSuchStudentException();
+            if (!Enum.TryParse(classAttendanceDto.Status, out AttendanceStatus status))
+                throw new InvalidAttendanceStatusException();
 
-            var isAttendanceExist = await _classAttendanceRepository.Get();
-            var attendanceExist = isAttendanceExist.FirstOrDefault(x => x.ClassId == classAttendancedto.ClassId && x.StudentId == classAttendancedto.StudentId);
-            if (attendanceExist == null)
+            var existingAttendance = (await _classAttendanceRepository.Get())
+                .FirstOrDefault(x => x.ClassId == classAttendanceDto.ClassId && x.StudentId == classAttendanceDto.StudentId);
+
+            if (existingAttendance == null)
                 throw new NoSuchClassAttendanceException();
 
-            if (!Enum.TryParse(classAttendancedto.Status, out AttendanceStatus status))
-            {
-                throw new InvalidAttendanceStatusException();
-            }
+            existingAttendance.Status = status;
 
-            attendanceExist.Status = status;
-
-            var updatedAttendance = await _classAttendanceRepository.Update(attendanceExist);
-            return MapClassAttendanceToClassAttendanceReturnDTO(updatedAttendance);
+            var updatedAttendance = await _classAttendanceRepository.Update(existingAttendance);
+            return MapClassAttendanceToDTO(updatedAttendance);
         }
 
-        private ClassAttendanceReturnDTO MapClassAttendanceToClassAttendanceReturnDTO(ClassAttendance newAttendance)
+        private async Task ValidateClassExistence(int classId)
+        {
+            if (await _classRepository.Get(classId) == null)
+                throw new NoSuchClassException();
+        }
+
+        private async Task ValidateStudentExistence(int studentId)
+        {
+            if (await _studentRepository.Get(studentId) == null)
+                throw new NoSuchStudentException();
+        }
+
+        private async Task ValidateClassAndStudentExistence(int classId, int studentId)
+        {
+            await ValidateClassExistence(classId);
+            await ValidateStudentExistence(studentId);
+        }
+
+        private ClassAttendanceReturnDTO MapClassAttendanceToDTO(ClassAttendance attendance)
         {
             return new ClassAttendanceReturnDTO
             {
-                ClassId = newAttendance.ClassId,
-                StudentId = newAttendance.StudentId,
-                Date = newAttendance.Date,
-                Status = newAttendance.Status.ToString()
+                ClassId = attendance.ClassId,
+                StudentId = attendance.StudentId,
+                Date = attendance.Date,
+                Status = attendance.Status.ToString()
             };
         }
     }
