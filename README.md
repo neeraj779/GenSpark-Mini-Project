@@ -18,6 +18,7 @@
 >   - [⚙️ Installation](#️-installation)
 >   - [🤖 Running GenSpark-Mini-Project](#-running-GenSpark-Mini-Project)
 >   - [🧪 Tests](#-tests)
+> - [🧪 Code Coverage Report](#-code-coverage-report)
 
 ---
 
@@ -316,3 +317,10 @@ To execute tests, run:
 ```sh
 dotnet test
 ```
+
+
+## 🧪 Code Coverage Report
+
+![image](CodeCoverageReport.png)
+
+
