@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Repositories;
@@ -8,11 +10,18 @@ namespace StudentManagementAPITest.RepositoryUnitTest
     public class AssignmentSubmissionRepositoryTest
     {
         StudentManagementContext context;
+        private Mock<StudentManagementContext> mockContext;
+        private AssignmentSubmissionRepository mockAssignmentSubmissionRepository;
+
+
         [SetUp]
         public async Task SetupAsync()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("StudentManagementDB");
             context = new StudentManagementContext(optionsBuilder.Options);
+
+            mockContext = new Mock<StudentManagementContext>(optionsBuilder.Options);
+            mockAssignmentSubmissionRepository = new AssignmentSubmissionRepository(mockContext.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -55,6 +64,28 @@ namespace StudentManagementAPITest.RepositoryUnitTest
         }
 
         [Test]
+        public void Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
+        {
+            //Arrange
+            IRepository<int, Submission> assignmentSubmissionRepository = new AssignmentSubmissionRepository(context);
+            Submission assignmentSubmission = new Submission()
+            {
+                AssignmentId = 3,
+                StudentId = 4002,
+                FileName = "Assignment1.pdf",
+                SubmissionDate = new DateTime(2024, 5, 6, 9, 0, 0),
+            };
+
+            //Action
+            mockContext.Setup(c => c.Add(assignmentSubmission)).Verifiable();
+            mockContext.Setup(c => c.SaveChangesAsync(default)).ThrowsAsync(new DbUpdateException());
+
+            //Assert
+            var exception = Assert.ThrowsAsync<UnableToAddException>(async () => await mockAssignmentSubmissionRepository.Add(assignmentSubmission));
+            Assert.That(exception.Message, Is.EqualTo("Unable to add assignment submission. Please check the data and try again."));
+        }
+
+        [Test]
         public async Task TestGetAssignmentSubmissionById()
         {
             //Arrange
@@ -80,6 +111,7 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             Assert.That(assignmentSubmissionResult.Count, Is.EqualTo(1));
         }
 
+
         [Test]
         public async Task TestDeleteAssignmentSubmission()
         {
@@ -93,6 +125,19 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             //Assert
             Assert.That(resultAll.Count, Is.EqualTo(0));
             Assert.That(result.SubmissionId, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void TestDeleteAssignmentSubmissionNotFound()
+        {
+            //Arrange
+            IRepository<int, Submission> assignmentSubmissionRepository = new AssignmentSubmissionRepository(context);
+
+            //Action
+            var exception = Assert.ThrowsAsync<NoSuchSubmissionException>(async () => await assignmentSubmissionRepository.Delete(2));
+
+            //Assert
+            Assert.That(exception.Message, Is.EqualTo("No such submission found!"));
         }
 
         [Test]
@@ -112,6 +157,28 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             //Assert
             Assert.That(assignmentSubmission.FileName, Is.EqualTo("Updated Assignment"));
         }
+
+        [Test]
+        public void TestUpdateAssignmentSubmissionNotFound()
+        {
+            //Arrange
+            IRepository<int, Submission> assignmentSubmissionRepository = new AssignmentSubmissionRepository(context);
+
+            Submission assignmentSubmission = new Submission()
+            {
+                AssignmentId = 2,
+                StudentId = 4001,
+                FileName = "Assignment1.pdf",
+                SubmissionDate = new DateTime(2024, 5, 6, 9, 0, 0),
+            };
+
+            //Action
+            var exception = Assert.ThrowsAsync<NoSuchSubmissionException>(async () => await assignmentSubmissionRepository.Update(assignmentSubmission));
+
+            //Assert
+            Assert.That(exception.Message, Is.EqualTo("No such submission found!"));
+        }
+
 
     }
 }

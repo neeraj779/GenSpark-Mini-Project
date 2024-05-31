@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -9,11 +10,17 @@ namespace StudentManagementAPITest.RepositoryUnitTest
     public class StudentReposiotryTest
     {
         StudentManagementContext context;
+        private Mock<StudentManagementContext> mockContext;
+        private StudentRepository mockStudentRepository;
+
         [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("StudentManagementDB");
             context = new StudentManagementContext(optionsBuilder.Options);
+
+            mockContext = new Mock<StudentManagementContext>(optionsBuilder.Options);
+            mockStudentRepository = new StudentRepository(mockContext.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -43,6 +50,27 @@ namespace StudentManagementAPITest.RepositoryUnitTest
 
             //Assert
             Assert.That(studentResult.StudentId, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
+        {
+            //Arrange
+            IRepository<int, Student> studentRepository = new StudentRepository(context);
+            Student student = new Student()
+            {
+                FullName = "Mr. Raj Patel",
+                RollNo = "CSE2020002",
+                Department = "Computer Science",
+            };
+
+            //Action
+            mockContext.Setup(c => c.Add(student)).Verifiable();
+            mockContext.Setup(c => c.SaveChangesAsync(default)).ThrowsAsync(new DbUpdateException());
+
+            //Assert
+            var exception = Assert.ThrowsAsync<UnableToAddException>(async () => await mockStudentRepository.Add(student));
+            Assert.That(exception.Message, Is.EqualTo("Unable to add student. Please check the data and try again."));
         }
 
         [Test]

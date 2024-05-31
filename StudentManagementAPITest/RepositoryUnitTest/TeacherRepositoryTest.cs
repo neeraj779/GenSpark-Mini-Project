@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -9,11 +10,17 @@ namespace StudentManagementAPITest.RepositoryUnitTest
     public class TeacherRepositoryTest
     {
         StudentManagementContext context;
+        private Mock<StudentManagementContext> mockContext;
+        private TeacherRepository mockteacherRepository;
+
         [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("StudentManagementDB");
             context = new StudentManagementContext(optionsBuilder.Options);
+
+            mockContext = new Mock<StudentManagementContext>(optionsBuilder.Options);
+            mockteacherRepository = new TeacherRepository(mockContext.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -39,6 +46,26 @@ namespace StudentManagementAPITest.RepositoryUnitTest
 
             //Assert
             Assert.That(teacherResult.TeacherId, Is.EqualTo(1371731));
+        }
+
+        [Test]
+        public void Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
+        {
+            // Arrange
+            Teacher teacher = new Teacher()
+            {
+                TeacherId = 1371731,
+                FullName = "Test Teacher",
+                Email = "example@test.com",
+                Gender = "Male",
+                Phone = "1234567890",
+            };
+            mockContext.Setup(c => c.Add(teacher)).Verifiable();
+            mockContext.Setup(c => c.SaveChangesAsync(default)).ThrowsAsync(new DbUpdateException());
+
+            // Act and Assert
+            var exception = Assert.ThrowsAsync<UnableToAddException>(async () => await mockteacherRepository.Add(teacher));
+            Assert.That(exception.Message, Is.EqualTo("Unable to Register Teacher. Please check the data and try again."));
         }
 
 

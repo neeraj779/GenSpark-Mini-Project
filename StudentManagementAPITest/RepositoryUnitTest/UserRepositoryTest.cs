@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -11,11 +12,19 @@ namespace StudentManagementAPITest.RepositoryUnitTest
     public class UserRepositoryTest
     {
         StudentManagementContext context;
+        private Mock<StudentManagementContext> mockContext;
+        private UserRepository mockUserRepository;
+
+
+
         [SetUp]
         public void Setup()
         {
             DbContextOptionsBuilder optionsBuilder = new DbContextOptionsBuilder().UseInMemoryDatabase("StudentManagementDB");
             context = new StudentManagementContext(optionsBuilder.Options);
+
+            mockContext = new Mock<StudentManagementContext>(optionsBuilder.Options);
+            mockUserRepository = new UserRepository(mockContext.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -47,6 +56,29 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             //Assert
             var userResult = await userRepository.Get(101);
             Assert.That(userResult.UserId, Is.EqualTo(101));
+        }
+
+
+        [Test]
+        public void Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
+        {
+            // Arrange
+            var newUser = new User
+            {
+                UserId = 101,
+                UserName = "newUser",
+                Status = "Active",
+                Role = UserRole.Admin,
+                RegistrationDate = DateTime.UtcNow
+            };
+
+            //Action
+            mockContext.Setup(c => c.Add(newUser)).Verifiable();
+            mockContext.Setup(c => c.SaveChangesAsync(default)).ThrowsAsync(new DbUpdateException());
+
+            // Assert
+            var exception = Assert.ThrowsAsync<UnableToAddException>(async () => await mockUserRepository.Add(newUser));
+            Assert.That(exception.Message, Is.EqualTo("Unable to add user. Please check the data and try again."));
         }
 
         [Test]
@@ -105,9 +137,45 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             Assert.That(result.UserName, Is.EqualTo("test1"));
         }
 
+        [Test]
+        public void TestUpdateFail()
+        {
+            //Arrange 
+            IUserRepository<int, User> userRepository = new UserRepository(context);
+
+            var user = new User
+            {
+                UserId = 10,
+                UserName = "test1",
+                Status = "Active",
+                Role = UserRole.Admin,
+                RegistrationDate = DateTime.UtcNow
+            };
+
+            //Action
+            var ex = Assert.ThrowsAsync<NoSuchUserException>(() => userRepository.Update(user));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Uh oh! No such user found!"));
+        }
 
         [Test]
-        public async Task TestDeleteFail()
+        public async Task TestDeleteUser()
+        {
+            //Arrange 
+            IUserRepository<int, User> userRepository = new UserRepository(context);
+
+            //Action
+            await userRepository.Delete(100);
+
+            //Assert
+            var result = await userRepository.Get(100);
+            Assert.That(result, Is.Null);
+        }
+
+
+        [Test]
+        public void TestDeleteFail()
         {
             //Arrange 
             IUserRepository<int, User> userRepository = new UserRepository(context);
