@@ -125,7 +125,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
 
             //Action
-            var result = await courseOfferingService.GetcourseOfferingByCourseCode(courseCode);
+            var result = await courseOfferingService.GetCourseOfferingByCourseCode(courseCode);
 
             //Assert
             Assert.NotNull(result);
@@ -139,7 +139,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             string courseCode = "CSE201";
 
             //Action
-            var ex = Assert.ThrowsAsync<NoCourseOfferingException>(() => courseOfferingService.GetcourseOfferingByCourseCode(courseCode));
+            var ex = Assert.ThrowsAsync<NoCourseOfferingException>(() => courseOfferingService.GetCourseOfferingByCourseCode(courseCode));
 
             //Assert
             Assert.That(ex.Message, Is.EqualTo("Uh oh! No course offering found!"));
@@ -152,20 +152,20 @@ namespace StudentManagementAPITest.ServiceUnitTest
             string courseCode = "CSE202";
 
             //Action
-            var ex = Assert.ThrowsAsync<NoSuchCourseException>(() => courseOfferingService.GetcourseOfferingByCourseCode(courseCode));
+            var ex = Assert.ThrowsAsync<NoSuchCourseException>(() => courseOfferingService.GetCourseOfferingByCourseCode(courseCode));
 
             //Assert
             Assert.That(ex.Message, Is.EqualTo("No such course found!"));
         }
 
         [Test]
-        public async Task GetcourseOfferingByTeacherId_WhenCourseOfferingsExists_ShouldReturnCourseOfferingDTOList()
+        public async Task GetCourseOfferingByTeacherId_WhenCourseOfferingsExists_ShouldReturnCourseOfferingDTOList()
         {
             //Arrange
             int teacherId = 2000;
 
             //Action
-            var result = await courseOfferingService.GetcourseOfferingByTeacherId(teacherId);
+            var result = await courseOfferingService.GetCourseOfferingByTeacherId(teacherId);
 
             //Assert
             Assert.NotNull(result);
@@ -173,7 +173,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public void GetcourseOfferingByTeacherId_WhenNoCourseOfferingsExists_ShouldThrowNoCourseOfferingException()
+        public void GetCourseOfferingByTeacherId_WhenNoCourseOfferingsExists_ShouldThrowNoCourseOfferingException()
         {
             //Arrange
             context.CourseOfferings.RemoveRange(context.CourseOfferings);
@@ -182,20 +182,20 @@ namespace StudentManagementAPITest.ServiceUnitTest
             int teacherId = 2000;
 
             //Action
-            var ex = Assert.ThrowsAsync<NoCourseOfferingException>(() => courseOfferingService.GetcourseOfferingByTeacherId(teacherId));
+            var ex = Assert.ThrowsAsync<NoCourseOfferingException>(() => courseOfferingService.GetCourseOfferingByTeacherId(teacherId));
 
             //Assert
             Assert.That(ex.Message, Is.EqualTo("Uh oh! No course offering found!"));
         }
 
         [Test]
-        public void GetcourseOfferingByTeacherId_WhenTeacherDoesNotExists_ShouldThrowNoSuchTeacherException()
+        public void GetCourseOfferingByTeacherId_WhenTeacherDoesNotExists_ShouldThrowNoSuchTeacherException()
         {
             //Arrange
             int teacherId = 1001;
 
             //Action
-            var ex = Assert.ThrowsAsync<NoSuchTeacherException>(() => courseOfferingService.GetcourseOfferingByTeacherId(teacherId));
+            var ex = Assert.ThrowsAsync<NoSuchTeacherException>(() => courseOfferingService.GetCourseOfferingByTeacherId(teacherId));
 
             //Assert
             Assert.That(ex.Message, Is.EqualTo("Uh oh! No such teacher found!"));

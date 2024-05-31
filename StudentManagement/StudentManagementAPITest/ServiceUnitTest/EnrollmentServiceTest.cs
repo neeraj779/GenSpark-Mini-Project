@@ -172,7 +172,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
         public void GetEnrollmentsByStudentId_NoEnrollments_ThrowsNoSuchEnrollmentException()
         {
             // Arrange
-            int studentId = 9999;
+            context.Enrollments.RemoveRange(context.Enrollments);
+            context.SaveChanges();
+            int studentId = 4004;
 
             // Action
             var ex = Assert.ThrowsAsync<NoSuchEnrollmentException>(() => enrollmentService.GetEnrollmentsByStudentId(studentId));
@@ -188,7 +190,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             string CourseCode = "CSE101";
 
             // Act
-            var result = await enrollmentService.GetEnrollmentsByCourseId(CourseCode);
+            var result = await enrollmentService.GetEnrollmentsByCourseCode(CourseCode);
 
             // Assert
             Assert.IsNotNull(result);
@@ -198,10 +200,10 @@ namespace StudentManagementAPITest.ServiceUnitTest
         public void GetEnrollmentsByCourseId_NoEnrollments_ThrowsNoSuchEnrollmentException()
         {
             // Arrange
-            string courseCode = "INVALID";
+            string courseCode = "CSE201";
 
             // Action
-            var ex = Assert.ThrowsAsync<NoSuchEnrollmentException>(() => enrollmentService.GetEnrollmentsByCourseId(courseCode));
+            var ex = Assert.ThrowsAsync<NoSuchEnrollmentException>(() => enrollmentService.GetEnrollmentsByCourseCode(courseCode));
 
             // Assert
             Assert.That(ex.Message, Is.EqualTo("No such enrollment found!"));

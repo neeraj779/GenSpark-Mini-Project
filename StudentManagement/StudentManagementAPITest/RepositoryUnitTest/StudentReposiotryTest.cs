@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
 using StudentManagementAPI.Repositories;
@@ -86,6 +87,19 @@ namespace StudentManagementAPITest.RepositoryUnitTest
 
             //Assert
             Assert.That(student.FullName, Is.EqualTo("Updated Student"));
+        }
+
+        [Test]
+        public void TestDeleteStudentNotFound()
+        {
+            //Arrange
+            IRepository<int, Student> studentRepository = new StudentRepository(context);
+
+            //Action
+            var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => studentRepository.Delete(1000));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Uh oh! No such student found!"));
         }
 
         [Test]
