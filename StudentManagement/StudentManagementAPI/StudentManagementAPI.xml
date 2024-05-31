@@ -230,7 +230,7 @@
             <param name="studentId"> The ID of the student for which the enrollments are to be fetched.</param>
             <returns></returns>
         </member>
-        <member name="M:StudentManagementAPI.Controllers.EnrollmentController.GetEnrollmentsByCourseId(System.String)">
+        <member name="M:StudentManagementAPI.Controllers.EnrollmentController.GetEnrollmentsByCourseCode(System.String)">
             <summary>
             Retrieves a course's enrollments based on the provided course code.
             </summary>

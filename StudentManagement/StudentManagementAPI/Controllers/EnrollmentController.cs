@@ -108,15 +108,15 @@ namespace StudentManagementAPI.Controllers
         /// </summary>
         /// <param name="courseCode"> The code of the course for which the enrollments are to be fetched.</param>
         /// <returns></returns>
-        [HttpGet("GetEnrollmentsByCourseId")]
+        [HttpGet("GetEnrollmentsByCourseCode")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(EnrollmentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByCourseId(string courseCode)
+        public async Task<ActionResult<EnrollmentReturnDTO>> GetEnrollmentsByCourseCode(string courseCode)
         {
             try
             {
-                var result = await _enrollmentService.GetEnrollmentsByCourseId(courseCode);
+                var result = await _enrollmentService.GetEnrollmentsByCourseCode(courseCode);
                 return Ok(result);
             }
 
