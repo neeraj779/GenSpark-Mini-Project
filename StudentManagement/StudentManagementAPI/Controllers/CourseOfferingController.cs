@@ -122,7 +122,7 @@ namespace StudentManagementAPI.Controllers
         {
             try
             {
-                var courseOffering = await _courseOfferingService.GetcourseOfferingByTeacherId(teacherid);
+                var courseOffering = await _courseOfferingService.GetCourseOfferingByTeacherId(teacherid);
                 return Ok(courseOffering);
             }
             catch (NoCourseOfferingException ex)
@@ -148,7 +148,7 @@ namespace StudentManagementAPI.Controllers
         {
             try
             {
-                var courseOffering = await _courseOfferingService.GetcourseOfferingByCourseCode(CourseCode);
+                var courseOffering = await _courseOfferingService.GetCourseOfferingByCourseCode(CourseCode);
                 return Ok(courseOffering);
             }
             catch (NoCourseOfferingException ex)

@@ -7,146 +7,127 @@ namespace StudentManagementAPI.Services
 {
     public class CourseOfferingService : ICourseOfferingService
     {
-        private IRepository<int, CourseOffering> _courseOfferingRepository;
-        private IRepository<string, Course> _courseRepository;
-        private IRepository<int, Teacher> _teacherRepository;
+        private readonly IRepository<int, CourseOffering> _courseOfferingRepository;
+        private readonly IRepository<string, Course> _courseRepository;
+        private readonly IRepository<int, Teacher> _teacherRepository;
 
         public CourseOfferingService(
             IRepository<int, CourseOffering> courseOfferingRepository,
             IRepository<string, Course> courseRepository,
-            IRepository<int, Teacher> teacherRepository
-            )
+            IRepository<int, Teacher> teacherRepository)
         {
             _courseOfferingRepository = courseOfferingRepository;
             _courseRepository = courseRepository;
             _teacherRepository = teacherRepository;
         }
-        public async Task<CourseOfferingDTO> AssignTeacherForCourseOffering(int teacherid, string CourseCode)
+
+        public async Task<CourseOfferingDTO> AssignTeacherForCourseOffering(int teacherId, string courseCode)
         {
-            var course = await _courseRepository.Get(CourseCode);
-            var teacher = await _teacherRepository.Get(teacherid);
+            var course = await EnsureCourseExists(courseCode);
+            var teacher = await EnsureTeacherExists(teacherId);
 
-            if (course == null)
-                throw new NoSuchCourseException();
-
-            if (teacher == null)
-                throw new NoSuchTeacherException();
-
-            var isCourseOfferingExists = await _courseOfferingRepository.Get();
-            var courseOfferingExists = isCourseOfferingExists.FirstOrDefault(courseOffering => courseOffering.CourseCode == CourseCode && courseOffering.TeacherId == teacherid);
-
-            if (courseOfferingExists != null)
+            var existingCourseOffering = await _courseOfferingRepository.Get();
+            if (existingCourseOffering.Any(co => co.CourseCode == courseCode && co.TeacherId == teacherId))
                 throw new CourseOfferingAlreadyExistsException();
 
-            var courseOffering = new CourseOffering();
-            courseOffering.CourseCode = course.CourseCode;
-            courseOffering.TeacherId = teacher.TeacherId;
+            var newCourseOffering = new CourseOffering
+            {
+                CourseCode = course.CourseCode,
+                TeacherId = teacher.TeacherId
+            };
 
-            var createdCourseOffering = await _courseOfferingRepository.Add(courseOffering);
-
-            return MapCourseOfferingToCourseOfferingDTO(createdCourseOffering);
+            var createdCourseOffering = await _courseOfferingRepository.Add(newCourseOffering);
+            return MapToDTO(createdCourseOffering);
         }
 
         public async Task<IEnumerable<CourseOfferingDTO>> GetAllCourseOfferings()
         {
             var courseOfferings = await _courseOfferingRepository.Get();
-
-            if (courseOfferings.Count() == 0)
+            if (!courseOfferings.Any())
                 throw new NoCourseOfferingException();
 
-            var courseOfferingDTOs = new List<CourseOfferingDTO>();
-
-            foreach (var courseOffering in courseOfferings)
-            {
-                courseOfferingDTOs.Add(MapCourseOfferingToCourseOfferingDTO(courseOffering));
-            }
-            return courseOfferingDTOs;
+            return courseOfferings.Select(MapToDTO).ToList();
         }
 
-        public async Task<IEnumerable<CourseOfferingDTO>> GetcourseOfferingByCourseCode(string courseCode)
+        public async Task<IEnumerable<CourseOfferingDTO>> GetCourseOfferingByCourseCode(string courseCode)
         {
-            var course = await _courseRepository.Get(courseCode);
+            var course = await EnsureCourseExists(courseCode);
 
-            if (course == null)
-                throw new NoSuchCourseException();
+            var filteredCourseOfferings = await FilterCourseOfferings(co => co.CourseCode == courseCode);
+            if (!filteredCourseOfferings.Any())
+                throw new NoCourseOfferingException();
+
+            return filteredCourseOfferings.Select(MapToDTO).ToList();
+        }
+
+        public async Task<IEnumerable<CourseOfferingDTO>> GetCourseOfferingByTeacherId(int teacherId)
+        {
+            var teacher = await EnsureTeacherExists(teacherId);
+
+            var filteredCourseOfferings = await FilterCourseOfferings(co => co.TeacherId == teacherId);
+            if (!filteredCourseOfferings.Any())
+                throw new NoCourseOfferingException();
+
+            return filteredCourseOfferings.Select(MapToDTO).ToList();
+        }
+
+        private async Task<IEnumerable<CourseOffering>> FilterCourseOfferings(Func<CourseOffering, bool> filter)
+        {
+            var courseOfferings = await _courseOfferingRepository.Get();
+            var filteredCourseOfferings = courseOfferings.Where(filter).ToList();
+            return filteredCourseOfferings;
+        }
+
+        public async Task<CourseOfferingDTO> UnassignTeacherFromCourseOffering(int teacherId, string courseCode)
+        {
+            var course = await EnsureCourseExists(courseCode);
+            var teacher = await EnsureTeacherExists(teacherId);
 
             var courseOfferings = await _courseOfferingRepository.Get();
-
-            var courseOfferingsByCourseCode = courseOfferings.Where(courseOffering => courseOffering.CourseCode == courseCode).ToList();
-
-            if (courseOfferingsByCourseCode.Count == 0)
-                throw new NoCourseOfferingException();
-
-            var courseOfferingDTOs = new List<CourseOfferingDTO>();
-
-            foreach (var courseOffering in courseOfferingsByCourseCode)
-                courseOfferingDTOs.Add(MapCourseOfferingToCourseOfferingDTO(courseOffering));
-
-            return courseOfferingDTOs;
-        }
-
-        public async Task<IEnumerable<CourseOfferingDTO>> GetcourseOfferingByTeacherId(int teacherId)
-        {
-            var teacher = await _teacherRepository.Get(teacherId);
-
-            if (teacher == null)
-                throw new NoSuchTeacherException();
-
-            var courseOfferings = await _courseOfferingRepository.Get();
-
-            var courseOfferingByTeacherId = courseOfferings.Where(courseOffering => courseOffering.TeacherId == teacherId);
-
-            if (courseOfferingByTeacherId.Count() == 0)
-                throw new NoCourseOfferingException();
-
-            var courseOfferingDTOs = new List<CourseOfferingDTO>();
-
-            foreach (var courseOffering in courseOfferingByTeacherId)
-                courseOfferingDTOs.Add(MapCourseOfferingToCourseOfferingDTO(courseOffering));
-
-            return courseOfferingDTOs;
-        }
-
-        public async Task<CourseOfferingDTO> UnassignTeacherFromCourseOffering(int teacherid, string CourseCode)
-        {
-            var course = await _courseRepository.Get(CourseCode);
-            var teacher = await _teacherRepository.Get(teacherid);
-
-            if (course == null)
-                throw new NoSuchCourseException();
-
-            if (teacher == null)
-                throw new NoSuchTeacherException();
-
-            var courseOffering = await _courseOfferingRepository.Get();
-            var courseOfferingToUnassign = courseOffering.FirstOrDefault(courseOffering => courseOffering.CourseCode == CourseCode && courseOffering.TeacherId == teacherid);
-
+            var courseOfferingToUnassign = courseOfferings.FirstOrDefault(co => co.CourseCode == courseCode && co.TeacherId == teacherId);
             if (courseOfferingToUnassign == null)
                 throw new NoSuchCourseOfferingException();
 
             await _courseOfferingRepository.Delete(courseOfferingToUnassign.CourseOfferingId);
-
-            return MapCourseOfferingToCourseOfferingDTO(courseOfferingToUnassign);
+            return MapToDTO(courseOfferingToUnassign);
         }
 
-        public async Task<CourseOfferingDTO> UpdateTeacherForCourseOffering(int teacherid, int courseOfferingId)
+        public async Task<CourseOfferingDTO> UpdateTeacherForCourseOffering(int teacherId, int courseOfferingId)
         {
-            var teacher = await _teacherRepository.Get(teacherid);
-            var courseoffering = await _courseOfferingRepository.Get(courseOfferingId);
+            var teacher = await EnsureTeacherExists(teacherId);
+            var courseOffering = await EnsureCourseOfferingExists(courseOfferingId);
 
+            courseOffering.TeacherId = teacher.TeacherId;
+            var updatedCourseOffering = await _courseOfferingRepository.Update(courseOffering);
+
+            return MapToDTO(updatedCourseOffering);
+        }
+
+        private async Task<Course> EnsureCourseExists(string courseCode)
+        {
+            var course = await _courseRepository.Get(courseCode);
+            if (course == null)
+                throw new NoSuchCourseException();
+            return course;
+        }
+
+        private async Task<Teacher> EnsureTeacherExists(int teacherId)
+        {
+            var teacher = await _teacherRepository.Get(teacherId);
             if (teacher == null)
                 throw new NoSuchTeacherException();
-
-            if (courseoffering == null)
-                throw new NoSuchCourseOfferingException();
-
-            courseoffering.TeacherId = teacher.TeacherId;
-            await _courseOfferingRepository.Update(courseoffering);
-
-            return MapCourseOfferingToCourseOfferingDTO(courseoffering);
+            return teacher;
         }
 
-        public CourseOfferingDTO MapCourseOfferingToCourseOfferingDTO(CourseOffering courseOffering)
+        private async Task<CourseOffering> EnsureCourseOfferingExists(int courseOfferingId)
+        {
+            var courseOffering = await _courseOfferingRepository.Get(courseOfferingId);
+            if (courseOffering == null)
+                throw new NoSuchCourseOfferingException();
+            return courseOffering;
+        }
+
+        private CourseOfferingDTO MapToDTO(CourseOffering courseOffering)
         {
             return new CourseOfferingDTO
             {
