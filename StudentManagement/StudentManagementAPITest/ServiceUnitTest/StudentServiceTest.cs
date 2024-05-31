@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -11,7 +12,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
     public class StudentServiceTest
     {
         StudentManagementContext context;
+        StudentService _studentService;
         IRepository<int, Student> studentRepository;
+        private Mock<IRepository<int, Student>> _studentRepositoryMock;
         StudentService studentService;
 
         [SetUp]
@@ -22,6 +25,8 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             studentRepository = new StudentRepository(context);
             studentService = new StudentService(studentRepository);
+            _studentRepositoryMock = new Mock<IRepository<int, Student>>();
+            _studentService = new StudentService(_studentRepositoryMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -73,6 +78,29 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             //Assert
             Assert.That(exception.Message, Is.EqualTo("Invalid Student Status, Please provide a valid status. valid status are Undergraduate, Postgraduate, Alumni, Graduated, DroppedOut, Expelled, Suspended and Transferred"));
+        }
+
+        [Test]
+        public void RegisterStudent_UnableToAdd_ThrowsUnableToAddException()
+        {
+            // Arrange
+            var student = new StudentRegisterDTO
+            {
+                FullName = "Jack Doe",
+                RollNo = "12347",
+                Gender = "Male",
+                Department = "Commerce",
+                DateOfBirth = DateTime.Parse("2000-01-01"),
+                Phone = "1122334455",
+                Email = "jack.doe@example.com",
+                Status = "Graduated"
+            };
+
+            _studentRepositoryMock.Setup(repo => repo.Add(It.IsAny<Student>())).ThrowsAsync(new UnableToAddException());
+
+            // Act & Assert
+            var ex = Assert.ThrowsAsync<UnableToAddException>(async () => await _studentService.RegisterStudent(student));
+            Assert.That(ex.Message, Is.EqualTo("Unable to Register Student. Please check the data and try again."));
         }
 
         [Test]

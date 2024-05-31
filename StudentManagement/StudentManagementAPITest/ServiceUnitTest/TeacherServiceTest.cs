@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -14,6 +15,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
         IRepository<int, Teacher> teacherRepository;
         TeacherService teacherService;
 
+        Mock<IRepository<int, Teacher>> _teacherRepositoryMock;
+        TeacherService _teacherService;
+
         [SetUp]
         public void Setup()
         {
@@ -22,6 +26,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             teacherRepository = new TeacherRepository(context);
             teacherService = new TeacherService(teacherRepository);
+
+            _teacherRepositoryMock = new Mock<IRepository<int, Teacher>>();
+            _teacherService = new TeacherService(_teacherRepositoryMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -45,6 +52,27 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             //Assert
             Assert.That(result.FullName, Is.EqualTo(newTeacher.FullName));
+        }
+        
+        [Test]
+        public void RegisterTeacher_UnableToAdd_ThrowsUnableToAddException()
+        {
+            //Arrange
+            var newTeacher = new TeacherRegisterDTO
+            {
+                FullName = "Dr. Seema Reddy",
+                Email = "seema.reddy@gmail.com",
+                Gender = "Female",
+                DateOfBirth = new DateTime(1983, 5, 20),
+                Phone = "9876543216"
+            };
+
+            //Action
+            _teacherRepositoryMock.Setup(repo => repo.Add(It.IsAny<Teacher>())).ThrowsAsync(new UnableToAddException());
+
+            // Assert
+            var ex = Assert.ThrowsAsync<UnableToAddException>(async () => await _teacherService.RegisterTeacher(newTeacher));
+            Assert.That(ex.Message, Is.EqualTo("Unable to Register Teacher. Please check the data and try again."));
         }
 
         [Test]

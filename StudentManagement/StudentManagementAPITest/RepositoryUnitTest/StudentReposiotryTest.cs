@@ -90,6 +90,31 @@ namespace StudentManagementAPITest.RepositoryUnitTest
         }
 
         [Test]
+        public void TestUpdateStudentNotFound()
+        {
+            //Arrange
+            IRepository<int, Student> studentRepository = new StudentRepository(context);
+            Student student = new Student()
+            {
+                StudentId = 1,
+                FullName = "Mr. Raj Patel",
+                RollNo = "CSE2020002",
+                Department = "Computer Science",
+                Email = "raj.patel@gmail.com",
+                Gender = "Male",
+                Phone = "9374729562",
+                Status = StudentStatus.Undergraduate,
+                DateOfBirth = new DateTime(1998, 2, 15)
+            };
+
+            //Action
+            var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => studentRepository.Update(student));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Uh oh! No such student found!"));
+        }
+
+        [Test]
         public void TestDeleteStudentNotFound()
         {
             //Arrange
