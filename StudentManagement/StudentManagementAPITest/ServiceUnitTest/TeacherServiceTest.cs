@@ -53,7 +53,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             //Assert
             Assert.That(result.FullName, Is.EqualTo(newTeacher.FullName));
         }
-        
+
         [Test]
         public void RegisterTeacher_UnableToAdd_ThrowsUnableToAddException()
         {

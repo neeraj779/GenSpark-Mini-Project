@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -7,8 +9,6 @@ using StudentManagementAPI.Repositories;
 using StudentManagementAPI.Services;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace StudentManagementAPITest.ServiceUnitTest
 {
@@ -87,7 +87,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
 
             // Action
-            var ex  =Assert.ThrowsAsync<InvalidLoginException>(() => userService.Login(loginDTO));
+            var ex = Assert.ThrowsAsync<InvalidLoginException>(() => userService.Login(loginDTO));
             var ex2 = Assert.ThrowsAsync<InvalidLoginException>(() => userService.Login(wrongPasswordDTO));
 
             // Assert
