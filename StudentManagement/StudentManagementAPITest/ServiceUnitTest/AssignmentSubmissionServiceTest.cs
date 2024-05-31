@@ -166,7 +166,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             var ex = Assert.ThrowsAsync<NotEnrolledInCourseException>(() => assignmentSubmissionService.SubmitAssignment(userId, assignmentSubmission));
 
             //Assert
-            Assert.That(ex.Message, Is.EqualTo("You are not enrolled in this course."));
+            Assert.That(ex.Message, Is.EqualTo("Student is not enrolled in the course."));
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             var ex = Assert.ThrowsAsync<NotEnrolledInCourseException>(() => assignmentSubmissionService.GetAssignedAssignmentsByCourse(userId, courseCode));
 
             //Assert
-            Assert.That(ex.Message, Is.EqualTo("You are not enrolled in this course."));
+            Assert.That(ex.Message, Is.EqualTo("Student is not enrolled in the course."));
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             var ex = Assert.ThrowsAsync<NotEnrolledInCourseException>(() => assignmentSubmissionService.GetAssignedAssignmentsByCourse(userId, courseCode));
 
             //Assert
-            Assert.That(ex.Message, Is.EqualTo("You are not enrolled in this course."));
+            Assert.That(ex.Message, Is.EqualTo("Student is not enrolled in the course."));
         }
 
         [Test]

@@ -14,6 +14,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
         IRepository<int, ClassAttendance> classAttendanceRepository;
         IRepository<int, Class> classRepository;
         IRepository<int, Student> studentRepository;
+        IRepository<int, Enrollment> enrollmentRepository;
+        IRepository<int, CourseOffering> courseOfferingRepository;
+
         ClassAttendanceService classAttendanceService;
 
 
@@ -27,8 +30,10 @@ namespace StudentManagementAPITest.ServiceUnitTest
             classAttendanceRepository = new ClassAttendanceRepository(context);
             classRepository = new ClassRepository(context);
             studentRepository = new StudentRepository(context);
+            enrollmentRepository = new EnrollmentRepository(context);
+            courseOfferingRepository = new CourseOfferingRepository(context);
 
-            classAttendanceService = new ClassAttendanceService(classAttendanceRepository, classRepository, studentRepository);
+            classAttendanceService = new ClassAttendanceService(classAttendanceRepository, classRepository, studentRepository, enrollmentRepository, courseOfferingRepository);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -129,6 +134,30 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             // Assert
             Assert.That(ex.Message, Is.EqualTo("You have already marked attendance for this student in this class. Please Update the attendance status if needed."));
+        }
+
+        [Test]
+        public void MarkStudentAttendanceTest_StudentNotEnrolledInCourse()
+        {
+            //Arrange
+            context.CourseOfferings.Add(new CourseOffering { CourseOfferingId = 11, CourseCode = "CSE201", TeacherId = 2000 });
+            context.Classes.Add(new Class { ClassId = 11, CourseOfferingId = 11, ClassDateAndTime = DateTime.Now });
+            context.SaveChanges();
+
+
+
+            var classAttendanceDTO = new ClassAttendanceDTO
+            {
+                ClassId = 11,
+                StudentId = 4000,
+                Status = "Present"
+            };
+
+            // Act
+            var ex = Assert.ThrowsAsync<NotEnrolledInCourseException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
+
+            // Assert
+            Assert.That(ex.Message, Is.EqualTo("Student is not enrolled in the course."));
         }
 
         [Test]
