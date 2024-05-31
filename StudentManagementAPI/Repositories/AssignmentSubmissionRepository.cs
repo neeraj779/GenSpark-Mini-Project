@@ -43,20 +43,12 @@ namespace StudentManagementAPI.Repositories
         public async Task<Submission> Get(int key)
         {
             var submission = await _context.Submissions.SingleOrDefaultAsync(s => s.SubmissionId == key);
-            if (submission == null)
-            {
-                throw new NoSuchSubmissionException();
-            }
             return submission;
         }
 
         public async Task<IEnumerable<Submission>> Get()
         {
             var submissions = await _context.Submissions.ToListAsync();
-            if (submissions == null)
-            {
-                throw new NoSubmissionFoundException();
-            }
             return submissions;
         }
 
