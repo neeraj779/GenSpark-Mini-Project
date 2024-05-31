@@ -7,92 +7,97 @@ namespace StudentManagementAPI.Services
 {
     public class AssignmentService : IAssignmentService
     {
-        private IRepository<int, Assignment> _assignmentRepository;
-        private IRepository<string, Course> _courseRepository;
+        private readonly IRepository<int, Assignment> _assignmentRepository;
+        private readonly IRepository<string, Course> _courseRepository;
 
         public AssignmentService(IRepository<int, Assignment> assignmentRepository, IRepository<string, Course> courseRepository)
         {
             _assignmentRepository = assignmentRepository;
             _courseRepository = courseRepository;
         }
+
         public async Task<AssignmentDTO> CreateAssignment(CreateAssignmentDTO assignment)
         {
-            var newAssignment = new Assignment();
+            await EnsureCourseExists(assignment.CourseCode);
+            await EnsureAssignmentDoesNotExist(assignment.CourseCode, assignment.Title);
 
-            var course = await _courseRepository.Get(assignment.CourseCode);
-            if (course == null)
-                throw new NoSuchCourseException();
-
-            newAssignment.Title = assignment.Title;
-            newAssignment.DueDate = assignment.AssignmentDueDate;
-            newAssignment.CourseCode = assignment.CourseCode;
+            var newAssignment = new Assignment
+            {
+                Title = assignment.Title,
+                DueDate = assignment.AssignmentDueDate,
+                CourseCode = assignment.CourseCode
+            };
 
             var createdAssignment = await _assignmentRepository.Add(newAssignment);
-
-            return MapAssignmentToAssignmentDTO(createdAssignment);
+            return MapToDTO(createdAssignment);
         }
 
         public async Task<AssignmentDTO> DeleteAssignment(int assignmentId)
         {
-            try
-            {
-                var deletedAssignment = await _assignmentRepository.Delete(assignmentId);
-                return MapAssignmentToAssignmentDTO(deletedAssignment);
-            }
-            catch (NoSuchAssignmentException)
-            {
-                throw new NoSuchAssignmentException();
-            }
+            var assignment = await EnsureAssignmentExists(assignmentId);
+            await _assignmentRepository.Delete(assignment.AssignmentId);
+            return MapToDTO(assignment);
         }
 
         public async Task<AssignmentDTO> GetAssignmentById(int assignmentId)
         {
-            var assignment = await _assignmentRepository.Get(assignmentId);
-
-            if (assignment == null)
-                throw new NoSuchAssignmentException();
-
-            return MapAssignmentToAssignmentDTO(assignment);
+            var assignment = await EnsureAssignmentExists(assignmentId);
+            return MapToDTO(assignment);
         }
 
         public async Task<IEnumerable<AssignmentDTO>> GetAssignments()
         {
             var assignments = await _assignmentRepository.Get();
 
-            if (assignments.Count() == 0)
+            if (!assignments.Any())
                 throw new NoAssignmentFoundException();
 
-            var assignmentDTOs = new List<AssignmentDTO>();
-            foreach (var assignment in assignments)
-                assignmentDTOs.Add(MapAssignmentToAssignmentDTO(assignment));
-
-            return assignmentDTOs;
-
+            return assignments.Select(MapToDTO).ToList();
         }
 
-        public async Task<AssignmentDTO> UpdateAssignmentDueDate(AssignmentUpdateDTO assignment)
+        public async Task<AssignmentDTO> UpdateAssignmentDueDate(AssignmentUpdateDTO assignmentUpdateDto)
         {
-            var assignmentDb = await _assignmentRepository.Get(assignment.AssignmentId);
+            var assignment = await EnsureAssignmentExists(assignmentUpdateDto.AssignmentId);
+            assignment.DueDate = assignmentUpdateDto.AssignmentDueDate;
 
-            if (assignmentDb == null)
+            var updatedAssignment = await _assignmentRepository.Update(assignment);
+            return MapToDTO(updatedAssignment);
+        }
+
+        private async Task<Course> EnsureCourseExists(string courseCode)
+        {
+            var course = await _courseRepository.Get(courseCode);
+            if (course == null)
+                throw new NoSuchCourseException();
+            return course;
+        }
+
+        private async Task<bool> EnsureAssignmentDoesNotExist(string courseCode, string title)
+        {
+            var isAssignmentExists = await _assignmentRepository.Get();
+            if (isAssignmentExists.Any(a => a.Title == title && a.CourseCode == courseCode))
+                throw new AssignmentAlreadyExistsException();
+
+            return true;
+        }
+
+        private async Task<Assignment> EnsureAssignmentExists(int assignmentId)
+        {
+            var assignment = await _assignmentRepository.Get(assignmentId);
+            if (assignment == null)
                 throw new NoSuchAssignmentException();
-
-            assignmentDb.DueDate = assignment.AssignmentDueDate;
-
-            var updatedAssignment = await _assignmentRepository.Update(assignmentDb);
-            return MapAssignmentToAssignmentDTO(updatedAssignment);
+            return assignment;
         }
 
-        public AssignmentDTO MapAssignmentToAssignmentDTO(Assignment assignment)
+        private AssignmentDTO MapToDTO(Assignment assignment)
         {
-            AssignmentDTO assignmentDTO = new AssignmentDTO
+            return new AssignmentDTO
             {
                 AssignmentId = assignment.AssignmentId,
                 Title = assignment.Title,
                 AssignmentDueDate = assignment.DueDate,
                 CourseCode = assignment.CourseCode
             };
-            return assignmentDTO;
         }
     }
 }

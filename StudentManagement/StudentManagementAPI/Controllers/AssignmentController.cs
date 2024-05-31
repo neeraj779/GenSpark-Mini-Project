@@ -38,6 +38,10 @@ namespace StudentManagementAPI.Controllers
             {
                 return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+            catch (AssignmentAlreadyExistsException ex)
+            {
+                return Conflict(new ErrorModel { ErrorCode = StatusCodes.Status409Conflict, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
