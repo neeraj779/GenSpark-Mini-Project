@@ -78,6 +78,11 @@ namespace StudentManagementAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
+
+            catch (NoSuchEnrollmentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
+            }
         }
 
         /// <summary>
@@ -95,6 +100,11 @@ namespace StudentManagementAPI.Controllers
             {
                 var result = await _enrollmentService.GetEnrollmentsByStudentId(studentId);
                 return Ok(result);
+            }
+
+            catch (NoSuchStudentException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
 
             catch (NoSuchEnrollmentException ex)
@@ -118,6 +128,11 @@ namespace StudentManagementAPI.Controllers
             {
                 var result = await _enrollmentService.GetEnrollmentsByCourseCode(courseCode);
                 return Ok(result);
+            }
+
+            catch (NoSuchCourseException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
 
             catch (NoSuchEnrollmentException ex)
