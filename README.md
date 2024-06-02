@@ -116,168 +116,181 @@ The Student Management System provides the following features:
 
 ```sh
 └── GenSpark-Mini-Project/
+    ├── API-documentation.pdf
+    ├── API.postman_collection.json
+    ├── CodeCoverageReport.png
     ├── LICENSE
     ├── README.md
-    ├── StudentManagement
-    │   ├── StudentManagementAPI
-    │   │   ├── Contexts
-    │   │   │   └── StudentManagementContext.cs
-    │   │   ├── Controllers
-    │   │   │   ├── AssignmentController.cs
-    │   │   │   ├── AssignmentSubmissionController.cs
-    │   │   │   ├── ClassAttendanceController.cs
-    │   │   │   ├── ClassController.cs
-    │   │   │   ├── CourseController.cs
-    │   │   │   ├── CourseOfferingController.cs
-    │   │   │   ├── EnrollmentController.cs
-    │   │   │   ├── StudentController.cs
-    │   │   │   ├── TeacherController.cs
-    │   │   │   └── UserController.cs
-    │   │   ├── Exceptions
-    │   │   │   ├── ClassAlreadyExistsException.cs
-    │   │   │   ├── ClassAttendanceAlreadyExistsException.cs
-    │   │   │   ├── CourseAlreadyExistsException.cs
-    │   │   │   ├── CourseOfferingAlreadyExistsException.cs
-    │   │   │   ├── DuplicateAssignmentSubmissionException.cs
-    │   │   │   ├── DuplicateUserException.cs
-    │   │   │   ├── DuplicateUserNameException.cs
-    │   │   │   ├── InvalidAttendanceStatusException.cs
-    │   │   │   ├── InvalidFileExtensionException.cs
-    │   │   │   ├── InvalidLoginException.cs
-    │   │   │   ├── InvalidRoleException.cs
-    │   │   │   ├── InvalidStudentStatusException.cs
-    │   │   │   ├── NoAssignmentFoundException.cs
-    │   │   │   ├── NoClassAttendanceFoundException.cs
-    │   │   │   ├── NoClassFoundException.cs
-    │   │   │   ├── NoCourseFoundException.cs
-    │   │   │   ├── NoCourseOfferingException.cs
-    │   │   │   ├── NoEnrollmentFoundException.cs
-    │   │   │   ├── NoLinkedAccountException.cs
-    │   │   │   ├── NoStudentFoundException.cs
-    │   │   │   ├── NoSubmissionFoundException.cs
-    │   │   │   ├── NoSuchAssignmentException.cs
-    │   │   │   ├── NoSuchAssignmentSubmissionException.cs
-    │   │   │   ├── NoSuchClassAttendanceException.cs
-    │   │   │   ├── NoSuchClassException.cs
-    │   │   │   ├── NoSuchCourseException.cs
-    │   │   │   ├── NoSuchCourseOfferingException.cs
-    │   │   │   ├── NoSuchEnrollmentException.cs
-    │   │   │   ├── NoSuchStudentException.cs
-    │   │   │   ├── NoSuchSubmissionException.cs
-    │   │   │   ├── NoSuchTeacherException.cs
-    │   │   │   ├── NoSuchUserException.cs
-    │   │   │   ├── NoTeacherFoundException.cs
-    │   │   │   ├── NoUserFoundException.cs
-    │   │   │   ├── NotEnrolledInAnyCourseException.cs
-    │   │   │   ├── NotEnrolledInCourseException.cs
-    │   │   │   ├── StudentAlreadyEnrolledException.cs
-    │   │   │   ├── UnableToAddException.cs
-    │   │   │   ├── UnauthorizedUserException.cs
-    │   │   │   ├── UserNotActiveException.cs
-    │   │   │   └── UserNotPartOfInstitutionException.cs
-    │   │   ├── Interfaces
-    │   │   │   ├── IAssignmentService.cs
-    │   │   │   ├── IAssignmentSubmissionService.cs
-    │   │   │   ├── IClassAttendanceService.cs
-    │   │   │   ├── IClassService.cs
-    │   │   │   ├── ICourseOfferingService.cs
-    │   │   │   ├── ICourseService.cs
-    │   │   │   ├── IEnrollmentService.cs
-    │   │   │   ├── IRepository.cs
-    │   │   │   ├── IStudentService.cs
-    │   │   │   ├── ITeacherService.cs
-    │   │   │   ├── ITokenService.cs
-    │   │   │   ├── IUserRepository.cs
-    │   │   │   └── IUserService.cs
-    │   │   ├── Migrations
-    │   │   │   ├── 20240530045901_Init.Designer.cs
-    │   │   │   ├── 20240530045901_Init.cs
-    │   │   │   └── StudentManagementContextModelSnapshot.cs
-    │   │   ├── Models
-    │   │   │   ├── DBModels
-    │   │   │   │   ├── Assignment.cs
-    │   │   │   │   ├── Class.cs
-    │   │   │   │   ├── ClassAttendance.cs
-    │   │   │   │   ├── Course.cs
-    │   │   │   │   ├── CourseOffering.cs
-    │   │   │   │   ├── Enrollment.cs
-    │   │   │   │   ├── Student.cs
-    │   │   │   │   ├── Submission.cs
-    │   │   │   │   ├── Teacher.cs
-    │   │   │   │   └── User.cs
-    │   │   │   ├── DTOs
-    │   │   │   │   ├── AssignmentDTO.cs
-    │   │   │   │   ├── AssignmentSubmissionResultDTO.cs
-    │   │   │   │   ├── AssignmentSubmisssionDTO.cs
-    │   │   │   │   ├── AssignmentSubmisssionReturnDTO.cs
-    │   │   │   │   ├── AssignmentUpdateDTO.cs
-    │   │   │   │   ├── ClassAttendanceDTO.cs
-    │   │   │   │   ├── ClassAttendanceReturnDTO.cs
-    │   │   │   │   ├── ClassRegisterDTO.cs
-    │   │   │   │   ├── ClassReturnDTO.cs
-    │   │   │   │   ├── CourseDTO.cs
-    │   │   │   │   ├── CourseOfferingDTO.cs
-    │   │   │   │   ├── CreateAssignmentDTO.cs
-    │   │   │   │   ├── EnrollmentDTO.cs
-    │   │   │   │   ├── EnrollmentReturnDTO.cs
-    │   │   │   │   ├── LoginReturnDTO.cs
-    │   │   │   │   ├── RegisteredUserDTO.cs
-    │   │   │   │   ├── StudentRegisterDTO.cs
-    │   │   │   │   ├── StudentReturnDTO.cs
-    │   │   │   │   ├── TeacherRegisterDTO.cs
-    │   │   │   │   ├── TeacherReturnDTO.cs
-    │   │   │   │   ├── UpdateClassDTO.cs
-    │   │   │   │   ├── UpdateEmailDTO.cs
-    │   │   │   │   ├── UpdatePhoneDTO.cs
-    │   │   │   │   ├── UserLoginDTO.cs
-    │   │   │   │   └── UserRegisterDTO.cs
-    │   │   │   └── ErrorModel.cs
-    │   │   ├── Program.cs
-    │   │   ├── Properties
-    │   │   │   └── launchSettings.json
-    │   │   ├── Repositories
-    │   │   │   ├── AssignmentRepository.cs
-    │   │   │   ├── AssignmentSubmissionRepository.cs
-    │   │   │   ├── ClassAttendanceRepository.cs
-    │   │   │   ├── ClassRepository.cs
-    │   │   │   ├── CourseOfferingRepository.cs
-    │   │   │   ├── CourseRepository.cs
-    │   │   │   ├── EnrollmentRepository.cs
-    │   │   │   ├── StudentRepository.cs
-    │   │   │   ├── TeacherRepository.cs
-    │   │   │   └── UserRepository.cs
-    │   │   ├── Services
-    │   │   │   ├── AssignmentService.cs
-    │   │   │   ├── AssignmentSubmissionService.cs
-    │   │   │   ├── ClassAttendanceService.cs
-    │   │   │   ├── ClassService.cs
-    │   │   │   ├── CourseOfferingService.cs
-    │   │   │   ├── CourseService.cs
-    │   │   │   ├── EnrollmentService.cs
-    │   │   │   ├── StudentService.cs
-    │   │   │   ├── TeacherService.cs
-    │   │   │   ├── TokenService.cs
-    │   │   │   └── UserService.cs
-    │   │   ├── StudentManagementAPI.csproj
-    │   │   ├── StudentManagementAPI.xml
-    │   │   ├── appsettings.Development.json
-    │   │   └── appsettings.json
-    │   ├── StudentManagementAPITest
-    │   │   ├── RepositoryUnitTest
-    │   │   │   ├── AssignmentRepositoryTest.cs
-    │   │   │   ├── AssignmentSubmissionRepositoryTest.cs
-    │   │   │   ├── ClassAttendanceRepositoryTest.cs
-    │   │   │   ├── ClassRepositoryTest.cs
-    │   │   │   ├── CourseOfferingRepositoryTest.cs
-    │   │   │   ├── CourseRepositoryTest.cs
-    │   │   │   ├── EnrollmentRepositoryTest.cs
-    │   │   │   ├── StudentReposiotryTest.cs
-    │   │   │   ├── TeacherRepositoryTest.cs
-    │   │   │   └── UserRepositoryTest.cs
-    │   │   └── StudentManagementAPITest.csproj
-    │   └── StudentManagementSol.sln
+    ├── StudentManagementAPI
+    │   ├── Contexts
+    │   │   └── StudentManagementContext.cs
+    │   ├── Controllers
+    │   │   ├── AssignmentController.cs
+    │   │   ├── AssignmentSubmissionController.cs
+    │   │   ├── ClassAttendanceController.cs
+    │   │   ├── ClassController.cs
+    │   │   ├── CourseController.cs
+    │   │   ├── CourseOfferingController.cs
+    │   │   ├── EnrollmentController.cs
+    │   │   ├── StudentController.cs
+    │   │   ├── TeacherController.cs
+    │   │   └── UserController.cs
+    │   ├── Exceptions
+    │   │   ├── AssignmentAlreadyExistsException.cs
+    │   │   ├── ClassAlreadyExistsException.cs
+    │   │   ├── ClassAttendanceAlreadyExistsException.cs
+    │   │   ├── CourseAlreadyExistsException.cs
+    │   │   ├── CourseOfferingAlreadyExistsException.cs
+    │   │   ├── DuplicateAssignmentSubmissionException.cs
+    │   │   ├── DuplicateUserException.cs
+    │   │   ├── DuplicateUserNameException.cs
+    │   │   ├── InvalidAttendanceStatusException.cs
+    │   │   ├── InvalidFileExtensionException.cs
+    │   │   ├── InvalidLoginException.cs
+    │   │   ├── InvalidRoleException.cs
+    │   │   ├── InvalidStudentStatusException.cs
+    │   │   ├── NoAssignmentFoundException.cs
+    │   │   ├── NoClassAttendanceFoundException.cs
+    │   │   ├── NoClassFoundException.cs
+    │   │   ├── NoCourseFoundException.cs
+    │   │   ├── NoCourseOfferingException.cs
+    │   │   ├── NoEnrollmentFoundException.cs
+    │   │   ├── NoLinkedAccountException.cs
+    │   │   ├── NoStudentFoundException.cs
+    │   │   ├── NoSuchAssignmentException.cs
+    │   │   ├── NoSuchAssignmentSubmissionException.cs
+    │   │   ├── NoSuchClassAttendanceException.cs
+    │   │   ├── NoSuchClassException.cs
+    │   │   ├── NoSuchCourseException.cs
+    │   │   ├── NoSuchCourseOfferingException.cs
+    │   │   ├── NoSuchEnrollmentException.cs
+    │   │   ├── NoSuchStudentException.cs
+    │   │   ├── NoSuchSubmissionException.cs
+    │   │   ├── NoSuchTeacherException.cs
+    │   │   ├── NoSuchUserException.cs
+    │   │   ├── NoTeacherFoundException.cs
+    │   │   ├── NoUserFoundException.cs
+    │   │   ├── NotEnrolledInAnyCourseException.cs
+    │   │   ├── NotEnrolledInCourseException.cs
+    │   │   ├── StudentAlreadyEnrolledException.cs
+    │   │   ├── UnableToAddException.cs
+    │   │   ├── UserNotActiveException.cs
+    │   │   └── UserNotPartOfInstitutionException.cs
+    │   ├── Interfaces
+    │   │   ├── IAssignmentService.cs
+    │   │   ├── IAssignmentSubmissionService.cs
+    │   │   ├── IClassAttendanceService.cs
+    │   │   ├── IClassService.cs
+    │   │   ├── ICourseOfferingService.cs
+    │   │   ├── ICourseService.cs
+    │   │   ├── IEnrollmentService.cs
+    │   │   ├── IRepository.cs
+    │   │   ├── IStudentService.cs
+    │   │   ├── ITeacherService.cs
+    │   │   ├── ITokenService.cs
+    │   │   ├── IUserRepository.cs
+    │   │   └── IUserService.cs
+    │   ├── Migrations
+    │   │   ├── 20240602091231_initial.Designer.cs
+    │   │   ├── 20240602091231_initial.cs
+    │   │   └── StudentManagementContextModelSnapshot.cs
+    │   ├── Models
+    │   │   ├── DBModels
+    │   │   │   ├── Assignment.cs
+    │   │   │   ├── Class.cs
+    │   │   │   ├── ClassAttendance.cs
+    │   │   │   ├── Course.cs
+    │   │   │   ├── CourseOffering.cs
+    │   │   │   ├── Enrollment.cs
+    │   │   │   ├── Student.cs
+    │   │   │   ├── Submission.cs
+    │   │   │   ├── Teacher.cs
+    │   │   │   └── User.cs
+    │   │   ├── DTOs
+    │   │   │   ├── AssignmentDTO.cs
+    │   │   │   ├── AssignmentSubmissionResultDTO.cs
+    │   │   │   ├── AssignmentSubmisssionDTO.cs
+    │   │   │   ├── AssignmentSubmisssionReturnDTO.cs
+    │   │   │   ├── AssignmentUpdateDTO.cs
+    │   │   │   ├── ClassAttendanceDTO.cs
+    │   │   │   ├── ClassAttendanceReturnDTO.cs
+    │   │   │   ├── ClassRegisterDTO.cs
+    │   │   │   ├── ClassReturnDTO.cs
+    │   │   │   ├── CourseDTO.cs
+    │   │   │   ├── CourseOfferingDTO.cs
+    │   │   │   ├── CreateAssignmentDTO.cs
+    │   │   │   ├── EnrollmentDTO.cs
+    │   │   │   ├── EnrollmentReturnDTO.cs
+    │   │   │   ├── LoginReturnDTO.cs
+    │   │   │   ├── RegisteredUserDTO.cs
+    │   │   │   ├── StudentRegisterDTO.cs
+    │   │   │   ├── StudentReturnDTO.cs
+    │   │   │   ├── TeacherRegisterDTO.cs
+    │   │   │   ├── TeacherReturnDTO.cs
+    │   │   │   ├── UpdateClassDTO.cs
+    │   │   │   ├── UpdateEmailDTO.cs
+    │   │   │   ├── UpdatePhoneDTO.cs
+    │   │   │   ├── UserLoginDTO.cs
+    │   │   │   └── UserRegisterDTO.cs
+    │   │   └── ErrorModel.cs
+    │   ├── Program.cs
+    │   ├── Properties
+    │   │   └── launchSettings.json
+    │   ├── Repositories
+    │   │   ├── AssignmentRepository.cs
+    │   │   ├── AssignmentSubmissionRepository.cs
+    │   │   ├── ClassAttendanceRepository.cs
+    │   │   ├── ClassRepository.cs
+    │   │   ├── CourseOfferingRepository.cs
+    │   │   ├── CourseRepository.cs
+    │   │   ├── EnrollmentRepository.cs
+    │   │   ├── StudentRepository.cs
+    │   │   ├── TeacherRepository.cs
+    │   │   └── UserRepository.cs
+    │   ├── Services
+    │   │   ├── AssignmentService.cs
+    │   │   ├── AssignmentSubmissionService.cs
+    │   │   ├── ClassAttendanceService.cs
+    │   │   ├── ClassService.cs
+    │   │   ├── CourseOfferingService.cs
+    │   │   ├── CourseService.cs
+    │   │   ├── EnrollmentService.cs
+    │   │   ├── StudentService.cs
+    │   │   ├── TeacherService.cs
+    │   │   ├── TokenService.cs
+    │   │   └── UserService.cs
+    │   ├── StudentManagementAPI.csproj
+    │   ├── StudentManagementAPI.xml
+    │   ├── appsettings.Development.json
+    │   ├── appsettings.json
+    │   └── log4net.config
+    ├── StudentManagementAPITest
+    │   ├── RepositoryUnitTest
+    │   │   ├── AssignmentRepositoryTest.cs
+    │   │   ├── AssignmentSubmissionRepositoryTest.cs
+    │   │   ├── ClassAttendanceRepositoryTest.cs
+    │   │   ├── ClassRepositoryTest.cs
+    │   │   ├── CourseOfferingRepositoryTest.cs
+    │   │   ├── CourseRepositoryTest.cs
+    │   │   ├── EnrollmentRepositoryTest.cs
+    │   │   ├── StudentReposiotryTest.cs
+    │   │   ├── TeacherRepositoryTest.cs
+    │   │   └── UserRepositoryTest.cs
+    │   ├── ServiceUnitTest
+    │   │   ├── AssignmentServiceTest.cs
+    │   │   ├── AssignmentSubmissionServiceTest.cs
+    │   │   ├── ClassAttendanceServiceTest.cs
+    │   │   ├── ClassServiceTest.cs
+    │   │   ├── CourseOfferingServiceTest.cs
+    │   │   ├── CourseServiceTest.cs
+    │   │   ├── EnrollmentServiceTest.cs
+    │   │   ├── StudentServiceTest.cs
+    │   │   ├── TeacherServiceTest.cs
+    │   │   ├── TokenServiceTest.cs
+    │   │   └── UserServiceTest.cs
+    │   └── StudentManagementAPITest.csproj
     ├── StudentManagementERD.png
-    └── api-documentation.pdf
+    └── StudentManagementSol.sln
 ```
 
 ---
