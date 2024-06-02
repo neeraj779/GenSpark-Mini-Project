@@ -15,8 +15,8 @@ namespace StudentManagementAPI.Models.DBModels
         [Range(1, 10, ErrorMessage = "Course credit must be between 1 and 10.")]
         public int CourseCredit { get; set; }
 
-        public ICollection<Assignment> Assignments { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<CourseOffering> CourseOfferings { get; set; }
+        public ICollection<Assignment>? Assignments { get; set; }
+        public ICollection<Enrollment>? Enrollments { get; set; }
+        public ICollection<CourseOffering>? CourseOfferings { get; set; }
     }
 }

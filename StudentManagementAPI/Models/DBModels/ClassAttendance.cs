@@ -29,7 +29,7 @@ namespace StudentManagementAPI.Models.DBModels
         [MaxLength(50, ErrorMessage = "Status cannot exceed 50 characters")]
         public AttendanceStatus Status { get; set; }
 
-        public Class Class { get; set; }
-        public Student Student { get; set; }
+        public Class? Class { get; set; }
+        public Student? Student { get; set; }
     }
 }

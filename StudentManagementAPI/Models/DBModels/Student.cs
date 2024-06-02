@@ -53,8 +53,8 @@ namespace StudentManagementAPI.Models.DBModels
         public StudentStatus Status { get; set; }
 
         public User? User { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; }
-        public ICollection<ClassAttendance> ClassAttendances { get; set; }
-        public ICollection<Submission> Submissions { get; set; }
+        public ICollection<Enrollment>? Enrollments { get; set; }
+        public ICollection<ClassAttendance>? ClassAttendances { get; set; }
+        public ICollection<Submission>? Submissions { get; set; }
     }
 }
