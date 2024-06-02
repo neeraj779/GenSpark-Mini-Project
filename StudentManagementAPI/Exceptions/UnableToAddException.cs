@@ -11,7 +11,7 @@
 
         public UnableToAddException(string? message) : base(message)
         {
-            _message = message;
+            _message = message ?? throw new ArgumentNullException(nameof(message));
         }
 
         public override string Message => _message;

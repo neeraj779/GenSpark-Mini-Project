@@ -102,9 +102,9 @@ namespace StudentManagementAPI.Controllers
                 var updatedTeacher = await _teacherService.UpdateTeacherEmail(updateEmaildto);
                 return Ok(updatedTeacher);
             }
-            catch (NoSuchTeacherException)
+            catch (NoSuchTeacherException ex)
             {
-                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = "Teacher not found" });
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
         }
 
@@ -127,9 +127,9 @@ namespace StudentManagementAPI.Controllers
                 var updatedTeacher = await _teacherService.UpdateTeacherPhone(updatePhonedto);
                 return Ok(updatedTeacher);
             }
-            catch (NoSuchTeacherException)
+            catch (NoSuchTeacherException ex)
             {
-                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = "Teacher not found" });
+                return NotFound(new ErrorModel { ErrorCode = StatusCodes.Status404NotFound, ErrorMessage = ex.Message });
             }
         }
 
