@@ -43,10 +43,6 @@ namespace StudentManagementAPI.Repositories
         public async Task<Enrollment> Get(int key)
         {
             var enrollment = await _context.Enrollments.SingleOrDefaultAsync(e => e.EnrollmentId == key);
-            if (enrollment == null)
-            {
-                throw new NoSuchEnrollmentException();
-            }
             return enrollment;
         }
 
