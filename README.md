@@ -8,7 +8,9 @@
 	<img src="https://img.shields.io/github/languages/top/neeraj779/GenSpark-Mini-Project?style=flat&color=0080ff" alt="repo-top-language">
 	<img src="https://img.shields.io/github/languages/count/neeraj779/GenSpark-Mini-Project?style=flat&color=0080ff" alt="repo-language-count">
 <hr>
-
+	
+[![CodeQL](https://github.com/neeraj779/GenSpark-Mini-Project/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/neeraj779/GenSpark-Mini-Project/actions/workflows/github-code-scanning/codeql)
+	
 ## 🔗 Quick Links
 
 > - [📍 Overview](#-overview)
