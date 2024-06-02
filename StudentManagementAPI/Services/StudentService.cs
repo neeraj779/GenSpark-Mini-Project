@@ -8,17 +8,19 @@ namespace StudentManagementAPI.Services
     public class StudentService : IStudentService
     {
         private readonly IRepository<int, Student> _studentRepository;
+        private readonly ILogger<StudentService> _logger;
 
-        public StudentService(IRepository<int, Student> studentRepository)
+        public StudentService(IRepository<int, Student> studentRepository, ILogger<StudentService> logger)
         {
             _studentRepository = studentRepository;
+            _logger = logger;
         }
 
         public async Task<StudentReturnDTO> RegisterStudent(StudentRegisterDTO student)
         {
-
             if (!Enum.TryParse(student.Status, out StudentStatus status))
             {
+                _logger.LogWarning("Invalid student status: {Status}", student.Status);
                 throw new InvalidStudentStatusException();
             }
 
@@ -36,104 +38,86 @@ namespace StudentManagementAPI.Services
 
             try
             {
-                var AddedStudent = await _studentRepository.Add(newStudent);
-                return MapStudentToStudentReturnDTO(AddedStudent);
+                var addedStudent = await _studentRepository.Add(newStudent);
+                return MapStudentToStudentReturnDTO(addedStudent);
             }
-
-            catch (UnableToAddException)
+            catch (UnableToAddException ex)
             {
-                throw new UnableToAddException("Unable to Register Student. Please check the data and try again.");
+                _logger.LogError(ex, "Unable to register student: {Student}", student);
+                throw new UnableToAddException("Unable to register student. Please check the data and try again.");
             }
         }
 
-
-        public async Task<StudentReturnDTO> UpdateStudentEmail(UpdateEmailDTO updateEmaildto)
+        public async Task<StudentReturnDTO> UpdateStudentEmail(UpdateEmailDTO updateEmailDto)
         {
-            var student = await _studentRepository.Get(updateEmaildto.Id);
-            if (student != null)
-            {
-                student.Email = updateEmaildto.Email;
-                var updatedStudent = await _studentRepository.Update(student);
-                return MapStudentToStudentReturnDTO(updatedStudent);
-            }
-
-            throw new NoSuchStudentException();
+            var student = await GetStudentByIdOrThrow(updateEmailDto.Id);
+            student.Email = updateEmailDto.Email;
+            var updatedStudent = await _studentRepository.Update(student);
+            return MapStudentToStudentReturnDTO(updatedStudent);
         }
 
-
-        public async Task<StudentReturnDTO> UpdateStudentPhone(UpdatePhoneDTO updatePhonedto)
+        public async Task<StudentReturnDTO> UpdateStudentPhone(UpdatePhoneDTO updatePhoneDto)
         {
-            var student = await _studentRepository.Get(updatePhonedto.Id);
-            if (student != null)
-            {
-                student.Phone = updatePhonedto.Phone;
-                var updatedStudent = await _studentRepository.Update(student);
-                return MapStudentToStudentReturnDTO(updatedStudent);
-            }
-            throw new NoSuchStudentException();
+            var student = await GetStudentByIdOrThrow(updatePhoneDto.Id);
+            student.Phone = updatePhoneDto.Phone;
+            var updatedStudent = await _studentRepository.Update(student);
+            return MapStudentToStudentReturnDTO(updatedStudent);
         }
 
         public async Task<StudentReturnDTO> UpdateStudentStatus(int studentId, string status)
         {
-            var student = await _studentRepository.Get(studentId);
+            var student = await GetStudentByIdOrThrow(studentId);
 
             if (!Enum.TryParse(status, out StudentStatus studentStatus))
             {
+                _logger.LogWarning("Invalid student status: {Status}", status);
                 throw new InvalidStudentStatusException();
             }
 
-
-            if (student != null)
-            {
-                student.Status = studentStatus;
-                var updatedStudent = await _studentRepository.Update(student);
-                return MapStudentToStudentReturnDTO(updatedStudent);
-            }
-            throw new NoSuchStudentException();
+            student.Status = studentStatus;
+            var updatedStudent = await _studentRepository.Update(student);
+            return MapStudentToStudentReturnDTO(updatedStudent);
         }
-
 
         public async Task<StudentReturnDTO> GetStudentById(int studentId)
         {
-            var student = await _studentRepository.Get(studentId);
-            if (student == null)
-                throw new NoSuchStudentException();
+            var student = await GetStudentByIdOrThrow(studentId);
             return MapStudentToStudentReturnDTO(student);
         }
-
 
         public async Task<IEnumerable<StudentReturnDTO>> GetStudents()
         {
             var students = await _studentRepository.Get();
-
-            if (students.Count() == 0)
+            if (!students.Any())
+            {
+                _logger.LogWarning("No students found");
                 throw new NoStudentFoundException();
+            }
 
-            var studentDTOs = new List<StudentReturnDTO>();
-            foreach (var student in students)
-                studentDTOs.Add(MapStudentToStudentReturnDTO(student));
-            return studentDTOs;
+            return students.Select(MapStudentToStudentReturnDTO).ToList();
         }
-
 
         public async Task<StudentReturnDTO> DeleteStudent(int studentId)
         {
-            try
-            {
-                var student = await _studentRepository.Delete(studentId);
-                return MapStudentToStudentReturnDTO(student);
-            }
-
-            catch (NoSuchStudentException)
-            {
-                throw new NoSuchStudentException();
-            }
+            await GetStudentByIdOrThrow(studentId);
+            var deletedStudent = await _studentRepository.Delete(studentId);
+            return MapStudentToStudentReturnDTO(deletedStudent);
         }
 
-
-        public StudentReturnDTO MapStudentToStudentReturnDTO(Student student)
+        private async Task<Student> GetStudentByIdOrThrow(int studentId)
         {
-            StudentReturnDTO studentReturnDTO = new StudentReturnDTO
+            var student = await _studentRepository.Get(studentId);
+            if (student == null)
+            {
+                _logger.LogWarning("Student not found with ID: {Id}", studentId);
+                throw new NoSuchStudentException();
+            }
+            return student;
+        }
+
+        private StudentReturnDTO MapStudentToStudentReturnDTO(Student student)
+        {
+            return new StudentReturnDTO
             {
                 StudentId = student.StudentId,
                 FullName = student.FullName,
@@ -145,8 +129,6 @@ namespace StudentManagementAPI.Services
                 Email = student.Email,
                 Status = student.Status.ToString()
             };
-
-            return studentReturnDTO;
         }
     }
 }
