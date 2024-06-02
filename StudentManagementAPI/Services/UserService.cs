@@ -35,85 +35,98 @@ namespace StudentManagementAPI.Services
             var userDB = await _userRepo.GetByUserName(loginDTO.UserName);
             if (userDB == null)
             {
-                _logger.LogWarning("Login failed for user: {UserName} - User not found", loginDTO.UserName);
+                _logger.LogWarning("Login failed: User not found");
                 throw new InvalidLoginException();
             }
 
             if (userDB.Status != "Active")
             {
-                _logger.LogWarning("Login failed for user: {UserName} - User not active", loginDTO.UserName);
+                _logger.LogWarning("Login failed: User not active");
                 throw new UserNotActiveException();
             }
 
-            HMACSHA512 hMACSHA = new HMACSHA512(userDB.PasswordHashKey);
-            var encrypterPass = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
-
-            bool isPasswordCorrect = encrypterPass.SequenceEqual(userDB.Password);
-
-            if (!isPasswordCorrect)
+            if (!IsPasswordCorrect(loginDTO.Password, userDB.PasswordHashKey, userDB.Password))
             {
-                _logger.LogWarning("Login failed for user: {UserName} - Incorrect password", loginDTO.UserName);
+                _logger.LogWarning("Login failed: Invalid password");
                 throw new InvalidLoginException();
             }
-            LoginReturnDTO returnDTO = new LoginReturnDTO
+
+            return new LoginReturnDTO
             {
                 AccessToken = _tokenService.GenerateToken(userDB),
                 TokenType = "Bearer",
                 Role = userDB.Role.ToString()
             };
-            return returnDTO;
         }
 
         public async Task<RegisteredUserDTO> Register(UserRegisterDTO user)
         {
             if (!Enum.TryParse(user.Role, out UserRole role))
             {
-                _logger.LogWarning("Register failed for user: {UserName} - Invalid role", user.UserName);
+                _logger.LogWarning("Registration failed: Invalid role");
                 throw new InvalidRoleException();
             }
 
             var userDB = await _userRepo.GetByUserName(user.UserName);
             if (userDB != null)
             {
-                _logger.LogWarning("Register failed for user: {UserName} - Duplicate username", user.UserName);
+                _logger.LogWarning("Registration failed: Duplicate username");
                 throw new DuplicateUserNameException();
             }
 
             switch (role)
             {
                 case UserRole.Teacher:
-                    var teacher = await _teacherRepo.Get(user.AccountId);
-                    if (teacher == null)
-                        throw new UserNotPartOfInstitutionException();
-
-                    if (teacher.UserId != null)
-                        throw new DuplicateUserException();
-
-                    User newUserTeacher = await CreateUser(user, role);
-                    teacher.UserId = newUserTeacher.UserId;
-                    await _teacherRepo.Update(teacher);
-                    return MapUserToReturnDTO(newUserTeacher);
+                    return await RegisterTeacher(user);
 
                 case UserRole.Student:
-                    var student = await _studentRepo.Get(user.AccountId);
-                    if (student == null)
-                    {
-                        _logger.LogWarning("Register failed for user: {UserName} - User not part of institution", user.UserName);
-                        throw new UserNotPartOfInstitutionException();
-                    }
-                    if (student.UserId != null)
-                    {
-                        _logger.LogWarning("Register failed for user: {UserName} - Duplicate user", user.UserName);
-                        throw new DuplicateUserException();
-                    }
+                    return await RegisterStudent(user);
 
-                    User newUserStudent = await CreateUser(user, role);
-                    student.UserId = newUserStudent.UserId;
-                    await _studentRepo.Update(student);
-                    return MapUserToReturnDTO(newUserStudent);
                 default:
-                    _logger.LogWarning("Register failed for user: {UserName} - Invalid role", user.UserName);
+                    _logger.LogWarning("Register failed: Invalid role");
                     throw new InvalidRoleException();
+            }
+        }
+
+        private async Task<RegisteredUserDTO> RegisterTeacher(UserRegisterDTO user)
+        {
+            var teacher = await _teacherRepo.Get(user.AccountId);
+            ValidateUserPartOfInstitution(teacher);
+
+            User newUserTeacher = await CreateUser(user, UserRole.Teacher);
+            teacher.UserId = newUserTeacher.UserId;
+            await _teacherRepo.Update(teacher);
+
+            return MapUserToReturnDTO(newUserTeacher);
+        }
+
+        private async Task<RegisteredUserDTO> RegisterStudent(UserRegisterDTO user)
+        {
+            var student = await _studentRepo.Get(user.AccountId);
+            ValidateUserPartOfInstitution(student);
+
+            User newUserStudent = await CreateUser(user, UserRole.Student);
+            student.UserId = newUserStudent.UserId;
+            await _studentRepo.Update(student);
+
+            return MapUserToReturnDTO(newUserStudent);
+        }
+
+        private void ValidateUserPartOfInstitution(object institutionMember)
+        {
+            if (institutionMember == null)
+            {
+                _logger.LogWarning("Registration failed: User not part of institution");
+                throw new UserNotPartOfInstitutionException();
+            }
+
+            bool isTeacherWithUserId = institutionMember is Teacher teacher && teacher.UserId != null;
+            bool isStudentWithUserId = institutionMember is Student student && student.UserId != null;
+
+            if (isTeacherWithUserId || isStudentWithUserId)
+            {
+                _logger.LogWarning("Registration failed: Duplicate user");
+                throw new DuplicateUserException();
             }
         }
 
@@ -157,7 +170,7 @@ namespace StudentManagementAPI.Services
 
             if (user == null)
             {
-                _logger.LogWarning("Activate failed for user: {UserId} - User not found", id);
+                _logger.LogWarning("Activation failed: User not found");
                 throw new NoSuchUserException();
             }
 
@@ -173,7 +186,7 @@ namespace StudentManagementAPI.Services
 
             if (user == null)
             {
-                _logger.LogWarning("Deactivate failed for user: {UserId} - User not found", id);
+                _logger.LogWarning("Deactivation failed: User not found");
                 throw new NoSuchUserException();
             }
 
@@ -181,6 +194,13 @@ namespace StudentManagementAPI.Services
             await _userRepo.Update(user);
 
             return MapUserToReturnDTO(user);
+        }
+
+        private bool IsPasswordCorrect(string password, byte[] passwordHashKey, byte[] storedPasswordHash)
+        {
+            using var hmac = new HMACSHA512(passwordHashKey);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return computedHash.SequenceEqual(storedPasswordHash);
         }
 
         public RegisteredUserDTO MapUserToReturnDTO(User user)
