@@ -279,7 +279,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
 
             // Action
-            var result = await userService.DeactivateUser(100);
+            var result = await userService.DeactivateUser(accountId);
 
             // Assert
             Assert.NotNull(result);

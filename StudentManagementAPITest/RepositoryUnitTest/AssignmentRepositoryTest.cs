@@ -31,6 +31,8 @@ namespace StudentManagementAPITest.RepositoryUnitTest
                 Title = "Test Assignment",
                 CourseCode = "CSE101",
                 DueDate = new DateTime(2024, 5, 6, 9, 0, 0),
+                Course = null,
+                Submissions = null
             };
 
             await assignmentRepository.Add(assignment);
@@ -60,7 +62,7 @@ namespace StudentManagementAPITest.RepositoryUnitTest
         }
 
         [Test]
-        public async Task Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
+        public void Add_WhenDbUpdateExceptionThrown_ShouldThrowUnableToAddException()
         {
             // Arrange
             var assignment = new Assignment { AssignmentId = 1, Title = "Assignment 1", CourseCode = "CSE101" };
@@ -69,7 +71,7 @@ namespace StudentManagementAPITest.RepositoryUnitTest
 
             // Act and Assert
             var exception = Assert.ThrowsAsync<UnableToAddException>(async () => await mockAssignmentRepository.Add(assignment));
-            Assert.AreEqual("Unable to add assignment. Please check the data and try again.", exception.Message);
+            Assert.That(exception.Message, Is.EqualTo("Unable to add assignment. Please check the data and try again."));
         }
 
         [Test]

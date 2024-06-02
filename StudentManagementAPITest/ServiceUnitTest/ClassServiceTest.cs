@@ -69,9 +69,10 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             // Act
             await classService.AddClass(classdto);
+            var ex = Assert.ThrowsAsync<ClassAlreadyExistsException>(() => classService.AddClass(classdto));
 
             // Assert
-            Assert.ThrowsAsync<ClassAlreadyExistsException>(() => classService.AddClass(classdto));
+            Assert.That(ex.Message, Is.EqualTo("Class already exists!"));
         }
 
         [Test]
@@ -84,8 +85,11 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 ClassDateAndTime = DateTime.Now
             };
 
-            // Action & Assert
-            Assert.ThrowsAsync<NoSuchCourseOfferingException>(() => classService.AddClass(classdto));
+            // Action
+            var ex = Assert.ThrowsAsync<NoSuchCourseOfferingException>(() => classService.AddClass(classdto));
+
+            // Assert
+            Assert.That(ex.Message, Is.EqualTo("No such course offering found."));
         }
 
         [Test]
@@ -111,8 +115,11 @@ namespace StudentManagementAPITest.ServiceUnitTest
             //Arrange
             int classId = 150;
 
-            // Action & Assert
-            Assert.ThrowsAsync<NoSuchClassException>(() => classService.DeleteClass(classId));
+            // Action
+            var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classService.DeleteClass(classId));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Class with given Id does not exist."));
         }
 
         [Test]
@@ -136,8 +143,12 @@ namespace StudentManagementAPITest.ServiceUnitTest
             //Arrange
             int classId = 150;
 
-            // Action & Assert
-            Assert.ThrowsAsync<NoSuchClassException>(() => classService.GetClass(classId));
+            // Action
+            var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classService.GetClass(classId));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Class with given Id does not exist."));
+
         }
 
         [Test]
@@ -158,8 +169,11 @@ namespace StudentManagementAPITest.ServiceUnitTest
             context.Classes.RemoveRange(context.Classes);
             context.SaveChanges();
 
-            // Action & Assert
-            Assert.ThrowsAsync<NoClassFoundException>(() => classService.GetClasses());
+            // Action
+            var ex = Assert.ThrowsAsync<NoClassFoundException>(() => classService.GetClasses());
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("No class found!"));
         }
 
         [Test]
@@ -194,8 +208,11 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 ClassDateAndTime = DateTime.Now
             };
 
-            // Action & Assert
-            Assert.ThrowsAsync<NoSuchClassException>(() => classService.UpdateClassTime(updateclassdto));
+            // Action
+            var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classService.UpdateClassTime(updateclassdto));
+
+            //Assert
+            Assert.That(ex.Message, Is.EqualTo("Class with given Id does not exist."));
         }
     }
 }

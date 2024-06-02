@@ -52,6 +52,8 @@ namespace StudentManagementAPITest.RepositoryUnitTest
                 StudentId = 4001,
                 FileName = "Assignment1.pdf",
                 SubmissionDate = new DateTime(2024, 5, 6, 9, 0, 0),
+                Student = null,
+                Assignment = null
             };
 
 

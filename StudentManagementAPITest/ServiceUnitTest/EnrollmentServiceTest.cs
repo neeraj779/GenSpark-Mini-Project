@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -9,11 +11,12 @@ namespace StudentManagementAPITest.ServiceUnitTest
 {
     public class EnrollmentServiceTest
     {
-        private StudentManagementContext context;
-        private IRepository<int, Enrollment> enrollmentRepository;
-        private IRepository<int, Student> studentRepository;
-        private IRepository<string, Course> courseRepository;
-        private EnrollmentService enrollmentService;
+        StudentManagementContext context;
+        IRepository<int, Enrollment> enrollmentRepository;
+        IRepository<int, Student> studentRepository;
+        IRepository<string, Course> courseRepository;
+        EnrollmentService enrollmentService;
+        Mock<ILogger<EnrollmentService>> loggerMock;
 
         [SetUp]
         public void Setup()
@@ -26,7 +29,10 @@ namespace StudentManagementAPITest.ServiceUnitTest
             enrollmentRepository = new EnrollmentRepository(context);
             studentRepository = new StudentRepository(context);
             courseRepository = new CourseRepository(context);
-            enrollmentService = new EnrollmentService(enrollmentRepository, studentRepository, courseRepository);
+
+            loggerMock = new Mock<ILogger<EnrollmentService>>();
+
+            enrollmentService = new EnrollmentService(enrollmentRepository, studentRepository, courseRepository, loggerMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();

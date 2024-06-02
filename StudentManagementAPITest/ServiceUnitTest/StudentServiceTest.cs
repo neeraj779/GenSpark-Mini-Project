@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -14,7 +15,8 @@ namespace StudentManagementAPITest.ServiceUnitTest
         StudentManagementContext context;
         StudentService _studentService;
         IRepository<int, Student> studentRepository;
-        private Mock<IRepository<int, Student>> _studentRepositoryMock;
+        Mock<IRepository<int, Student>> _studentRepositoryMock;
+        Mock<ILogger<StudentService>> loggerMock;
         StudentService studentService;
 
         [SetUp]
@@ -24,9 +26,10 @@ namespace StudentManagementAPITest.ServiceUnitTest
             context = new StudentManagementContext(optionsBuilder.Options);
 
             studentRepository = new StudentRepository(context);
-            studentService = new StudentService(studentRepository);
             _studentRepositoryMock = new Mock<IRepository<int, Student>>();
-            _studentService = new StudentService(_studentRepositoryMock.Object);
+            loggerMock = new Mock<ILogger<StudentService>>();
+            studentService = new StudentService(studentRepository, loggerMock.Object);
+            _studentService = new StudentService(_studentRepositoryMock.Object, loggerMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -57,7 +60,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestRegisterStudentException()
+        public void TestRegisterStudentException()
         {
             //Arrange
             var newStudent = new StudentRegisterDTO
@@ -100,7 +103,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             // Act & Assert
             var ex = Assert.ThrowsAsync<UnableToAddException>(async () => await _studentService.RegisterStudent(student));
-            Assert.That(ex.Message, Is.EqualTo("Unable to Register Student. Please check the data and try again."));
+            Assert.That(ex.Message, Is.EqualTo("Unable to register student. Please check the data and try again."));
         }
 
         [Test]
@@ -123,7 +126,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestUpdateStudentEmailException()
+        public void TestUpdateStudentEmailException()
         {
             //Arrange
             var newStudent = new UpdateEmailDTO
@@ -159,7 +162,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestUpdateStudentPhoneException()
+        public void TestUpdateStudentPhoneException()
         {
             //Arrange
             var newStudent = new UpdatePhoneDTO
@@ -192,7 +195,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestUpdateStudentStatusException()
+        public void TestUpdateStudentStatusException()
         {
             //Arrange
             int Id = 4000;
@@ -224,7 +227,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestGetAllStudentsException()
+        public void TestGetAllStudentsException()
         {
             //Arrange
             context.Students.RemoveRange(context.Students);
@@ -251,7 +254,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestGetStudentByIdException()
+        public void TestGetStudentByIdException()
         {
             //Arrange
             var studentId = 5000;
@@ -277,7 +280,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestDeleteStudentException()
+        public void TestDeleteStudentException()
         {
             //Arrange
             var studentId = 5000;

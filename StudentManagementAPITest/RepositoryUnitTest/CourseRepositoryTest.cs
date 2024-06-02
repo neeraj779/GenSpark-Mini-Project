@@ -36,7 +36,11 @@ namespace StudentManagementAPITest.RepositoryUnitTest
             {
                 CourseCode = "TST101",
                 CourseName = "Introduction to Unit Test",
-                CourseCredit = 3
+                CourseCredit = 3,
+                CourseOfferings = null,
+                Assignments = null,
+                Enrollments = null
+
             };
 
             //Action

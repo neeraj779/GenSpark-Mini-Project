@@ -38,6 +38,8 @@ namespace StudentManagementAPITest.RepositoryUnitTest
                 Email = "example@test.com",
                 Gender = "Male",
                 Phone = "1234567890",
+                User = null,
+                CourseOfferings = null
             };
 
             //Action

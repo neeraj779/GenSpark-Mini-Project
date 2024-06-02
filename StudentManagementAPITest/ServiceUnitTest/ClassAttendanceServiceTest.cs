@@ -50,7 +50,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var result = await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
             var allAttendance = await classAttendanceRepository.Get();
 
@@ -73,7 +73,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
 
             // Assert
@@ -91,7 +91,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
 
             // Assert
@@ -109,7 +109,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Presentt"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<InvalidAttendanceStatusException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
 
             // Assert
@@ -129,7 +129,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<ClassAttendanceAlreadyExistsException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
 
             // Assert
@@ -153,7 +153,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NotEnrolledInCourseException>(() => classAttendanceService.MarkStudentAttendance(classAttendanceDTO));
 
             // Assert
@@ -173,7 +173,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
 
-            // Act
+            // Action
             var result = await classAttendanceService.GetAttendanceByClass(1);
 
             // Assert
@@ -184,7 +184,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByClassTest_NoSuchClass()
         {
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classAttendanceService.GetAttendanceByClass(1000));
 
             // Assert
@@ -194,7 +194,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByClassTest_NoAttendanceFound()
         {
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoClassAttendanceFoundException>(() => classAttendanceService.GetAttendanceByClass(1));
 
             // Assert
@@ -214,7 +214,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
 
-            // Act
+            // Action
             var result = await classAttendanceService.GetAttendanceByStudent(4000);
 
             // Assert
@@ -225,7 +225,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByStudentTest_NoSuchStudent()
         {
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => classAttendanceService.GetAttendanceByStudent(1000));
 
             // Assert
@@ -235,7 +235,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByStudentTest_NoAttendanceFound()
         {
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoClassAttendanceFoundException>(() => classAttendanceService.GetAttendanceByStudent(4000));
 
             // Assert
@@ -255,7 +255,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
 
-            // Act
+            // Action
             var result = await classAttendanceService.GetAttendanceByClassAndStudent(1, 4000);
 
             // Assert
@@ -268,7 +268,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByClassAndStudentTest_NoSuchClass()
         {
-            // Action
+            // Actionion
             var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classAttendanceService.GetAttendanceByClassAndStudent(1000, 4000));
 
             // Assert
@@ -288,7 +288,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             await classAttendanceService.MarkStudentAttendance(classAttendanceDTO);
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => classAttendanceService.GetAttendanceByClassAndStudent(1, 1000));
 
             // Assert
@@ -299,7 +299,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         [Test]
         public void GetAttendanceByClassAndStudentTest_NoAttendanceFoundAsync()
         {
-            // Action
+            // Actionion
             var ex = Assert.ThrowsAsync<NoSuchClassAttendanceException>(() => classAttendanceService.GetAttendanceByClassAndStudent(1, 4000));
 
             // Assert
@@ -321,7 +321,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
             classAttendanceDTO.Status = "Absent";
 
-            // Act
+            // Action
             var result = await classAttendanceService.UpdateClassAttendance(classAttendanceDTO);
 
             // Assert
@@ -342,7 +342,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchClassException>(() => classAttendanceService.UpdateClassAttendance(classAttendanceDTO));
 
             // Assert
@@ -360,7 +360,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchStudentException>(() => classAttendanceService.UpdateClassAttendance(classAttendanceDTO));
 
             // Assert
@@ -379,7 +379,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
                 Status = "Present"
             };
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<NoSuchClassAttendanceException>(() => classAttendanceService.UpdateClassAttendance(classAttendanceDTO));
 
             // Assert
@@ -402,7 +402,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
             classAttendanceDTO.Status = "Presenttt";
 
 
-            // Act
+            // Action
             var ex = Assert.ThrowsAsync<InvalidAttendanceStatusException>(() => classAttendanceService.UpdateClassAttendance(classAttendanceDTO));
 
             // Assert

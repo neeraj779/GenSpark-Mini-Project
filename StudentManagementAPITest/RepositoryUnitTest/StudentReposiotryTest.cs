@@ -41,7 +41,11 @@ namespace StudentManagementAPITest.RepositoryUnitTest
                 Gender = "Male",
                 Phone = "9374729562",
                 Status = StudentStatus.Undergraduate,
-                DateOfBirth = new DateTime(1998, 2, 15)
+                DateOfBirth = new DateTime(1998, 2, 15),
+                User = null,
+                Enrollments = null,
+                ClassAttendances = null,
+                Submissions = null
             };
 
             //Action

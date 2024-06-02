@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
 using StudentManagementAPI.Models.DBModels;
@@ -12,6 +14,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
     {
         StudentManagementContext context;
         IRepository<string, Course> couserRepository;
+        Mock<ILogger<CourseService>> loggerMock;
         CourseService courseService;
 
         [SetUp]
@@ -21,7 +24,9 @@ namespace StudentManagementAPITest.ServiceUnitTest
             context = new StudentManagementContext(optionsBuilder.Options);
 
             couserRepository = new CourseRepository(context);
-            courseService = new CourseService(couserRepository);
+
+            loggerMock = new Mock<ILogger<CourseService>>();
+            courseService = new CourseService(couserRepository, loggerMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();

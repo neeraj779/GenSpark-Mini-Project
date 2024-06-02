@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using StudentManagementAPI.Exceptions;
 using StudentManagementAPI.Interfaces;
@@ -14,9 +15,11 @@ namespace StudentManagementAPITest.ServiceUnitTest
         StudentManagementContext context;
         IRepository<int, Teacher> teacherRepository;
         TeacherService teacherService;
+        TeacherService _teacherService;
 
         Mock<IRepository<int, Teacher>> _teacherRepositoryMock;
-        TeacherService _teacherService;
+        Mock<ILogger<TeacherService>> loggerMock;
+
 
         [SetUp]
         public void Setup()
@@ -25,10 +28,12 @@ namespace StudentManagementAPITest.ServiceUnitTest
             context = new StudentManagementContext(optionsBuilder.Options);
 
             teacherRepository = new TeacherRepository(context);
-            teacherService = new TeacherService(teacherRepository);
+            loggerMock = new Mock<ILogger<TeacherService>>();
+
+            teacherService = new TeacherService(teacherRepository, loggerMock.Object);
 
             _teacherRepositoryMock = new Mock<IRepository<int, Teacher>>();
-            _teacherService = new TeacherService(_teacherRepositoryMock.Object);
+            _teacherService = new TeacherService(_teacherRepositoryMock.Object, loggerMock.Object);
 
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
@@ -97,7 +102,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
 
 
         [Test]
-        public async Task TestUpdateTeacherEmailException()
+        public void TestUpdateTeacherEmailException()
         {
             //Arrange
             var newTeacher = new UpdateEmailDTO
@@ -134,7 +139,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestUpdateTeacherPhoneException()
+        public void TestUpdateTeacherPhoneException()
         {
             //Arrange
             var newTeacher = new UpdatePhoneDTO
@@ -164,7 +169,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestGetAllTeachersException()
+        public void TestGetAllTeachersException()
         {
             //Arrange
             context.Teachers.RemoveRange(context.Teachers);
@@ -191,7 +196,7 @@ namespace StudentManagementAPITest.ServiceUnitTest
         }
 
         [Test]
-        public async Task TestGetTeacherByIdException()
+        public void TestGetTeacherByIdException()
         {
             //Action
             var ex = Assert.ThrowsAsync<NoSuchTeacherException>(() => teacherService.GetTeacherById(20000));
