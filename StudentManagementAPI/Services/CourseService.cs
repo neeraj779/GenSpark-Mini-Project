@@ -7,90 +7,92 @@ namespace StudentManagementAPI.Services
 {
     public class CourseService : ICourseService
     {
-        private IRepository<string, Course> _courseRepository;
+        private readonly IRepository<string, Course> _courseRepository;
+        private readonly ILogger<CourseService> _logger;
 
-        public CourseService(IRepository<string, Course> courseRepository)
+        public CourseService(IRepository<string, Course> courseRepository, ILogger<CourseService> logger)
         {
             _courseRepository = courseRepository;
+            _logger = logger;
         }
 
-        public async Task<CourseDTO> CreateCourse(CourseDTO course)
+        public async Task<CourseDTO> CreateCourse(CourseDTO courseDto)
         {
+            var existingCourse = await _courseRepository.Get(courseDto.CourseCode);
 
-            var courseExists = await _courseRepository.Get(course.CourseCode);
-
-            if (courseExists != null)
+            if (existingCourse != null)
+            {
+                _logger.LogWarning("Course with code {CourseCode} already exists", courseDto.CourseCode);
                 throw new CourseAlreadyExistsException();
+            }
 
             var newCourse = new Course
             {
-                CourseCode = course.CourseCode,
-                CourseName = course.CourseName,
-                CourseCredit = course.CourseCredit
+                CourseCode = courseDto.CourseCode,
+                CourseName = courseDto.CourseName,
+                CourseCredit = courseDto.CourseCredit
             };
 
             var createdCourse = await _courseRepository.Add(newCourse);
 
-            return MapCourseToCourseDTO(createdCourse);
+            return MapToDTO(createdCourse);
         }
 
         public async Task<CourseDTO> DeleteCourse(string courseCode)
         {
-            try
-            {
-                var deletedCourse = await _courseRepository.Delete(courseCode);
-                return MapCourseToCourseDTO(deletedCourse);
-            }
-            catch (NoSuchCourseException)
-            {
-                throw new NoSuchCourseException();
-            }
+            await EnsureCourseExists(courseCode);
+
+            var deletedCourse = await _courseRepository.Delete(courseCode);
+            return MapToDTO(deletedCourse);
         }
 
         public async Task<CourseDTO> GetCourseByCode(string courseCode)
         {
-            var course = await _courseRepository.Get(courseCode);
-            if (course == null)
-                throw new NoSuchCourseException();
-            return MapCourseToCourseDTO(course);
+            var course = await EnsureCourseExists(courseCode);
+            return MapToDTO(course);
         }
 
         public async Task<IEnumerable<CourseDTO>> GetCourses()
         {
             var courses = await _courseRepository.Get();
-            if (courses.Count() == 0)
+            if (!courses.Any())
+            {
+                _logger.LogWarning("No courses found");
                 throw new NoCourseFoundException();
+            }
 
-            var courseDTOs = new List<CourseDTO>();
-            foreach (var course in courses)
-                courseDTOs.Add(MapCourseToCourseDTO(course));
-
-            return courseDTOs;
-
+            return courses.Select(MapToDTO).ToList();
         }
 
         public async Task<CourseDTO> UpdateCourseCreditHours(string courseCode, int creditHours)
         {
-            var course = await _courseRepository.Get(courseCode);
-
-            if (course == null)
-                throw new NoSuchCourseException();
+            var course = await EnsureCourseExists(courseCode);
 
             course.CourseCredit = creditHours;
-
             var updatedCourse = await _courseRepository.Update(course);
-            return MapCourseToCourseDTO(updatedCourse);
+
+            return MapToDTO(updatedCourse);
         }
 
-        public CourseDTO MapCourseToCourseDTO(Course course)
+        private async Task<Course> EnsureCourseExists(string courseCode)
         {
-            CourseDTO newcourse = new CourseDTO
+            var course = await _courseRepository.Get(courseCode);
+            if (course == null)
+            {
+                _logger.LogWarning("Course not found with code: {CourseCode}", courseCode);
+                throw new NoSuchCourseException();
+            }
+            return course;
+        }
+
+        private CourseDTO MapToDTO(Course course)
+        {
+            return new CourseDTO
             {
                 CourseCode = course.CourseCode,
                 CourseName = course.CourseName,
                 CourseCredit = course.CourseCredit
             };
-            return newcourse;
         }
     }
 }
