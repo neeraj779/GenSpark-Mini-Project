@@ -20,13 +20,14 @@
 >   - [⚙️ Installation](#️-installation)
 >   - [🤖 Running GenSpark-Mini-Project](#-running-GenSpark-Mini-Project)
 >   - [🧪 Tests](#-tests)
-> - [🧪 Code Coverage Report](#-code-coverage-report)
+> - [📊 Code Coverage Report](#-code-coverage-report)
+> - [📝 API documentation](#-api-documentation)
 
 ---
 
 ## 📍 Overview
 
-This repository contains the codebase for the GenSpark Mini Project. The project is a Student Management System that allows users to manage students, teachers, courses, enrollments, assignments, and class attendance. The project is built using ASP.NET Core and Entity Framework. The project is divided into multiple modules, each of which is responsible for managing a specific aspect of the system. The project also includes a test project that contains unit tests for the repository classes.
+This repository contains the codebase for the GenSpark Mini Project. The project is a Student Management System that allows users to manage students, teachers, courses, enrollments, assignments, and class attendance. The project is built using ASP.NET Core and Entity Framework. The project is divided into multiple modules, each of which is responsible for managing a specific aspect of the system. The project also includes a test project that contains unit tests for the repository and service classes.
 
 ---
 
@@ -334,8 +335,11 @@ dotnet test
 ```
 
 
-## 🧪 Code Coverage Report
+## 📊 Code Coverage Report
 
 ![image](CodeCoverageReport.png)
 
+## 📝 API documentation
+
+You can check out the API documentation [here](https://bump.sh/neeraj779/doc/student-management-api).
 
