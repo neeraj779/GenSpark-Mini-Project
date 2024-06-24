@@ -66,7 +66,7 @@ namespace StudentManagementAPI.Services
 
         public async Task<StudentReturnDTO> UpdateStudentStatus(UpdateStatusDTO updateStatusdto)
         {
-            var student = await GetStudentByIdOrThrow(updateStatusdto.studentId);
+            var student = await GetStudentByIdOrThrow(updateStatusdto.StudentId);
 
             if (!Enum.TryParse(updateStatusdto.Status, out StudentStatus studentStatus))
             {
