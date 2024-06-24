@@ -5,7 +5,7 @@ namespace StudentManagementAPI.Models.DTOs
 {
     public class StudentRegisterDTO
     {
-        public string FullName { get; set; }
+        public string FullName { get; set; } = string.Empty;
         public string RollNo { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
         [DataType(DataType.Date)]
@@ -22,9 +22,7 @@ namespace StudentManagementAPI.Models.DTOs
         [Required(ErrorMessage = "Email address is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
-        public string Degree { get; set; }
-        public string Branch { get; set; }
     }
 }
