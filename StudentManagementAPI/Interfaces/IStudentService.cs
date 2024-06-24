@@ -8,7 +8,7 @@ namespace StudentManagementAPI.Interfaces
         public Task<StudentReturnDTO> GetStudentById(int studentId);
         public Task<StudentReturnDTO> UpdateStudentEmail(UpdateEmailDTO updateEmaildto);
         public Task<StudentReturnDTO> UpdateStudentPhone(UpdatePhoneDTO updatePhonedto);
-        public Task<StudentReturnDTO> UpdateStudentStatus(int studentId, string status);
+        public Task<StudentReturnDTO> UpdateStudentStatus(UpdateStatusDTO updateStatusdto);
         public Task<IEnumerable<StudentReturnDTO>> GetStudents();
         public Task<StudentReturnDTO> DeleteStudent(int studentId);
     }

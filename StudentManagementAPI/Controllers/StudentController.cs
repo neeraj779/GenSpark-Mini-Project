@@ -107,11 +107,11 @@ namespace StudentManagementAPI.Controllers
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentStatus(int studentId, string status)
+        public async Task<ActionResult<StudentReturnDTO>> UpdateStudentStatus(UpdateStatusDTO updateStatusdto)
         {
             try
             {
-                var updatedStudent = await _studentService.UpdateStudentStatus(studentId, status);
+                var updatedStudent = await _studentService.UpdateStudentStatus(updateStatusdto);
                 return Ok(updatedStudent);
             }
 
@@ -174,7 +174,7 @@ namespace StudentManagementAPI.Controllers
         /// Deletes a student based on the provided student ID.
         /// </summary>
         /// <param name="studentId">The ID of the student to be deleted.</param>
-        [HttpDelete("DeleteStudent")]
+        [HttpDelete("DeleteStudentRecord")]
         [Authorize(Roles = "Admin, Teacher")]
         [ProducesResponseType(typeof(StudentReturnDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorModel), StatusCodes.Status404NotFound)]

@@ -64,13 +64,13 @@ namespace StudentManagementAPI.Services
             return MapStudentToStudentReturnDTO(updatedStudent);
         }
 
-        public async Task<StudentReturnDTO> UpdateStudentStatus(int studentId, string status)
+        public async Task<StudentReturnDTO> UpdateStudentStatus(UpdateStatusDTO updateStatusdto)
         {
-            var student = await GetStudentByIdOrThrow(studentId);
+            var student = await GetStudentByIdOrThrow(updateStatusdto.studentId);
 
-            if (!Enum.TryParse(status, out StudentStatus studentStatus))
+            if (!Enum.TryParse(updateStatusdto.Status, out StudentStatus studentStatus))
             {
-                _logger.LogWarning("Invalid student status: {Status}", status);
+                _logger.LogWarning("Invalid student status: {Status}", updateStatusdto.Status);
                 throw new InvalidStudentStatusException();
             }
 
