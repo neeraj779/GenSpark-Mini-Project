@@ -184,14 +184,14 @@ namespace StudentManagementAPITest.ServiceUnitTest
             //Arrange
             var toBeUpdate = new UpdateStatusDTO
             {
-                StudentId = 4000,
+                Id = 4000,
                 Status = StudentStatus.Alumni.ToString()
-                
+
             };
 
             //Action
             var result = await studentService.UpdateStudentStatus(toBeUpdate);
-            var student = await studentRepository.Get(toBeUpdate.StudentId);
+            var student = await studentRepository.Get(toBeUpdate.Id);
 
             //Assert
             Assert.That(result.Status, Is.EqualTo(toBeUpdate.Status));
@@ -204,13 +204,13 @@ namespace StudentManagementAPITest.ServiceUnitTest
             //Arrange
             var wrongStatusCheck = new UpdateStatusDTO
             {
-                StudentId = 4000,
+                Id = 4000,
                 Status = "wrong status"
             };
-            
+
             var wrongIdCheck = new UpdateStatusDTO
             {
-                StudentId = 5000,
+                Id = 5000,
                 Status = StudentStatus.Alumni.ToString()
             };
 
