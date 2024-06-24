@@ -182,31 +182,42 @@ namespace StudentManagementAPITest.ServiceUnitTest
         public async Task TestUpdateStudentStatus()
         {
             //Arrange
-            int Id = 4000;
-            string status = StudentStatus.Alumni.ToString();
+            var toBeUpdate = new UpdateStatusDTO
+            {
+                StudentId = 4000,
+                Status = StudentStatus.Alumni.ToString()
+                
+            };
 
             //Action
-            var result = await studentService.UpdateStudentStatus(Id, status);
-            var student = await studentRepository.Get(Id);
+            var result = await studentService.UpdateStudentStatus(toBeUpdate);
+            var student = await studentRepository.Get(toBeUpdate.StudentId);
 
             //Assert
-            Assert.That(result.Status, Is.EqualTo(status));
-            Assert.That(student.Status, Is.EqualTo(Enum.Parse<StudentStatus>(status)));
+            Assert.That(result.Status, Is.EqualTo(toBeUpdate.Status));
+            Assert.That(student.Status, Is.EqualTo(Enum.Parse<StudentStatus>(toBeUpdate.Status)));
         }
 
         [Test]
         public void TestUpdateStudentStatusException()
         {
             //Arrange
-            int Id = 4000;
-            string status = StudentStatus.Alumni.ToString();
+            var wrongStatusCheck = new UpdateStatusDTO
+            {
+                StudentId = 4000,
+                Status = "wrong status"
+            };
+            
+            var wrongIdCheck = new UpdateStatusDTO
+            {
+                StudentId = 5000,
+                Status = StudentStatus.Alumni.ToString()
+            };
 
-            int wrongId = 5000;
-            string wrongStatus = "InvalidStatus";
 
             //Action
-            var exception = Assert.ThrowsAsync<NoSuchStudentException>(() => studentService.UpdateStudentStatus(wrongId, status));
-            var exception2 = Assert.ThrowsAsync<InvalidStudentStatusException>(() => studentService.UpdateStudentStatus(Id, wrongStatus));
+            var exception = Assert.ThrowsAsync<NoSuchStudentException>(() => studentService.UpdateStudentStatus(wrongIdCheck));
+            var exception2 = Assert.ThrowsAsync<InvalidStudentStatusException>(() => studentService.UpdateStudentStatus(wrongStatusCheck));
 
             //Assert
             Assert.That(exception.Message, Is.EqualTo("Uh oh! No such student found!"));
