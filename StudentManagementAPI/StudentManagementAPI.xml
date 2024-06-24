@@ -262,7 +262,7 @@
             <param name="updatePhonedto"> UpdatePhoneDTO object containing the details of the student's phone number to be updated.</param>
             <returns></returns>
         </member>
-        <member name="M:StudentManagementAPI.Controllers.StudentController.UpdateStudentStatus(System.Int32,System.String)">
+        <member name="M:StudentManagementAPI.Controllers.StudentController.UpdateStudentStatus(StudentManagementAPI.Models.DTOs.UpdateStatusDTO)">
             <summary>
             Updates the status of a student based on the provided student ID.
             </summary>
