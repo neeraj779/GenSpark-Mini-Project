@@ -1,15 +1,15 @@
 <p align="center">
-    <h1 align="center">GENSPARK-MINI-PROJECT</h1>
+    <h1 align="center">GenSpark-Mini-Project-Backend</h1>
 </p>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/neeraj779/GenSpark-Mini-Project?style=flat&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/neeraj779/GenSpark-Mini-Project?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/neeraj779/GenSpark-Mini-Project?style=flat&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/neeraj779/GenSpark-Mini-Project?style=flat&color=0080ff" alt="repo-language-count">
+	<img src="https://img.shields.io/github/license/neeraj779/GenSpark-Mini-Project-Backend?style=flat&color=0080ff" alt="license">
+	<img src="https://img.shields.io/github/last-commit/neeraj779/GenSpark-Mini-Project-Backend?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/neeraj779/GenSpark-Mini-Project-Backend?style=flat&color=0080ff" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/neeraj779/GenSpark-Mini-Project-Backend?style=flat&color=0080ff" alt="repo-language-count">
 <hr>
 	
-[![CodeQL](https://github.com/neeraj779/GenSpark-Mini-Project/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/neeraj779/GenSpark-Mini-Project/actions/workflows/github-code-scanning/codeql)
+[![CodeQL](https://github.com/neeraj779/GenSpark-Mini-Project-Backend/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/neeraj779/GenSpark-Mini-Project-Backend/actions/workflows/github-code-scanning/codeql)
 	
 ## 🔗 Quick Links
 
@@ -18,7 +18,7 @@
 > - [📂 Repository Structure](#-repository-structure)
 > - [🚀 Getting Started](#-getting-started)
 >   - [⚙️ Installation](#️-installation)
->   - [🤖 Running GenSpark-Mini-Project](#-running-GenSpark-Mini-Project)
+>   - [🤖 Running GenSpark-Mini-Project-Backend](#-running-GenSpark-Mini-Project-Backend)
 >   - [🧪 Tests](#-tests)
 > - [📊 Code Coverage Report](#-code-coverage-report)
 > - [📝 API documentation](#-api-documentation)
@@ -116,7 +116,7 @@ The Student Management System provides the following features:
 ## 📂 Repository Structure
 
 ```sh
-└── GenSpark-Mini-Project/
+└── GenSpark-Mini-Project-Backend/
     ├── API-documentation.pdf
     ├── API.postman_collection.json
     ├── CodeCoverageReport.png
@@ -300,16 +300,16 @@ The Student Management System provides the following features:
 
 ### ⚙️ Installation
 
-1. Clone the GenSpark-Mini-Project repository:
+1. Clone the GenSpark-Mini-Project-Backend repository:
 
 ```sh
-git clone https://github.com/neeraj779/GenSpark-Mini-Project
+git clone https://github.com/neeraj779/GenSpark-Mini-Project-Backend
 ```
 
 2. Change to the project directory:
 
 ```sh
-cd GenSpark-Mini-Project
+cd GenSpark-Mini-Project-Backend
 ```
 
 3. Install the dependencies:
@@ -318,9 +318,9 @@ cd GenSpark-Mini-Project
 dotnet build
 ```
 
-### 🤖 Running GenSpark-Mini-Project
+### 🤖 Running GenSpark-Mini-Project-Backend
 
-Use the following command to run GenSpark-Mini-Project:
+Use the following command to run GenSpark-Mini-Project-Backend:
 
 ```sh
 dotnet run
